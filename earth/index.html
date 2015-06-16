@@ -4,9 +4,12 @@
 		<link rel="stylesheet" type="text/css" href="style.css">
 		<script src="three.min.js"></script>
 		<script src="earth.js"></script>
+		<script src="ShaderExtras.js"></script>
+		<script src="OrbitControls.js"></script>
+		<!--<script src="mousekeyboard.js"></script>-->
 	</head>
 	<body>
-		
+		<div id="atlas" style="position: absolute; top: 0px; left: 0px; width:100%; height:100%;"></div>
 		<script type="x-shader/x-vertex" id="vertexshader">
 			uniform float amplitude;
 			attribute float size;
@@ -50,7 +53,7 @@
 				vUv = uv;
 			}
 		</script>
-
+		<!-- varying vec3 vNormal;-->
 		<script id="globeFragmentShader" type="x-shader/x-fragment">
 			uniform sampler2D mapIndex;
 			uniform sampler2D lookup;

@@ -6,39 +6,56 @@ var cube
 
 window.onload = function(){
 	
+	var outlinedMapTexture
 	var mapIndexedImage = new Image();
 	mapIndexedImage.src = 'images/map_indexed.png'
-	document.body.appendChild(mapIndexedImage)
+	//document.body.appendChild(mapIndexedImage)
 	var mapOutlineImage
-	mapIndexedImage.onload= function(){
+	var indexedMapTexture = THREE.ImageUtils.loadTexture('images/map_indexed.png', {}, function(){
 		mapOutlineImage = new Image();
 		mapOutlineImage.src = 'images/map_outline.png'
-		mapOutlineImage.onload = function(){
+		outlinedMapTexture = THREE.ImageUtils.loadTexture('images/map_outline.png', {}, function(){
 			buildearth();
-			};
-		};
+			});
+		});
 	
 	
 	function buildearth(){
 		var rotating
 		scene = new THREE.Scene();
 		scene.matrixAutoUpdate = false;		
-		// scene.fog = new THREE.FogExp2( 0xBBBBBB, 0.00003 );		        		       
+		scene.fog = new THREE.FogExp2( 0xBBBBBB, 0.00003 );		        		       
 
 		scene.add( new THREE.AmbientLight( 0x505050 ) );				
 
-		light1 = new THREE.SpotLight( 0xeeeeee, 3 );
+		/*light1 = new THREE.SpotLight( 0xeeeeee, 3 );
 		light1.position.x = 730; 
 		light1.position.y = 520;
 		light1.position.z = 626;
 		light1.castShadow = true;
+		scene.add( light1 );*/
+		
+		light1 = new THREE.SpotLight( "#ffffff", 100 );
+		light1.position.x = 0; 
+		light1.position.y = 0;
+		light1.position.z = 400;
+		light1.castShadow = true;
+		light1.lookAt(scene.position)
 		scene.add( light1 );
+		
+		
+		/*light1 = new THREE.SpotLight( 0xeeeeee, 100 );
+		light1.position.x = 730; 
+		light1.position.y = 520;
+		light1.position.z = 626;
+		light1.castShadow = true;
+		scene.add( light1 );*/
 
 		light2 = new THREE.PointLight( 0x222222, 14.8 );
 		light2.position.x = -640;
 		light2.position.y = -500;
 		light2.position.z = -1000;
-		scene.add( light2 );				
+		//scene.add( light2 );				
 
 		rotating = new THREE.Object3D();
 		scene.add(rotating);
@@ -53,32 +70,39 @@ window.onload = function(){
 		lookupTexture.needsUpdate = true;
 		
 		//THREE.ImageUtils.loadTexture( 'images/map_indexed.png' );
-		var indexedMapTexture = new THREE.Texture( mapIndexedImage );
+		//var indexedMapTexture = new THREE.Texture( mapIndexedImage );
 		indexedMapTexture.needsUpdate = true;
 		indexedMapTexture.magFilter = THREE.NearestFilter;
 		indexedMapTexture.minFilter = THREE.NearestFilter;
 
 		//var mapOutlineImage = new Image();
 		//mapOutlineImage.src = 'images/map_outline.png'
-		var outlinedMapTexture = new THREE.Texture( mapOutlineImage );
+		//var outlinedMapTexture = new THREE.Texture( mapOutlineImage );
 		outlinedMapTexture.needsUpdate = true;
 		// outlinedMapTexture.magFilter = THREE.NearestFilter;
 		// outlinedMapTexture.minFilter = THREE.NearestFilter;
 
-		var uniforms = {
+		/*var uniforms = {
 			'mapIndex': { type: 't', value: 0, texture: indexedMapTexture  },		
 			'lookup': { type: 't', value: 1, texture: lookupTexture },
 			'outline': { type: 't', value: 2, texture: outlinedMapTexture },
 			'outlineLevel': {type: 'f', value: 1 },
+		};*/
+		
+		var uniforms = {
+		    time: { type: "f", value: 0 },
+		    resolution: { type: "v2", value: new THREE.Vector2 },
+		    texture: { type: "t", value: THREE.ImageUtils.loadTexture('images/map_indexed.png') }
 		};
+		
 		mapUniforms = uniforms;
 
 		var shaderMaterial = new THREE.ShaderMaterial( {
 
 			uniforms: 		uniforms,
 			// attributes:     attributes,
-			vertexShader:   document.getElementById( 'globeVertexShader' ).textContent,
-			fragmentShader: document.getElementById( 'globeFragmentShader' ).textContent,
+			vertexShader:   document.getElementById( 'vertexshader' ).textContent,
+			fragmentShader: document.getElementById( 'fragmentshader' ).textContent,
 			// sizeAttenuation: true,
 		});
 
@@ -133,13 +157,13 @@ window.onload = function(){
 		//console.log( selectableCountries );
 		
 		// load geo data (country lat lons in this case)
-		console.time('loadGeoData');
+		//console.time('loadGeoData');
 		//loadGeoData( latlonData );				
-		console.timeEnd('loadGeoData');				
+	//	console.timeEnd('loadGeoData');				
 
-		console.time('buildDataVizGeometries');
+		//console.time('buildDataVizGeometries');
 		//var vizilines = buildDataVizGeometries(timeBins);
-		console.timeEnd('buildDataVizGeometries');
+		//console.timeEnd('buildDataVizGeometries');
 
 		//visualizationMesh = new THREE.Object3D();
 		//rotating.add(visualizationMesh);	
@@ -147,35 +171,59 @@ window.onload = function(){
 		
 		renderer = new THREE.WebGLRenderer({antialias:false});
 		renderer.setSize( window.innerWidth, window.innerHeight );
-		//renderer.autoClear = false;
+		renderer.autoClear = false;
 		
 		renderer.sortObjects = false;		
 		renderer.generateMipmaps = false;					
-
+		
 		/*camera = new THREE.PerspectiveCamera( 12, window.innerWidth / window.innerHeight, 1, 20000 ); 		        
 		camera.position.z = 1400;
 		camera.position.y = 0;
 		camera.lookAt(scene.width/2, scene.height/2);	
 		scene.add( camera );*/	  
+			
+		var skyBoxGeometry = new THREE.BoxGeometry( 10000, 10000, 10000 );
+		// BackSide: render faces from inside of the cube, instead of from outside (default).
+		var skyBoxMaterial = new THREE.MeshBasicMaterial( { color: 0x9999ff, side: THREE.BackSide } );
+		var skyBox = new THREE.Mesh( skyBoxGeometry, skyBoxMaterial );
+		scene.add(skyBox);
 
-		var camera = new THREE.PerspectiveCamera( 70, window.innerWidth/window.innerHeight, 0.5, 100000 );
+
+
+		camera = new THREE.PerspectiveCamera( 70, window.innerWidth/window.innerHeight, 0.5, 100000 );
 		camera.position.z = 500;
 		camera.position.y = 0;
 		camera.position.x = 0;
-
-		document.body.appendChild( renderer.domElement );	
+		
+		var controls = new THREE.OrbitControls( camera, renderer.domElement );
+		
+		var atlas = document.getElementById('atlas')
+		atlas.appendChild( renderer.domElement );	
 		//var geometry = new THREE.BoxGeometry( 1, 1, 1 );
 		//var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
 		//var cube = new THREE.Mesh( geometry, material );
 		//scene.add( cube );
 		
-		var render = function () {	
-			//renderer.clear();	 					
-			renderer.render( scene, camera );	
-		}	
 		
 		render();
+		animate();
 	}
+	
+	function render() {	
+		renderer.clear();	 					
+		renderer.render( scene, camera );	
+	}	
+	
+	
+	
+	
+	
+	function animate(){
+		
+		render();		        		       
+		requestAnimationFrame( animate );		    		
+	}
+	
 }
 
 
