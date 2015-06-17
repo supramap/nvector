@@ -170,7 +170,11 @@ window.onload = function(){
 		console.time('loadGeoData');
 		loadGeoData( latlonData );				
 		console.timeEnd('loadGeoData');				
-
+		
+		visualizationMesh = new THREE.Object3D();
+		rotating.add(visualizationMesh);
+		
+			
 		//console.time('buildDataVizGeometries');
 		//var vizilines = buildDataVizGeometries(timeBins);
 		//console.timeEnd('buildDataVizGeometries');
