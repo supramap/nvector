@@ -34,7 +34,7 @@ window.onload = function(){
 		scene.matrixAutoUpdate = false;		
 		scene.fog = new THREE.FogExp2( 0xBBBBBB, 0.00003 );		        		       
 
-		scene.add( new THREE.AmbientLight( 0x505050 ) );				
+		scene.add( new THREE.AmbientLight( 0x404040 ) );				
 
 		/*light1 = new THREE.SpotLight( 0xeeeeee, 3 );
 		light1.position.x = 730; 
@@ -43,7 +43,7 @@ window.onload = function(){
 		light1.castShadow = true;
 		scene.add( light1 );*/
 		
-		light1 = new THREE.SpotLight( "#ffffff", 100 );
+		light1 = new THREE.SpotLight( 0xeeeeee, 100 );
 		light1.position.x = 0; 
 		light1.position.y = 0;
 		light1.position.z = 400;
@@ -59,15 +59,17 @@ window.onload = function(){
 		light1.castShadow = true;
 		scene.add( light1 );*/
 
-		light2 = new THREE.PointLight( 0x222222, 14.8 );
+		light2 = new THREE.PointLight( 0xff0000, 300,1000 );
 		light2.position.x = -640;
 		light2.position.y = -500;
 		light2.position.z = -1000;
-		//scene.add( light2 );				
+		scene.add( light2 );				
 
 		rotating = new THREE.Object3D();
 		scene.add(rotating);
-
+		
+		rotating.add(light2)
+		
 		lookupCanvas = document.createElement('canvas');	
 		lookupCanvas.width = 256;
 		lookupCanvas.height = 1;
@@ -114,6 +116,7 @@ window.onload = function(){
 			// sizeAttenuation: true,
 		});
 		
+		//shaderMaterial.needsUpdate = true;
 		var sphereMaterial = new THREE.MeshBasicMaterial({map: outlinedMapTexture})
 
 		shaderMaterial.index0AttributeName = "position";
@@ -134,13 +137,15 @@ window.onload = function(){
 		// backMat.ambient = new THREE.Color(255,255,255);	
 		var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );						
 		sphere = new THREE.Mesh( new THREE.SphereGeometry( 100, 40, 40 ), sphereMaterial /*shaderMaterial*/ );				
-		// sphere.receiveShadow = true;
-		// sphere.castShadow = true;
+		//sphere.receiveShadow = true;
+		//sphere.castShadow = true;
+		//sphere.needsUpdate = true;
 		sphere.doubleSided = false;
 		sphere.rotation.x = Math.PI;				
 		sphere.rotation.y = -Math.PI/2;
 		sphere.rotation.z = Math.PI;
 		sphere.id = "base";	
+	
 		rotating.add( sphere );	
 
 
@@ -174,6 +179,16 @@ window.onload = function(){
 		visualizationMesh = new THREE.Object3D();
 		rotating.add(visualizationMesh);
 		
+			
+		//Create the geometry for a line between two countries. 
+		var geometry = makeLineGeometry('UNITED STATES','CANADA', 2000);
+		
+		var nextGeo = makeLineGeometry('UNITED STATES','RUSSIAN FEDERATION', 100);	
+		//Try and create the mesh for the fresh geometry
+		
+		createLine(geometry);
+		createLine(nextGeo);	
+			
 			
 		//console.time('buildDataVizGeometries');
 		//var vizilines = buildDataVizGeometries(timeBins);
