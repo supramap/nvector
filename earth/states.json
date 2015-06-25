@@ -1,0 +1,206 @@
+{
+    "Alabama": {
+        "lat": "32",
+        "lon": "-86"
+    },
+    "Alaska": {
+        "lat": "64",
+        "lon": "-152"
+    },
+    "Arizona": {
+        "lat": "34",
+        "lon": "-111"
+    },
+    "Arkansas": {
+        "lat": "34",
+        "lon": "-92"
+    },
+    "California": {
+        "lat": "36",
+        "lon": "-120"
+    },
+    "Colorado": {
+        "lat": "38",
+        "lon": "-105"
+    },
+    "Connecticut": {
+        "lat": "41",
+        "lon": "-72"
+    },
+    "Delaware": {
+        "lat": "38",
+        "lon": "-75"
+    },
+    "District of Columbia": {
+        "lat": "39",
+        "lon": "-76"
+    },
+    "Florida": {
+        "lat": "28",
+        "lon": "-81"
+    },
+    "Georgia": {
+        "lat": "32",
+        "lon": "-83"
+    },
+    "Hawaii": {
+        "lat": "20",
+        "lon": "-157"
+    },
+    "Idaho": {
+        "lat": "44",
+        "lon": "-114"
+    },
+    "Illinois": {
+        "lat": "40",
+        "lon": "-89"
+    },
+    "Indiana": {
+        "lat": "39",
+        "lon": "-86"
+    },
+    "Iowa": {
+        "lat": "41",
+        "lon": "-93"
+    },
+    "Kansas": {
+        "lat": "38",
+        "lon": "-98"
+    },
+    "Kentucky": {
+        "lat": "37",
+        "lon": "-85"
+    },
+    "Louisiana": {
+        "lat": "30",
+        "lon": "-92"
+    },
+    "Maine": {
+        "lat": "45",
+        "lon": "-69"
+    },
+    "Maryland": {
+        "lat": "39",
+        "lon": "-77"
+    },
+    "Massachusetts": {
+        "lat": "42",
+        "lon": "-72"
+    },
+    "Michigan": {
+        "lat": "45",
+        "lon": "-84"
+    },
+    "Minnesota": {
+        "lat": "46",
+        "lon": "-95"
+    },
+    "Mississippi": {
+        "lat": "32",
+        "lon": "-89"
+    },
+    "Missouri": {
+        "lat": "38",
+        "lon": "-92"
+    },
+    "Montana": {
+        "lat": "47",
+        "lon": "-109"
+    },
+    "Nebraska": {
+        "lat": "41",
+        "lon": "-99"
+    },
+    "Nevada": {
+        "lat": "39",
+        "lon": "-116"
+    },
+    "New Hampshire": {
+        "lat": "43",
+        "lon": "-71"
+    },
+    "New Jersey": {
+        "lat": "40",
+        "lon": "-74"
+    },
+    "New Mexico": {
+        "lat": "34",
+        "lon": "-106"
+    },
+    "New York": {
+        "lat": "42",
+        "lon": "-76"
+    },
+    "North Carolina": {
+        "lat": "35",
+        "lon": "-79"
+    },
+    "North Dakota": {
+        "lat": "47",
+        "lon": "-100"
+    },
+    "Ohio": {
+        "lat": "40",
+        "lon": "-82"
+    },
+    "Oklahoma": {
+        "lat": "35",
+        "lon": "-97"
+    },
+    "Oregon": {
+        "lat": "43",
+        "lon": "-120"
+    },
+    "Pennsylvania": {
+        "lat": "40",
+        "lon": "-77"
+    },
+    "Rhode Island": {
+        "lat": "41",
+        "lon": "-71"
+    },
+    "South Carolina": {
+        "lat": "33",
+        "lon": "-80"
+    },
+    "South Dakota": {
+        "lat": "44",
+        "lon": "-100"
+    },
+    "Tennessee": {
+        "lat": "35",
+        "lon": "-86"
+    },
+    "Texas": {
+        "lat": "31",
+        "lon": "-99"
+    },
+    "Utah": {
+        "lat": "39",
+        "lon": "-111"
+    },
+    "Vermont": {
+        "lat": "43",
+        "lon": "-72"
+    },
+    "Virginia": {
+        "lat": "37",
+        "lon": "-78"
+    },
+    "Washington": {
+        "lat": "47",
+        "lon": "-120"
+    },
+    "West Virginia": {
+        "lat": "38",
+        "lon": "-80"
+    },
+    "Wisconsin": {
+        "lat": "44",
+        "lon": "-89"
+    },
+    "Wyoming": {
+        "lat": "42",
+        "lon": "-107"
+    }
+}
