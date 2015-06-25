@@ -5,10 +5,12 @@ var camera
 var isoFile = 'country_iso3166.json';
 var latlonFile = 'country_lat_lon.json';
 var latlonData;	
+var stateCoords
 var cube;
 var countryLookup;
 
 var countryData = new Object();	
+var stateData = new Object();
 
 window.onload = function(){
 	var outlinedMapTexture;
@@ -20,10 +22,12 @@ window.onload = function(){
 		mapOutlineImage = new Image();
 		mapOutlineImage.src = 'images/map_outline.png'
 		loadWorldPins(function(){
-			loadCountryCodes(function(){
-				outlinedMapTexture = THREE.ImageUtils.loadTexture('images/map_outline.png', {}, function(){
-					buildearth();
-					});
+			loadStatePins(function(){
+				loadCountryCodes(function(){
+					outlinedMapTexture = THREE.ImageUtils.loadTexture('images/map_outline.png', {}, function(){
+						buildearth();
+						});
+				});
 			});	
 		});
 	});
@@ -173,7 +177,7 @@ window.onload = function(){
 		
 		// load geo data (country lat lons in this case)
 		console.time('loadGeoData');
-		loadGeoData( latlonData );				
+		loadGeoData( latlonData , stateCoords);				
 		console.timeEnd('loadGeoData');				
 		
 		visualizationMesh = new THREE.Object3D();
@@ -181,13 +185,15 @@ window.onload = function(){
 		
 			
 		//Create the geometry for a line between two countries. 
-		var geometry = makeLineGeometry('UNITED STATES','CANADA', 2000);
+		//var geometry = makeLineGeometry('UNITED STATES','CANADA', 2000,'country','country');
 		
-		var nextGeo = makeLineGeometry('UNITED STATES','RUSSIAN FEDERATION', 100);	
+		var stateGeo1 = makeLineGeometry('Alabama', 'New York', 2000, 'state','state');
+		
+		//var nextGeo = makeLineGeometry('UNITED STATES','RUSSIAN FEDERATION', 100, 'country','country');	
 		//Try and create the mesh for the fresh geometry
 		
-		createLine(geometry);
-		createLine(nextGeo);	
+		createLine(stateGeo1);
+		//createLine(nextGeo);	
 			
 			
 		//console.time('buildDataVizGeometries');

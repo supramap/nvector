@@ -20,6 +20,30 @@ function loadWorldPins( callback ){
 	xhr.send( null );			    	
 }
 
+function loadStatePins(callback){
+	// We're going to ask a file for the JSON data.
+	xhr = new XMLHttpRequest();
+
+	// Where do we get the data?
+	xhr.open( 'GET', "states.json", true );
+
+	// What do we do when we have it?
+	xhr.onreadystatechange = function() {
+	  // If we've received the data
+	  if ( xhr.readyState === 4 && (xhr.status === 200 || xhr.status === 0 )) {
+	      // Parse the JSON
+	      stateCoords = JSON.parse( xhr.responseText );
+	      if( callback )
+	      	callback();				     
+	    }
+	};
+
+	// Begin request
+	xhr.send( null );
+}
+
+
+
 function loadContentData(callback){	
 	var filePath = "categories/All.json";
 	filePath = encodeURI( filePath );

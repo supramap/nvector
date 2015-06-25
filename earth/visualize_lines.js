@@ -83,9 +83,20 @@ function makeConnectionLineGeometry( startpos, endpos, value ){
 }
 
 
-function makeLineGeometry(exporter,importer, value){
-	exporter = countryData[exporter]
-	importer = countryData[importer]
+function makeLineGeometry(exporter,importer, value, exportType, importType){
+	if(exportType == 'country'){
+		exporter = countryData[exporter]
+	}
+	else{
+		exporter = stateData[exporter]
+	}
+	if(importType == 'country' ){
+		importer = countryData[importer]
+	}
+	else{
+		importer = stateData[importer]
+	}
+
 	
 	var cloned = exporter.center.clone();
 	var subslf = cloned.sub(importer.center)
@@ -169,6 +180,25 @@ function makeLineGeometry(exporter,importer, value){
 	return curveGeometry;
 }
 
+
+function createMarker(place, type){
+	// determine place type and gather appropriate coordinates
+	var lat,lon;
+	
+	if (type == 'country'){
+		lat = countryData[place].lat
+		lon = countryData[place].lon
+		place = countryData[place]
+	}
+	else{
+		lat = stateData[place].lat
+		lon = stateData[place].lon
+		place = stateData[place]
+	}
+	
+	var center = place.center;
+	
+}
 
 
 

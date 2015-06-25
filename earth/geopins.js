@@ -1,4 +1,4 @@
-function loadGeoData( latlonData ){
+function loadGeoData( latlonData , stateCoords ){
     //	-----------------------------------------------------------------------------
     //	Load the world geo data json, per country	
 
@@ -34,6 +34,34 @@ function loadGeoData( latlonData ){
 		//	save and catalogue       
 		country.center = center;
 		countryData[country.countryName] = country;	
+	}
+	
+	for ( var i in stateCoords ) {										
+		var curstate = stateCoords[i];	
+		
+		//	can we even find the country in the list?
+		// if( countryLookup[country.n.toUpperCase()] === undefined ){
+		// 	console.log('could not find country that has country code: ' + country.n)
+		// 	continue;				
+		// }
+		
+
+		//	take the lat lon from the data and convert this to 3d globe space
+		// not sure on the -90
+        var lon = curstate.lon - 90;
+        var lat = curstate.lat;
+        
+        var phi = Math.PI/2 - lat * Math.PI / 180 - Math.PI * 0.01;
+        var theta = 2 * Math.PI - lon * Math.PI / 180 + Math.PI * 0.06;
+		
+		var center = new THREE.Vector3();                
+        center.x = Math.sin(phi) * Math.cos(theta) * rad;
+        center.y = Math.cos(phi) * rad;
+        center.z = Math.sin(phi) * Math.sin(theta) * rad;  	
+	
+		//	save and catalogue       
+		curstate.center = center;
+		stateData[i] = curstate;	
 	}		
 
 	// console.log(countryData);
