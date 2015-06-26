@@ -24,3 +24,15 @@ function createLine(geometry){
 	//	add it to scene graph
 //	visualizationMesh.add( mesh );
 }
+
+function createSquare(geometry){
+	
+	var material = new THREE.LineBasicMaterial({
+		color: 0x154492,
+		linewidth:5
+	});
+	
+	var square = new THREE.Mesh(geometry, material)
+	
+	vizualizationMesh.add()
+}

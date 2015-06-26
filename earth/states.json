@@ -40,16 +40,16 @@
         "lon": "-81"
     },
     "Georgia": {
-        "lat": "32",
-        "lon": "-83"
+        "lat": "33",
+        "lon": "-82"
     },
     "Hawaii": {
         "lat": "20",
         "lon": "-157"
     },
     "Idaho": {
-        "lat": "44",
-        "lon": "-114"
+        "lat": "43",
+        "lon": "-115"
     },
     "Illinois": {
         "lat": "40",
@@ -64,8 +64,8 @@
         "lon": "-93"
     },
     "Kansas": {
-        "lat": "38",
-        "lon": "-98"
+        "lat": "37",
+        "lon": "-99"
     },
     "Kentucky": {
         "lat": "37",
@@ -88,7 +88,7 @@
         "lon": "-72"
     },
     "Michigan": {
-        "lat": "45",
+        "lat": "44",
         "lon": "-84"
     },
     "Minnesota": {
@@ -108,8 +108,8 @@
         "lon": "-109"
     },
     "Nebraska": {
-        "lat": "41",
-        "lon": "-99"
+        "lat": "40",
+        "lon": "-100"
     },
     "Nevada": {
         "lat": "39",
@@ -128,16 +128,16 @@
         "lon": "-106"
     },
     "New York": {
-        "lat": "42",
-        "lon": "-76"
+        "lat": "43",
+        "lon": "-75"
     },
     "North Carolina": {
-        "lat": "35",
+        "lat": "36",
         "lon": "-79"
     },
     "North Dakota": {
         "lat": "47",
-        "lon": "-100"
+        "lon": "-101"
     },
     "Ohio": {
         "lat": "40",
@@ -152,7 +152,7 @@
         "lon": "-120"
     },
     "Pennsylvania": {
-        "lat": "40",
+        "lat": "41",
         "lon": "-77"
     },
     "Rhode Island": {
@@ -160,15 +160,15 @@
         "lon": "-71"
     },
     "South Carolina": {
-        "lat": "33",
-        "lon": "-80"
+        "lat": "34",
+        "lon": "-79"
     },
     "South Dakota": {
         "lat": "44",
         "lon": "-100"
     },
     "Tennessee": {
-        "lat": "35",
+        "lat": "36",
         "lon": "-86"
     },
     "Texas": {
@@ -180,11 +180,11 @@
         "lon": "-111"
     },
     "Vermont": {
-        "lat": "43",
+        "lat": "44",
         "lon": "-72"
     },
     "Virginia": {
-        "lat": "37",
+        "lat": "38",
         "lon": "-78"
     },
     "Washington": {
@@ -197,7 +197,7 @@
     },
     "Wisconsin": {
         "lat": "44",
-        "lon": "-89"
+        "lon": "-90"
     },
     "Wyoming": {
         "lat": "42",

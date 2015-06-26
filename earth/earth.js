@@ -189,10 +189,15 @@ window.onload = function(){
 		
 		var stateGeo1 = makeLineGeometry('Alabama', 'New York', 2000, 'state','state');
 		
+		
+		for (var i in stateData){
+			var firstMarker = createMarker(i, 'state');
+		
 		//var nextGeo = makeLineGeometry('UNITED STATES','RUSSIAN FEDERATION', 100, 'country','country');	
 		//Try and create the mesh for the fresh geometry
 		
-		createLine(stateGeo1);
+			createLine(firstMarker);
+		}
 		//createLine(nextGeo);	
 			
 			

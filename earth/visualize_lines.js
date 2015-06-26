@@ -197,7 +197,40 @@ function createMarker(place, type){
 	}
 	
 	var center = place.center;
+
+	//var rad = 110;
+
+	//var phi = Math.PI/2 - lat * Math.PI / 180 - Math.PI * 0.01;
+    //var theta = 2 * Math.PI - lon * Math.PI / 180 + Math.PI * 0.06;
+		
+	var endPoint = new THREE.Vector3();                
+        endPoint.x = center.x + (center.x * .05);
+        endPoint.y = center.y + (center.y * .05);
+        endPoint.z = center.z + (center.z * .05);
+        
+    var geometry = new THREE.Geometry();
+    
+    geometry.vertices.push(center);
+    geometry.vertices.push(endPoint);
+    return geometry
+    
+}
+
+function createSquareMarker(place, type){
+	var lat,lon;
 	
+	if (type == 'country'){
+		lat = countryData[place].lat
+		lon = countryData[place].lon
+		place = countryData[place]
+	}
+	else{
+		lat = stateData[place].lat
+		lon = stateData[place].lon
+		place = stateData[place]
+	}
+	
+	var center = place.center;
 }
 
 
