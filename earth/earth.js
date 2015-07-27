@@ -4,15 +4,15 @@ var camera
 
 var isoFile = 'country_iso3166.json';
 var latlonFile = 'country_lat_lon.json';
-var latlonData;	
+var latlonData;
 var stateCoords
 var cube;
 var countryLookup;
 
-var countryData = new Object();	
+var countryData = new Object();
 var stateData = new Object();
 
-window.onload = function(){
+//window.onload = function(){
 	var outlinedMapTexture;
 	var mapIndexedImage = new Image();
 	mapIndexedImage.src = 'images/map_indexed.png'
@@ -26,63 +26,92 @@ window.onload = function(){
 				loadCountryCodes(function(){
 					outlinedMapTexture = THREE.ImageUtils.loadTexture('images/map_outline.png', {}, function(){
 						buildearth();
-						});
+					});
 				});
-			});	
+			});
 		});
 	});
-	
+
+
+
+	var chooser = $("#infile");
+	chooser.change(function(evt) {
+	    console.log($(this).val() + " is loaded");
+			// draw file from the input
+			var f = this.files[0]
+
+			if(f){
+				var reader = new FileReader();
+				reader.onload = function(data){
+					// determine the file type. Based on file type call appropriate parser
+					loadGVFile(data.target.result,addNewLines);
+				};
+				reader.readAsText(f);
+			}
+	});
+
+// The addNewLines function is designed to be a callback function that
+// applies the newly loaded lines from the input file to the earth.
+	function addNewLines(connections){
+		// At this point add the lines to the earth based on the input from the file
+		for (var origin in connections){
+			var geo = makeLineGeometry(origin, connections[origin], 2000, 'state','state');
+			createLine(geo);
+		}
+		console.log("add the new lines")
+	}
+
 	function buildearth(){
 		var rotating
 		scene = new THREE.Scene();
-		scene.matrixAutoUpdate = false;		
-		scene.fog = new THREE.FogExp2( 0xBBBBBB, 0.00003 );		        		       
+		scene.matrixAutoUpdate = false;
+		scene.fog = new THREE.FogExp2( 0xBBBBBB, 0.00003 );
 
-		scene.add( new THREE.AmbientLight( 0x404040 ) );				
+		scene.add( new THREE.AmbientLight( 0x404040 ) );
 
-		/*light1 = new THREE.SpotLight( 0xeeeeee, 3 );
-		light1.position.x = 730; 
+		light1 = new THREE.SpotLight( 0xeeeeee, 3 );
+		light1.position.x = 730;
 		light1.position.y = 520;
 		light1.position.z = 626;
 		light1.castShadow = true;
-		scene.add( light1 );*/
-		
+		scene.add( light1 );
+/*
 		light1 = new THREE.SpotLight( 0xeeeeee, 100 );
-		light1.position.x = 0; 
+		light1.position.x = 0;
 		light1.position.y = 0;
 		light1.position.z = 400;
 		light1.castShadow = true;
 		light1.lookAt(scene.position)
-		scene.add( light1 );
-		
-		
-		/*light1 = new THREE.SpotLight( 0xeeeeee, 100 );
-		light1.position.x = 730; 
+		scene.add( light1 );*/
+
+
+		light1 = new THREE.SpotLight( 0xeeeeee, 100 );
+		light1.position.x = 730;
 		light1.position.y = 520;
 		light1.position.z = 626;
 		light1.castShadow = true;
-		scene.add( light1 );*/
+		scene.add( light1 );
 
 		light2 = new THREE.PointLight( 0xff0000, 300,1000 );
 		light2.position.x = -640;
 		light2.position.y = -500;
 		light2.position.z = -1000;
-		scene.add( light2 );				
+		scene.add( light2 );
 
 		rotating = new THREE.Object3D();
 		scene.add(rotating);
-		
+
 		rotating.add(light2)
-		
-		lookupCanvas = document.createElement('canvas');	
+
+		lookupCanvas = document.createElement('canvas');
 		lookupCanvas.width = 256;
 		lookupCanvas.height = 1;
-		
+
 		lookupTexture = new THREE.Texture( lookupCanvas );
 		lookupTexture.magFilter = THREE.NearestFilter;
 		lookupTexture.minFilter = THREE.NearestFilter;
 		lookupTexture.needsUpdate = true;
-		
+
 		//THREE.ImageUtils.loadTexture( 'images/map_indexed.png' );
 		//var indexedMapTexture = new THREE.Texture( mapIndexedImage );
 		indexedMapTexture.needsUpdate = true;
@@ -97,7 +126,7 @@ window.onload = function(){
 		// outlinedMapTexture.minFilter = THREE.NearestFilter;
 
 		var uniforms = {
-			'mapIndex': { type: 't', value: 0, texture: indexedMapTexture  },		
+			'mapIndex': { type: 't', value: 0, texture: indexedMapTexture  },
 			'lookup': { type: 't', value: 1, texture: lookupTexture },
 			'outline': { type: 't', value: 2, texture: outlinedMapTexture },
 			'outlineLevel': {type: 'f', value: 1 },
@@ -108,7 +137,7 @@ window.onload = function(){
 		    resolution: { type: "v2", value: new THREE.Vector2 },
 		    texture: { type: "t", value: THREE.ImageUtils.loadTexture('images/map_indexed.png') }
 		};*/
-		
+
 		mapUniforms = uniforms;
 
 		var shaderMaterial = new THREE.ShaderMaterial( {
@@ -119,7 +148,7 @@ window.onload = function(){
 			fragmentShader: document.getElementById( 'globeFragmentShader' ).textContent,
 			// sizeAttenuation: true,
 		});
-		
+
 		//shaderMaterial.needsUpdate = true;
 		var sphereMaterial = new THREE.MeshBasicMaterial({map: outlinedMapTexture})
 
@@ -131,29 +160,29 @@ window.onload = function(){
 		// mapGraphic.needsUpdate = true;
 		backMat = new THREE.MeshBasicMaterial(
 			{
-				// color: 		0xffffff, 
-				// shininess: 	10, 
+				// color: 		0xffffff,
+				// shininess: 	10,
 	// 			specular: 	0x333333,
 				// map: 		mapGraphic,
 				// lightMap: 	mapGraphic
 			}
-		);				
-		// backMat.ambient = new THREE.Color(255,255,255);	
-		var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );						
-		sphere = new THREE.Mesh( new THREE.SphereGeometry( 100, 40, 40 ), sphereMaterial /*shaderMaterial*/ );				
+		);
+		// backMat.ambient = new THREE.Color(255,255,255);
+		var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+		sphere = new THREE.Mesh( new THREE.SphereGeometry( 100, 40, 40 ), sphereMaterial /*shaderMaterial*/ );
 		//sphere.receiveShadow = true;
 		//sphere.castShadow = true;
 		//sphere.needsUpdate = true;
 		sphere.doubleSided = false;
-		sphere.rotation.x = Math.PI;				
+		sphere.rotation.x = Math.PI;
 		sphere.rotation.y = -Math.PI/2;
 		sphere.rotation.z = Math.PI;
-		sphere.id = "base";	
-	
-		rotating.add( sphere );	
+		sphere.id = "base";
+
+		rotating.add( sphere );
 
 
-		/*for( var i in timeBins ){					
+		/*for( var i in timeBins ){
 			var bin = timeBins[i].data;
 			for( var s in bin ){
 				var set = bin[s];
@@ -174,86 +203,86 @@ window.onload = function(){
 		}*/
 
 		//console.log( selectableCountries );
-		
+
 		// load geo data (country lat lons in this case)
 		console.time('loadGeoData');
-		loadGeoData( latlonData , stateCoords);				
-		console.timeEnd('loadGeoData');				
-		
+		loadGeoData( latlonData , stateCoords);
+		console.timeEnd('loadGeoData');
+
 		visualizationMesh = new THREE.Object3D();
 		rotating.add(visualizationMesh);
-		
-			
-		//Create the geometry for a line between two countries. 
+
+
+		//Create the geometry for a line between two countries.
 		//var geometry = makeLineGeometry('UNITED STATES','CANADA', 2000,'country','country');
-		
-		var stateGeo1 = makeLineGeometry('Alabama', 'New York', 2000, 'state','state');
-		
-		
-		for (var i in stateData){
-			var firstMarker = createMarker(i, 'state');
-		
-		//var nextGeo = makeLineGeometry('UNITED STATES','RUSSIAN FEDERATION', 100, 'country','country');	
+
+		//var stateGeo1 = makeLineGeometry('Alabama', 'New York', 2000, 'state','state');
+
+
+		//for (var i in stateData){
+		//	var firstMarker = createMarker(i, 'state');
+
+		//var nextGeo = makeLineGeometry('UNITED STATES','RUSSIAN FEDERATION', 100, 'country','country');
 		//Try and create the mesh for the fresh geometry
-		
-			createLine(firstMarker);
-		}
-		//createLine(nextGeo);	
-			
-			
+
+		//	createLine(firstMarker);
+		//}
+		//createLine(nextGeo);
+
+
 		//console.time('buildDataVizGeometries');
 		//var vizilines = buildDataVizGeometries(timeBins);
 		//console.timeEnd('buildDataVizGeometries');
 
 		//visualizationMesh = new THREE.Object3D();
-		//rotating.add(visualizationMesh);	
-		
-		
+		//rotating.add(visualizationMesh);
+
+
 		renderer = new THREE.WebGLRenderer({antialias:false});
 		renderer.setSize( window.innerWidth, window.innerHeight );
 		renderer.autoClear = false;
-		
-		renderer.sortObjects = false;		
-		renderer.generateMipmaps = false;					
-		
-		/*camera = new THREE.PerspectiveCamera( 12, window.innerWidth / window.innerHeight, 1, 20000 ); 		        
+
+		renderer.sortObjects = false;
+		renderer.generateMipmaps = false;
+
+		/*camera = new THREE.PerspectiveCamera( 12, window.innerWidth / window.innerHeight, 1, 20000 );
 		camera.position.z = 1400;
 		camera.position.y = 0;
-		camera.lookAt(scene.width/2, scene.height/2);	
-		scene.add( camera );*/	  
-			
+		camera.lookAt(scene.width/2, scene.height/2);
+		scene.add( camera );*/
+
 		var skyBoxGeometry = new THREE.BoxGeometry( 10000, 10000, 10000 );
 		// BackSide: render faces from inside of the cube, instead of from outside (default).
-		var skyBoxMaterial = new THREE.MeshBasicMaterial( { color: 0x9999ff, side: THREE.BackSide } );
+		var skyBoxMaterial = new THREE.MeshBasicMaterial( { color: 0xffffff, side: THREE.BackSide } );
 		var skyBox = new THREE.Mesh( skyBoxGeometry, skyBoxMaterial );
 		scene.add(skyBox);
 
 
 
-		camera = new THREE.PerspectiveCamera( 70, window.innerWidth/window.innerHeight, 0.5, 100000 );
+		camera = new THREE.PerspectiveCamera( 70, window.innerWidth/window.innerHeight, 0.5, 10000 );
 		camera.position.z = 500;
 		camera.position.y = 0;
 		camera.position.x = 0;
-		
+
 		var controls = new THREE.OrbitControls( camera, renderer.domElement );
-		
+
 		var atlas = document.getElementById('atlas')
-		atlas.appendChild( renderer.domElement );	
+		atlas.appendChild( renderer.domElement );
 		//var geometry = new THREE.BoxGeometry( 1, 1, 1 );
 		//var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
 		//var cube = new THREE.Mesh( geometry, material );
 		//scene.add( cube );
-		
-		
+
+
 		render();
 		animate();
 	}
-	
-	function render() {	
-		renderer.clear();	 					
-		renderer.render( scene, camera );	
-	}	
-	
+
+	function render() {
+		renderer.clear();
+		renderer.render( scene, camera );
+	}
+
 	var countryColorMap = {'PE':1,
 	'BF':2,'FR':3,'LY':4,'BY':5,'PK':6,'ID':7,'YE':8,'MG':9,'BO':10,'CI':11,'DZ':12,'CH':13,'CM':14,'MK':15,'BW':16,'UA':17,
 	'KE':18,'TW':19,'JO':20,'MX':21,'AE':22,'BZ':23,'BR':24,'SL':25,'ML':26,'CD':27,'IT':28,'SO':29,'AF':30,'BD':31,'DO':32,'GW':33,
@@ -270,16 +299,13 @@ window.onload = function(){
 	'LC':194,'YT':195,'VI':196,'GD':197,'MT':198,'MV':199,'KY':200,'KN':201,'MS':202,'BL':203,'NU':204,'PM':205,'CK':206,'WF':207,'AS':208,'MH':209,
 	'AW':210,'LI':211,'VG':212,'SH':213,'JE':214,'AI':215,'MF_1_':216,'GG':217,'SM':218,'BM':219,'TV':220,'NR':221,'GI':222,'PN':223,'MC':224,'VA':225,
 	'IM':226,'GU':227,'SG':228};
-	
-	
-	
+
+
+
 	function animate(){
-		
-		render();		        		       
-		requestAnimationFrame( animate );		    		
+
+		render();
+		requestAnimationFrame( animate );
 	}
-	
-}
 
-
-
+//}
