@@ -12,7 +12,7 @@ function createLine(geometry){
 	var lineColor = new THREE.Color(0x154492);
 
 	var material = new THREE.LineBasicMaterial({
-		color: 0x154492,
+		color: 0xff4b49,
 		linewidth:3
 	});
 
@@ -28,7 +28,7 @@ function createLine(geometry){
 function createSquare(geometry){
 
 	var material = new THREE.LineBasicMaterial({
-		color: 0x154492,
+		color: 0xd75b49,
 		linewidth:5
 	});
 

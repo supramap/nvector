@@ -97,7 +97,7 @@ var stateData = new Object();
 		light2.position.y = -500;
 		light2.position.z = -1000;
 		scene.add( light2 );
-
+		//scene.add(new axis(160));
 		rotating = new THREE.Object3D();
 		scene.add(rotating);
 
@@ -174,9 +174,9 @@ var stateData = new Object();
 		//sphere.castShadow = true;
 		//sphere.needsUpdate = true;
 		sphere.doubleSided = false;
-		sphere.rotation.x = Math.PI;
-		sphere.rotation.y = -Math.PI/2;
-		sphere.rotation.z = Math.PI;
+		sphere.rotation.x = Math.PI ;//- .2;
+		sphere.rotation.y = -Math.PI/2;// + .08;
+		sphere.rotation.z = Math.PI;// - .1;
 		sphere.id = "base";
 
 		rotating.add( sphere );
@@ -253,7 +253,7 @@ var stateData = new Object();
 
 		var skyBoxGeometry = new THREE.BoxGeometry( 10000, 10000, 10000 );
 		// BackSide: render faces from inside of the cube, instead of from outside (default).
-		var skyBoxMaterial = new THREE.MeshBasicMaterial( { color: 0xffffff, side: THREE.BackSide } );
+		var skyBoxMaterial = new THREE.MeshBasicMaterial( { color: 0x000000, side: THREE.BackSide } );
 		var skyBox = new THREE.Mesh( skyBoxGeometry, skyBoxMaterial );
 		scene.add(skyBox);
 
