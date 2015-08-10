@@ -67,14 +67,13 @@ var stateData = new Object();
 		scene.matrixAutoUpdate = false;
 		scene.fog = new THREE.FogExp2( 0xBBBBBB, 0.00003 );
 
-		scene.add( new THREE.AmbientLight( 0x404040 ) );
+		scene.add( new THREE.AmbientLight( 0x888888 ) );
 
-		light1 = new THREE.SpotLight( 0xeeeeee, 3 );
-		light1.position.x = 730;
-		light1.position.y = 520;
-		light1.position.z = 626;
-		light1.castShadow = true;
-		scene.add( light1 );
+		var point = new THREE.SpotLight( 0x333333,3.0);
+  	point.position.set( 400, 280, 180 );
+  	point.target.position.set(150,10,-10);
+  	//scene.add(point)
+
 /*
 		light1 = new THREE.SpotLight( 0xeeeeee, 100 );
 		light1.position.x = 0;
@@ -84,24 +83,10 @@ var stateData = new Object();
 		light1.lookAt(scene.position)
 		scene.add( light1 );*/
 
-
-		light1 = new THREE.SpotLight( 0xeeeeee, 100 );
-		light1.position.x = 730;
-		light1.position.y = 520;
-		light1.position.z = 626;
-		light1.castShadow = true;
-		scene.add( light1 );
-
-		light2 = new THREE.PointLight( 0xff0000, 300,1000 );
-		light2.position.x = -640;
-		light2.position.y = -500;
-		light2.position.z = -1000;
-		scene.add( light2 );
 		//scene.add(new axis(160));
 		rotating = new THREE.Object3D();
 		scene.add(rotating);
 
-		rotating.add(light2)
 
 		lookupCanvas = document.createElement('canvas');
 		lookupCanvas.width = 256;
@@ -150,7 +135,7 @@ var stateData = new Object();
 		});
 
 		//shaderMaterial.needsUpdate = true;
-		var sphereMaterial = new THREE.MeshBasicMaterial({map: outlinedMapTexture})
+		var sphereMaterial = new THREE.MeshPhongMaterial({map: outlinedMapTexture})
 
 		shaderMaterial.index0AttributeName = "position";
 		//	-----------------------------------------------------------------------------
@@ -158,15 +143,7 @@ var stateData = new Object();
 		// var mapGraphic = new THREE.Texture(worldCanvas);//THREE.ImageUtils.loadTexture("images/map.png");
 		// backTexture =  mapGraphic;
 		// mapGraphic.needsUpdate = true;
-		backMat = new THREE.MeshBasicMaterial(
-			{
-				// color: 		0xffffff,
-				// shininess: 	10,
-	// 			specular: 	0x333333,
-				// map: 		mapGraphic,
-				// lightMap: 	mapGraphic
-			}
-		);
+
 		// backMat.ambient = new THREE.Color(255,255,255);
 		var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
 		sphere = new THREE.Mesh( new THREE.SphereGeometry( 100, 40, 40 ), sphereMaterial /*shaderMaterial*/ );
@@ -251,20 +228,22 @@ var stateData = new Object();
 		camera.lookAt(scene.width/2, scene.height/2);
 		scene.add( camera );*/
 
-		var skyBoxGeometry = new THREE.BoxGeometry( 10000, 10000, 10000 );
+		var skyBoxGeometry = new THREE.SphereGeometry( 300, 50, 50 );
 		// BackSide: render faces from inside of the cube, instead of from outside (default).
-		var skyBoxMaterial = new THREE.MeshBasicMaterial( { color: 0x000000, side: THREE.BackSide } );
+		var skyBoxMaterial = new THREE.MeshBasicMaterial( { side: THREE.BackSide,map: THREE.ImageUtils.loadTexture('images/starfield.png') } );
 		var skyBox = new THREE.Mesh( skyBoxGeometry, skyBoxMaterial );
 		scene.add(skyBox);
 
 
 
 		camera = new THREE.PerspectiveCamera( 70, window.innerWidth/window.innerHeight, 0.5, 10000 );
-		camera.position.z = 500;
-		camera.position.y = 0;
-		camera.position.x = 0;
-
+		camera.position.set(-131,119,-22);
+		camera.add(point)
+  	scene.add(camera)
 		var controls = new THREE.OrbitControls( camera, renderer.domElement );
+		controls.noPan = true;
+		controls.minDistance = 140;
+		controls.maxDistance = 280;
 
 		var atlas = document.getElementById('atlas')
 		atlas.appendChild( renderer.domElement );
@@ -273,7 +252,7 @@ var stateData = new Object();
 		//var cube = new THREE.Mesh( geometry, material );
 		//scene.add( cube );
 
-
+		window.addEventListener( 'resize', onWindowResize, false );
 		render();
 		animate();
 	}
@@ -300,7 +279,17 @@ var stateData = new Object();
 	'AW':210,'LI':211,'VG':212,'SH':213,'JE':214,'AI':215,'MF_1_':216,'GG':217,'SM':218,'BM':219,'TV':220,'NR':221,'GI':222,'PN':223,'MC':224,'VA':225,
 	'IM':226,'GU':227,'SG':228};
 
+	function onWindowResize() {
 
+		windowHalfX = window.innerWidth / 2;
+		windowHalfY = window.innerHeight / 2;
+
+		camera.aspect = window.innerWidth / window.innerHeight;
+		camera.updateProjectionMatrix();
+
+		renderer.setSize( window.innerWidth, window.innerHeight );
+
+	}
 
 	function animate(){
 
