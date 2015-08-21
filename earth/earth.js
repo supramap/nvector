@@ -44,7 +44,7 @@ var stateData = new Object();
 				var reader = new FileReader();
 				reader.onload = function(data){
 					// determine the file type. Based on file type call appropriate parser
-					loadGVFile(data.target.result,addNewLines);
+					loadTransmissions(data.target.result,addNewGraph);
 				};
 				reader.readAsText(f);
 			}
@@ -59,6 +59,10 @@ var stateData = new Object();
 			createLine(geo);
 		}
 		console.log("add the new lines")
+	}
+
+	function addNewGraph(connectionObj){
+		var connectGeo = makeGraphGeometry(connectionObj);
 	}
 
 	function buildearth(){
@@ -244,6 +248,7 @@ var stateData = new Object();
 		controls.noPan = true;
 		controls.minDistance = 140;
 		controls.maxDistance = 280;
+		controls.zoomSpeed = .15;
 
 		var atlas = document.getElementById('atlas')
 		atlas.appendChild( renderer.domElement );

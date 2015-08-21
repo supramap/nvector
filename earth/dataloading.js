@@ -67,6 +67,82 @@ function loadGVFile(data,callback){
 	callback(connections);
 }
 
+function loadTransmissions(data, callback){
+	locations = {};
+	var lines = data.split("\n");
+	for (var on=0; on < lines.length; on++){
+		var line = lines[on];
+
+		if(line.indexOf("->") > -1){
+	    // split the line up into relevant chunks of data
+	    var relevant = line.split("->");
+
+	    // narrow down the start position
+	    var start = relevant[0].replace(/\"/g,"").trim();
+
+	    // narrow down the end position
+	    var end = relevant[1].substring(0,relevant[1].indexOf("[")).replace(/\"/g,"").trim();
+
+	    // gather options and positions.
+	    var options = {};
+	    var rawOptions = relevant[1].substring(relevant[1].indexOf("[") + 1,relevant[1].indexOf("]")).split(",");
+	    for (var i = 0; i < rawOptions.length; i++){
+
+	      var currentOption = rawOptions[i];
+	      var splitOption = currentOption.split("=")
+	      //console.log(splitOption);
+	      options[splitOption[0].trim()] = splitOption[1].replace(/\"/g,"");
+	    }
+	    // with options gathered I can start building the appropriate object for
+	    // properly building the tree.
+	    // Start, End, and Options are relevant variables to check Locations is target.
+
+	    //Check if variable is in locations
+
+	    if (!(start in locations)){
+	        // if not then add it and initiate with end position
+
+	        locations[start] = {"children":[end], "root":"true", "coord":options.start}
+
+	    }
+	    else{
+	        // if it is in there then we need to append this end to it's children
+
+	        var past = locations[start];
+	        var siblings = past.children;
+	        siblings.push(end);
+	        past.children = siblings;
+	    }
+	    // if the end point is not listed then it too needs to be added
+	    if (!(end in locations)){
+	        locations[end] = {"children":[], "root":"false", "coord":options.end};
+	    }
+	    else if( (end in locations) && locations[end].root == "true"){
+	      locations[end].root = false;
+	    }
+
+	  }
+
+	}// end of the big for loop
+
+	var realroots = [];
+
+	var keys = Object.keys(locations);
+  // iterate through all of the existing keys and check for their root values
+  for(var i = 0; i < keys.length; i++){
+      // if its a root then add it to my list of roots for future reference.
+      var current = locations[keys[i]];
+      if (current.root == "true"){
+        realroots.push(keys[i]);
+      }
+  }
+
+
+	locations["TreeRoots"] = realroots;
+	callback(locations);
+}
+
+
 
 function loadContentData(callback){
 	var filePath = "categories/All.json";
