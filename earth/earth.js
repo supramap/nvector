@@ -63,6 +63,10 @@ var stateData = new Object();
 
 	function addNewGraph(connectionObj){
 		var connectGeo = makeGraphGeometry(connectionObj);
+		for(var i = 0; i < connectGeo.length; i++){
+			scene.add(connectGeo[i]);
+		}
+		console.log("y up");
 	}
 
 	function buildearth(){
