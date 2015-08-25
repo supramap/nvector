@@ -1,7 +1,7 @@
 var globeRadius = 1000;
 var vec3_origin = new THREE.Vector3(0,0,0);
 var rad = 100;
-var freshLines = [];
+var freshLines = [], freshNodes = [];
 
 function makeConnectionLineGeometry( startpos, endpos, value ){
 	if( startpos.countryName == undefined || importer.countryName == undefined )
@@ -207,7 +207,7 @@ function recurseRebuild(current, bigObj){
 			  var strCord = node.coord.split(":");
 
 
-        var lon = parseFloat(strCord[1]); //- 90;
+        var lon = parseFloat(strCord[1]) - 90;
         var lat = parseFloat(strCord[0]);
 
         var phi = Math.PI/2 - lat * Math.PI / 180 - Math.PI * 0.00//0.01;
@@ -219,16 +219,28 @@ function recurseRebuild(current, bigObj){
         center.z = Math.sin(phi) * Math.sin(theta) * rad;
 				node.coord = center;
 
+				// make a sphere to represent this node, I'll give it a color to indicate
+				// that it is a leaf
+
+				var geometry = new THREE.SphereGeometry( .5 ,5, 5 );
+				var material = new THREE.MeshBasicMaterial( {color: 0xffff00} );
+				var sphere = new THREE.Mesh( geometry, material );
+				sphere.position.x = center.x;
+				sphere.position.y = center.y;
+				sphere.position.z = center.z;
+				sphere.name = current;
+				freshNodes.push(sphere);
+
 
 				// simple test
 
-				var testGeo = createTestMarker(lat,lon);
-				console.log("good : " + testGeo.vertices);
-				console.log("bad : " + center);
-				/*var testline = new THREE.Line(testGeo);
-				scene.add(testline);
-				console.log(lat + " " + lon);
-				*/
+				//var testGeo = createTestMarker(lat,lon);
+			//	console.log("good : " + testGeo.vertices[0].x + " " + testGeo.vertices[0].y + " " + testGeo.vertices[0].z);
+				//console.log("bad : " + center.x + " " + center.y + " " + center.z);
+				//var testline = new THREE.Line(testGeo);
+				//scene.add(testline);
+				//console.log(lat + " " + lon);
+				//
 				// simple test
 		}
 		return [];
@@ -262,14 +274,14 @@ function recurseRebuild(current, bigObj){
 			if(midPoint == null){
 				if(childPositions.length == 1){
 					midPoint = childPositions[i].clone();
-					distanceBetweenCenter = 30;
+					distanceBetweenCenter = 12;
 				}
 				else{
 					var firstPoint = childPositions[i];
 					i= i + 1;
 					var secondPoint = childPositions[i];
-					midPoint = firstPoint.lerp(secondPoint,.5);
-					avg = firstPoint.sub(secondPoint).length();
+					midPoint = firstPoint.clone().lerp(secondPoint.clone(),.5);
+					avg = firstPoint.clone().sub(secondPoint.clone()).length();
 					var distanceBetweenCenter = firstPoint.clone().sub(secondPoint.clone()).length();
 				}
 			}
@@ -281,14 +293,31 @@ function recurseRebuild(current, bigObj){
 		}
 		var midLength = midPoint.length();
 		midPoint.normalize();
+		if (distanceBetweenCenter < 3){
+			distanceBetweenCenter = 3;
+		}
+		console.log(distanceBetweenCenter);
 		midPoint.multiplyScalar(midLength + distanceBetweenCenter * 0.4);
 		bigObj[current].coord = midPoint;
+
+		// create the node's circle
+		var geometry = new THREE.SphereGeometry( .5 ,5, 5 );
+		var material = new THREE.MeshBasicMaterial( {color: 0xff4234} );
+		var sphere = new THREE.Mesh( geometry, material );
+		sphere.position.x = midPoint.x;
+		sphere.position.y = midPoint.y;
+		sphere.position.z = midPoint.z;
+		sphere.name = current;
+		freshNodes.push(sphere);
+
 
 		//create and push newly made lines
 		for(var i = 0; i < childPositions.length; i++){
 			var currentGeometry = new THREE.Geometry();
 			currentGeometry.vertices.push(midPoint,childPositions[i]);
-			var currentLine = new THREE.Line(currentGeometry);
+			var lineMat = new THREE.LineBasicMaterial({color: 0xc5c5c5});
+			var currentLine = new THREE.Line(currentGeometry,lineMat);
+			currentLine.name = current + " -> " + node.children[i]
 			freshLines.push(currentLine);
 
 		}
@@ -337,7 +366,7 @@ function createTestMarker(latit, longit){
 	// determine place type and gather appropriate coordinates
 	var rad = 100;
 	var lat = latit;
-	var lon = longit //- 90;
+	var lon = longit;// - 90;
 
 
 	var phi = Math.PI/2 - lat * Math.PI / 180 - Math.PI * 0.000//0.01;

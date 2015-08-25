@@ -12,8 +12,8 @@ canvas{
 #menu{
 	z-index: 3;
 	position:absolute;
-	top:0px; 
-	left: 0px; 
+	top:0px;
+	left: 0px;
 	background-color: black;
 	opacity: .5;
 	width: 20%;
@@ -24,18 +24,23 @@ canvas{
 #infile{
 	left:calc(50% - 42px);
 	position: absolute;
-	width: 78px; 
+	width: 78px;
 	height:20px;
 	top:calc(60% - 10px);
-} 
+}
 
 #close{
 	position: absolute;
-	right:1px; 
+	right:1px;
 	top:1px;
 	border-radius:20px;
 }
 
+#details{
+	color: white;
+	text-align: center;
+}
+
 #infile{
-	
+
 }

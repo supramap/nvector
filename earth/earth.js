@@ -5,10 +5,11 @@ var camera
 var isoFile = 'country_iso3166.json';
 var latlonFile = 'country_lat_lon.json';
 var latlonData;
-var stateCoords
+var stateCoords, mouse ={x: 0,y: 0};
 var cube;
 var countryLookup;
-
+var raycaster = new THREE.Raycaster();
+var graph = new THREE.Object3D();
 var countryData = new Object();
 var stateData = new Object();
 
@@ -63,9 +64,14 @@ var stateData = new Object();
 
 	function addNewGraph(connectionObj){
 		var connectGeo = makeGraphGeometry(connectionObj);
+
 		for(var i = 0; i < connectGeo.length; i++){
-			scene.add(connectGeo[i]);
+			graph.add(connectGeo[i]);
 		}
+		for(var i = 0; i < freshNodes.length; i++){
+			graph.add(freshNodes[i]);
+		}
+		scene.add(graph);
 		console.log("y up");
 	}
 
@@ -261,6 +267,7 @@ var stateData = new Object();
 		//var cube = new THREE.Mesh( geometry, material );
 		//scene.add( cube );
 
+		window.addEventListener( 'mousedown', onDocumentMouseDown, false );
 		window.addEventListener( 'resize', onWindowResize, false );
 		render();
 		animate();
@@ -287,6 +294,17 @@ var stateData = new Object();
 	'LC':194,'YT':195,'VI':196,'GD':197,'MT':198,'MV':199,'KY':200,'KN':201,'MS':202,'BL':203,'NU':204,'PM':205,'CK':206,'WF':207,'AS':208,'MH':209,
 	'AW':210,'LI':211,'VG':212,'SH':213,'JE':214,'AI':215,'MF_1_':216,'GG':217,'SM':218,'BM':219,'TV':220,'NR':221,'GI':222,'PN':223,'MC':224,'VA':225,
 	'IM':226,'GU':227,'SG':228};
+
+	function onDocumentMouseDown(event){
+		mouse.x = ( event.clientX / renderer.domElement.width ) * 2 - 1;
+		mouse.y = - ( event.clientY / renderer.domElement.height ) * 2 + 1;
+		raycaster.setFromCamera(mouse, camera);
+		var instersecs = raycaster.intersectObjects(graph.children);
+		if(instersecs.length > 0 ){
+			var relname = instersecs[0].object.name;
+			$("#details").html(relname);
+		}
+	}
 
 	function onWindowResize() {
 
