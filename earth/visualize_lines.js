@@ -200,7 +200,7 @@ function recurseRebuild(current, bigObj){
 	if(node.children.length == 0){
 		if(node.coord != "NONE"){
 				if(node.coord instanceof THREE.Vector3){
-					return;
+					return 1;
 				}
 			// convert the coordinates to three dimensional point
 			//	take the lat lon from the data and convert this to 3d globe space
@@ -243,7 +243,7 @@ function recurseRebuild(current, bigObj){
 				//
 				// simple test
 		}
-		return [];
+		return 1;
 	}
 
 	else{
@@ -251,9 +251,16 @@ function recurseRebuild(current, bigObj){
 		//conlines = [];
 		// iterate through all of the children and recurse
 		var childPositions = [];
+		var currentLevel = 0;
 		for(var i = 0; i < node.children.length; i++){
 				var child = node.children[i];
 				var recRet = recurseRebuild(child, bigObj);
+				// test if the returned Value is higher than the current level
+				// if so then set the current level to be higher.
+				if(recRet > currentLevel){
+					currentLevel = recRet;
+				}
+
 				//conlines.push.apply(conlines,recRet);
 				var childCoord = bigObj[child].coord
 				// In some cases the child Coordinate may be NONE...now what
@@ -296,8 +303,11 @@ function recurseRebuild(current, bigObj){
 		if (distanceBetweenCenter < 3){
 			distanceBetweenCenter = 3;
 		}
-		console.log(distanceBetweenCenter);
-		midPoint.multiplyScalar(midLength + distanceBetweenCenter * 0.4);
+		//console.log(distanceBetweenCenter);
+		var test = midLength + distanceBetweenCenter * 0.4;
+		console.log(current);
+		console.log(currentLevel);
+		midPoint.multiplyScalar(100 + currentLevel * 3);
 		bigObj[current].coord = midPoint;
 
 		// create the node's circle
@@ -322,7 +332,7 @@ function recurseRebuild(current, bigObj){
 
 		}
 		//console.log(conlines);
-		return;
+		return currentLevel + 1;
 	}
 }
 
