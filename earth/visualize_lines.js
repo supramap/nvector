@@ -336,6 +336,19 @@ function recurseRebuild(current, bigObj){
 	}
 }
 
+/*
+	A function who's purpose is to generate an appropriate line between two points
+	based upon the distance between those points. Assuming that distance is above
+	a set factor determined by the radius of the earth sphere, a curved line is
+	generated as apposed to a streight line.
+*/
+function generateLine(firstPoint, secondPoint){
+	// calculate the distance between the two points
+	
+
+}
+
+
 function createMarker(place, type){
 	// determine place type and gather appropriate coordinates
 	var lat,lon;
