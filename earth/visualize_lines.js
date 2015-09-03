@@ -3,6 +3,7 @@ var vec3_origin = new THREE.Vector3(0,0,0);
 var rad = 100;
 var freshLines = [], freshNodes = [];
 
+
 function makeConnectionLineGeometry( startpos, endpos, value ){
 	if( startpos.countryName == undefined || importer.countryName == undefined )
 		return undefined;
@@ -221,9 +222,14 @@ function recurseRebuild(current, bigObj){
 
 				// make a sphere to represent this node, I'll give it a color to indicate
 				// that it is a leaf
+				var geometry = new THREE.SphereGeometry( .5 ,10, 10 );
+				var material = new THREE.MeshLambertMaterial( {color: 0xfffc32, ambient:0xfffc32} );
+				material.fog = false;
+				//material.color.setHSL( .4, 0.1, .8 );
 
-				var geometry = new THREE.SphereGeometry( .5 ,5, 5 );
-				var material = new THREE.MeshBasicMaterial( {color: 0xffff00} );
+
+
+
 				var sphere = new THREE.Mesh( geometry, material );
 				sphere.position.x = center.x;
 				sphere.position.y = center.y;
@@ -277,6 +283,9 @@ function recurseRebuild(current, bigObj){
 		//midPoint.normalize();
 		//midPoint.multiplyScalar( midLength + distanceBetweenCenter * 0.4 );
 		var avg = 0;
+
+		var highestChildLength = 0;
+
 		for(var i = 0; i < childPositions.length; i++){
 			if(midPoint == null){
 				if(childPositions.length == 1){
@@ -287,14 +296,24 @@ function recurseRebuild(current, bigObj){
 					var firstPoint = childPositions[i];
 					i= i + 1;
 					var secondPoint = childPositions[i];
+
+					if(firstPoint.length() > highestChildLength){
+						highestChildLength = firstPoint.length();
+					}
+					if(secondPoint.length() > highestChildLength){
+						highestChildLength = secondPoint.length();
+					}
+
 					midPoint = firstPoint.clone().lerp(secondPoint.clone(),.5);
-					avg = firstPoint.clone().sub(secondPoint.clone()).length();
-					var distanceBetweenCenter = firstPoint.clone().sub(secondPoint.clone()).length();
+					distanceBetweenCenter = firstPoint.distanceTo(secondPoint);
 				}
 			}
 			else{
 				var nextPoint = childPositions[i];
-				midPoint = midPoint.lerp(nextPoint,.5);
+				midPoint = midPoint.clone().lerp(nextPoint,.5);
+				if(nextPoint.length() > highestChildLength){
+					highestChildLength = nextPoint.length()
+				}
 
 			}
 		}
@@ -305,20 +324,23 @@ function recurseRebuild(current, bigObj){
 		}
 		//console.log(distanceBetweenCenter);
 		var test = midLength + distanceBetweenCenter * 0.4;
-		console.log(current);
-		console.log(currentLevel);
-		midPoint.multiplyScalar(100 + currentLevel * 3);
+		// 100 + currentLevel * 3
+		// develop the distance scalling factor
+		scaling = highestChildLength + ((.5/currentLevel) * (distanceBetweenCenter * ((200 - distanceBetweenCenter)/200)));
+
+		midPoint.multiplyScalar(scaling);
 		bigObj[current].coord = midPoint;
 
 		// create the node's circle
-		var geometry = new THREE.SphereGeometry( .5 ,5, 5 );
-		var material = new THREE.MeshBasicMaterial( {color: 0xff4234} );
+		var geometry = new THREE.SphereGeometry( .5 ,10, 10 );
+		var material = new THREE.MeshLambertMaterial( {color: 0xff4234, ambient: 0xff4234} );
 		var sphere = new THREE.Mesh( geometry, material );
 		sphere.position.x = midPoint.x;
 		sphere.position.y = midPoint.y;
 		sphere.position.z = midPoint.z;
 		sphere.name = current;
 		freshNodes.push(sphere);
+
 
 
 		//create and push newly made lines

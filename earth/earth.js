@@ -79,7 +79,7 @@ var stateData = new Object();
 		var rotating
 		scene = new THREE.Scene();
 		scene.matrixAutoUpdate = false;
-		scene.fog = new THREE.FogExp2( 0xBBBBBB, 0.00003 );
+		//scene.fog = new THREE.FogExp2( 0xBBBBBB, 0.00003 );
 
 		scene.add( new THREE.AmbientLight( 0x888888 ) );
 
