@@ -324,11 +324,35 @@ function recurseRebuild(current, bigObj){
 		//create and push newly made lines
 		for(var i = 0; i < childPositions.length; i++){
 			var currentGeometry = new THREE.Geometry();
-			currentGeometry.vertices.push(midPoint,childPositions[i]);
-			var lineMat = new THREE.LineBasicMaterial({color: 0xc5c5c5});
-			var currentLine = new THREE.Line(currentGeometry,lineMat);
-			currentLine.name = current + " -> " + node.children[i]
-			freshLines.push(currentLine);
+			// determine if the line needs to be curved
+			var distOfLine = midPoint.distanceTo(childPositions[i]);
+			if (distOfLine > 35){
+				var linepeak = midPoint.clone().lerp(childPositions[i],.5);
+				linepeak.setLength(midPoint.length());
+
+
+				var latepeak = linepeak.clone().lerp(childPositions[i],.5);
+				latepeak.setLength(midPoint.length());
+
+
+				if(current == "a9" && node.children[i] == "a2"){
+					console.log("this one is messed up")
+				}
+
+				var lineMat = new THREE.LineBasicMaterial({color: 0xc5c5c5});
+				var curve = new THREE.CubicBezierCurve3(midPoint,linepeak,latepeak,childPositions[i]);
+				currentGeometry.vertices = curve.getPoints(50);
+				var currentLine = new THREE.Line(currentGeometry,lineMat);
+				currentLine.name = current + " -> " + node.children[i]
+				freshLines.push(currentLine);
+			}
+			else{
+				currentGeometry.vertices.push(midPoint,childPositions[i]);
+				var lineMat = new THREE.LineBasicMaterial({color: 0xc5c5c5});
+				var currentLine = new THREE.Line(currentGeometry,lineMat);
+				currentLine.name = current + " -> " + node.children[i]
+				freshLines.push(currentLine);
+			}
 
 		}
 		//console.log(conlines);
@@ -344,7 +368,7 @@ function recurseRebuild(current, bigObj){
 */
 function generateLine(firstPoint, secondPoint){
 	// calculate the distance between the two points
-	
+
 
 }
 
