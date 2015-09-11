@@ -2,7 +2,7 @@ var globeRadius = 1000;
 var vec3_origin = new THREE.Vector3(0,0,0);
 var rad = 100;
 var freshLines = [], freshNodes = [];
-
+var particlesGeo;
 
 function makeConnectionLineGeometry( startpos, endpos, value ){
 	if( startpos.countryName == undefined || importer.countryName == undefined )
@@ -186,6 +186,7 @@ function makeLineGeometry(exporter,importer, value, exportType, importType){
 
 function makeGraphGeometry(connectionObj){
 		var roots = connectionObj.TreeRoots;
+		particlesGeo = new THREE.Geometry();
 		for (var i = 0; i < roots.length; i++){
 			var current = roots[i];
 			recurseRebuild(current,connectionObj);
@@ -237,17 +238,6 @@ function recurseRebuild(current, bigObj){
 				sphere.name = current;
 				freshNodes.push(sphere);
 
-
-				// simple test
-
-				//var testGeo = createTestMarker(lat,lon);
-			//	console.log("good : " + testGeo.vertices[0].x + " " + testGeo.vertices[0].y + " " + testGeo.vertices[0].z);
-				//console.log("bad : " + center.x + " " + center.y + " " + center.z);
-				//var testline = new THREE.Line(testGeo);
-				//scene.add(testline);
-				//console.log(lat + " " + lon);
-				//
-				// simple test
 		}
 		return 1;
 	}
@@ -363,13 +353,18 @@ function recurseRebuild(current, bigObj){
 
 				var lineMat = new THREE.LineBasicMaterial({color: 0xc5c5c5});
 				var curve = new THREE.CubicBezierCurve3(midPoint,linepeak,latepeak,childPositions[i]);
+
 				currentGeometry.vertices = curve.getPoints(50);
+				generateParticles(currentGeometry.vertices);
 				var currentLine = new THREE.Line(currentGeometry,lineMat);
 				currentLine.name = current + " -> " + node.children[i]
 				freshLines.push(currentLine);
 			}
 			else{
-				currentGeometry.vertices.push(midPoint,childPositions[i]);
+				//currentGeometry.vertices.push(midPoint,childPositions[i]);
+				var streightCurve = new THREE.LineCurve3(midPoint,childPositions[i])
+				currentGeometry.vertices = streightCurve.getPoints(50);
+				generateParticles(currentGeometry.vertices);
 				var lineMat = new THREE.LineBasicMaterial({color: 0xc5c5c5});
 				var currentLine = new THREE.Line(currentGeometry,lineMat);
 				currentLine.name = current + " -> " + node.children[i]
@@ -391,6 +386,33 @@ function recurseRebuild(current, bigObj){
 function generateLine(firstPoint, secondPoint){
 	// calculate the distance between the two points
 
+
+}
+
+
+function generateParticles(points){
+	var	particleSize = 2;
+	// this may change to be relative to the size of the line.
+	particleCount = 10;
+
+	for(var i = 0; i < particleCount; i++){
+		var lineIndex = i/particleCount * points.length;
+		var rIndex = Math.floor(lineIndex);
+
+		// the point within the line's geometry where the particle starts
+		var point = points[rIndex];
+		// clone the points vertices into a particle
+		var particle = point.clone();
+		// determine where it goes next
+		particle.moveIndex = rIndex;
+		particle.nextIndex = rIndex+1;
+		if(particle.nextIndex >= points.length )
+				particle.nextIndex = 0;
+		particle.lerpN = 0;
+		particle.path = points;
+		particlesGeo.vertices.push( particle );
+		particle.size = particleSize;
+	}
 
 }
 

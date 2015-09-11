@@ -12,6 +12,7 @@ var raycaster = new THREE.Raycaster();
 var graph = new THREE.Object3D();
 var countryData = new Object();
 var stateData = new Object();
+var particlesExist = false;
 
 //window.onload = function(){
 	var outlinedMapTexture;
@@ -71,6 +72,10 @@ var stateData = new Object();
 		for(var i = 0; i < freshNodes.length; i++){
 			graph.add(freshNodes[i]);
 		}
+		// initialize particle affects
+		particlesExist = true;
+		var particleCloud = initializeParticles();
+		graph.add(particleCloud);
 		scene.add(graph);
 		console.log("y up");
 	}
@@ -267,6 +272,10 @@ var stateData = new Object();
 		//var cube = new THREE.Mesh( geometry, material );
 		//scene.add( cube );
 
+
+
+
+
 		window.addEventListener( 'mousedown', onDocumentMouseDown, false );
 		window.addEventListener( 'resize', onWindowResize, false );
 		render();
@@ -319,7 +328,9 @@ var stateData = new Object();
 	}
 
 	function animate(){
-
+		if(particlesExist){
+			pSystem.update();
+		}
 		render();
 		requestAnimationFrame( animate );
 	}
