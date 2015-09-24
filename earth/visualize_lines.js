@@ -361,7 +361,7 @@ function recurseRebuild(current, bigObj){
 				var curve = new THREE.CubicBezierCurve3(midPoint,linepeak,latepeak,childPositions[i]);
 
 				currentGeometry.vertices = curve.getPoints(50);
-				generateParticles(currentGeometry.vertices);
+				generateParticles(currentGeometry.vertices, curve.getLength());
 				var currentLine = new THREE.Line(currentGeometry,lineMat);
 				currentLine.name = current + " -> " + node.children[i]
 				freshLines.push(currentLine);
@@ -370,7 +370,7 @@ function recurseRebuild(current, bigObj){
 				//currentGeometry.vertices.push(midPoint,childPositions[i]);
 				var streightCurve = new THREE.LineCurve3(midPoint,childPositions[i])
 				currentGeometry.vertices = streightCurve.getPoints(50);
-				generateParticles(currentGeometry.vertices);
+				generateParticles(currentGeometry.vertices,streightCurve.getLength());
 				var lineMat = new THREE.LineBasicMaterial({color: 0xc5c5c5});
 				var currentLine = new THREE.Line(currentGeometry,lineMat);
 				currentLine.name = current + " -> " + node.children[i]
@@ -396,11 +396,11 @@ function generateLine(firstPoint, secondPoint){
 }
 
 
-function generateParticles(points){
+function generateParticles(points,lineLength){
 	var	particleSize = 2;
 	// this may change to be relative to the size of the line.
-	particleCount = 2;
-
+	particleCount = Math.floor(Math.sqrt(lineLength)) - 1;
+	console.log(particleCount);
 	for(var i = 0; i < particleCount; i++){
 		var lineIndex = i/particleCount * points.length;
 		var rIndex = Math.floor(lineIndex);
