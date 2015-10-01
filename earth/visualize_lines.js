@@ -247,10 +247,6 @@ function recurseRebuild(current, bigObj){
 		//conlines = [];
 		// iterate through all of the children and recurse
 
-		if(current == "Yuman"){
-			console.log("yuman");
-		}
-
 		var childPositions = [];
 		var currentLevel = 0;
 		for(var i = 0; i < node.children.length; i++){
@@ -353,7 +349,7 @@ function recurseRebuild(current, bigObj){
 				latepeak.setLength(midPoint.length());
 
 
-				if(current == "a9" && node.children[i] == "a2"){
+				if(current == "a4" && node.children[i] == "b8"){
 					console.log("this one is messed up")
 				}
 
@@ -400,7 +396,6 @@ function generateParticles(points,lineLength){
 	var	particleSize = 2;
 	// this may change to be relative to the size of the line.
 	particleCount = Math.floor(Math.sqrt(lineLength)) - 1;
-	console.log(particleCount);
 	for(var i = 0; i < particleCount; i++){
 		var lineIndex = i/particleCount * points.length;
 		var rIndex = Math.floor(lineIndex);
