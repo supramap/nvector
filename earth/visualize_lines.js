@@ -351,10 +351,37 @@ function recurseRebuild(current, bigObj){
 
 				if(current == "a4" && node.children[i] == "b8"){
 					console.log("this one is messed up")
+					var geometry = new THREE.SphereGeometry( .5 ,10, 10 );
+					var material = new THREE.MeshLambertMaterial( {color:0xaa26f1, ambient:0xaa26f1} );
+					material.fog = false;
+					//material.color.setHSL( .4, 0.1, .8 );
+
+
+
+
+					var sphere = new THREE.Mesh( geometry, material );
+					sphere.position.x = linepeak.x;
+					sphere.position.y = linepeak.y;
+					sphere.position.z = linepeak.z;
+					sphere.name = current;
+					scene.add(sphere);
+
+					var sphere1 = new THREE.Mesh( geometry, material );
+					sphere1.position.x = latepeak.x;
+					sphere1.position.y = latepeak.y;
+					sphere1.position.z = latepeak.z;
+					sphere1.name = current;
+					scene.add(sphere1)
 				}
+				var geometry = new THREE.SphereGeometry( .5 ,10, 10 );
+				var material = new THREE.MeshLambertMaterial( {color:0xaa26f1, ambient:0xaa26f1} );
+				material.fog = false;
+				//material.color.setHSL( .4, 0.1, .8 );
+
 
 				var lineMat = new THREE.LineBasicMaterial({color: 0xc5c5c5});
-				var curve = new THREE.CubicBezierCurve3(midPoint,linepeak,latepeak,childPositions[i]);
+				//var curve = new THREE.CubicBezierCurve3(midPoint,linepeak,latepeak,childPositions[i]);
+				var curve = new THREE.SplineCurve3([midPoint,linepeak,childPositions[i]]);
 
 				currentGeometry.vertices = curve.getPoints(50);
 				generateParticles(currentGeometry.vertices, curve.getLength());
@@ -378,6 +405,25 @@ function recurseRebuild(current, bigObj){
 		return currentLevel + 1;
 	}
 }
+
+/*
+	A recursive function designed to segment a curve appropriately to produce
+	a fluid arc that stays above
+*/
+function segmentLine(startPoint, endPoint, restraint){
+	var lineLength = startPoint.distanceTo(endPoint)
+	if(lineLength < restraint){
+		return []
+	}
+	var currentMid = startPoint.clone().lerp(endPoint,.5);
+	currentMid.setLength((startPoint.length() + endPoint.length())/2)
+	firstRetArray = segmentLine(startPoint,currentMid,restraint);
+	secRetArray = segmentLine(currentMid,endPoint, restraint);
+	firstRetArray.push(currentMid)
+	firstRetArray.concat(secRetArray);
+	return firstRetArray;
+}
+
 
 /*
 	A function who's purpose is to generate an appropriate line between two points
