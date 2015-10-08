@@ -340,6 +340,11 @@ function recurseRebuild(current, bigObj){
 			var currentGeometry = new THREE.Geometry();
 			// determine if the line needs to be curved
 			var distOfLine = midPoint.distanceTo(childPositions[i]);
+
+
+
+
+
 			if (distOfLine > 35){
 				var linepeak = midPoint.clone().lerp(childPositions[i],.5);
 				linepeak.setLength(midPoint.length());
@@ -349,31 +354,9 @@ function recurseRebuild(current, bigObj){
 				latepeak.setLength(midPoint.length());
 
 
-				if(current == "a4" && node.children[i] == "b8"){
-					console.log("this one is messed up")
-					var geometry = new THREE.SphereGeometry( .5 ,10, 10 );
-					var material = new THREE.MeshLambertMaterial( {color:0xaa26f1, ambient:0xaa26f1} );
-					material.fog = false;
-					//material.color.setHSL( .4, 0.1, .8 );
 
-
-
-
-					var sphere = new THREE.Mesh( geometry, material );
-					sphere.position.x = linepeak.x;
-					sphere.position.y = linepeak.y;
-					sphere.position.z = linepeak.z;
-					sphere.name = current;
-					scene.add(sphere);
-
-					var sphere1 = new THREE.Mesh( geometry, material );
-					sphere1.position.x = latepeak.x;
-					sphere1.position.y = latepeak.y;
-					sphere1.position.z = latepeak.z;
-					sphere1.name = current;
-					scene.add(sphere1)
-				}
 				var geometry = new THREE.SphereGeometry( .5 ,10, 10 );
+
 				var material = new THREE.MeshLambertMaterial( {color:0xaa26f1, ambient:0xaa26f1} );
 				material.fog = false;
 				//material.color.setHSL( .4, 0.1, .8 );
@@ -381,7 +364,38 @@ function recurseRebuild(current, bigObj){
 
 				var lineMat = new THREE.LineBasicMaterial({color: 0xc5c5c5});
 				//var curve = new THREE.CubicBezierCurve3(midPoint,linepeak,latepeak,childPositions[i]);
-				var curve = new THREE.SplineCurve3([midPoint,linepeak,childPositions[i]]);
+
+				//var curvePointsOne = segmentLine(midPoint,linepeak,10)
+				//var curvePointsTwo = segmentLine(linepeak,childPositions[i],15);
+
+				var curvePoints = []
+				curvePoints.push(midPoint);
+				//curvePoints = curvePoints.concat(curvePointsOne);
+				curvePoints = curvePoints.concat(segmentLine(midPoint,childPositions[i],10));
+				//curvePoints.push(linepeak);
+				//urvePoints = curvePoints.concat(curvePointsTwo);
+				curvePoints.push(childPositions[i]);
+
+				if(current == "a4" && node.children[i] == "b8"){
+					console.log("this one is messed up")
+					/*var geometry = new THREE.SphereGeometry( .5 ,10, 10 );
+					var material = new THREE.MeshLambertMaterial( {color:0xaa26f1, ambient:0xaa26f1} );
+					material.fog = false;
+					//material.color.setHSL( .4, 0.1, .8 );
+
+
+					for(var purple = 0 ; purple < curvePoints.length; purple++){
+						var sphere = new THREE.Mesh( geometry, material );
+						sphere.position.x = curvePoints[purple].x;
+						sphere.position.y = curvePoints[purple].y;
+						sphere.position.z = curvePoints[purple].z;
+						sphere.name = current;
+						scene.add(sphere);
+					}*/
+
+				}
+				// this still needs work but it may be on the right track
+				var curve = new THREE.SplineCurve3(curvePoints);
 
 				currentGeometry.vertices = curve.getPoints(50);
 				generateParticles(currentGeometry.vertices, curve.getLength());
@@ -415,13 +429,13 @@ function segmentLine(startPoint, endPoint, restraint){
 	if(lineLength < restraint){
 		return []
 	}
-	var currentMid = startPoint.clone().lerp(endPoint,.5);
+	var currentMid = startPoint.clone().lerp(endPoint.clone(),.5);
 	currentMid.setLength((startPoint.length() + endPoint.length())/2)
-	firstRetArray = segmentLine(startPoint,currentMid,restraint);
-	secRetArray = segmentLine(currentMid,endPoint, restraint);
+	var firstRetArray = segmentLine(startPoint,currentMid,restraint);
+	var secRetArray = segmentLine(currentMid,endPoint, restraint);
 	firstRetArray.push(currentMid)
-	firstRetArray.concat(secRetArray);
-	return firstRetArray;
+	return firstRetArray.concat(secRetArray);
+
 }
 
 
