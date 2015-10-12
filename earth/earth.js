@@ -10,6 +10,7 @@ var cube;
 var countryLookup;
 var raycaster = new THREE.Raycaster();
 var graph = new THREE.Object3D();
+var layers = new THREE.Object3D();
 var countryData = new Object();
 var stateData = new Object();
 var particlesExist = false;
@@ -42,7 +43,7 @@ var particlesExist = false;
 		$("#layerFile").trigger('click');
 	});
 
-	
+
 	var chooser = $("#infile");
 	chooser.change(function(evt) {
 	    console.log($(this).val() + " is loaded");
@@ -88,8 +89,13 @@ var particlesExist = false;
 	}
 
 
-	function addNewLayer(){
-
+	function addNewLayer(layerObj){
+		var newLayer = generateLayer(layerObj);
+		var currentLayer = new THREE.Object3D();
+		for (var i in newLayer){
+			currentLayer.add(newLayer[i]);
+		}
+		layers.add(currentLayer);
 	}
 
 	function addNewGraph(connectionObj){
@@ -105,7 +111,7 @@ var particlesExist = false;
 		particlesExist = true;
 		var particleCloud = initializeParticles();
 		graph.add(particleCloud);
-		scene.add(graph);
+		//scene.add(graph);
 		console.log("y up");
 	}
 
@@ -114,7 +120,8 @@ var particlesExist = false;
 		scene = new THREE.Scene();
 		scene.matrixAutoUpdate = false;
 		//scene.fog = new THREE.FogExp2( 0xBBBBBB, 0.00003 );
-
+		scene.add(layers);
+		scene.add(graph)
 		scene.add( new THREE.AmbientLight( 0x888888 ) );
 
 		var point = new THREE.SpotLight( 0x333333,3.0);

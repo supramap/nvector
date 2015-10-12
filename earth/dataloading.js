@@ -67,6 +67,12 @@ function loadGVFile(data,callback){
 	callback(connections);
 }
 
+function loadLayer(data, callback){
+	var	inObject = JSON.parse( data );
+	callback(inObject);
+}
+
+
 function loadTransmissions(data, callback){
 	// locations is used for the transmission of data between two points,
 	locations = {};
