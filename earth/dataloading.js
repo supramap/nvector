@@ -68,7 +68,10 @@ function loadGVFile(data,callback){
 }
 
 function loadTransmissions(data, callback){
+	// locations is used for the transmission of data between two points,
 	locations = {};
+	// places is used for individula points being added
+	places = {}
 	var lines = data.split("\n");
 	for (var on=0; on < lines.length; on++){
 		var line = lines[on];
@@ -118,10 +121,27 @@ function loadTransmissions(data, callback){
 	        locations[end] = {"children":[], "root":"false", "coord":options.end};
 	    }
 	    else if( (end in locations) && locations[end].root == "true"){
-	      locations[end].root = false;
+	    		locations[end].root = false;
 	    }
 
 	  }
+		else if(line.indexOf("\"") > -1){
+			// assuming that it is just a single point.
+			var relevant = line.split("[");
+			var nodeName = relevant[0].replace(/\"/g,"").trim();
+			var options = relevant[1].replace(/]/g,"").split(",");
+			places[nodeName] = {}
+			for(var i = 0; i < options.length; i++){
+				currentOption = options[i].split("=");
+				if (currentOption[0].trim() == "position"){
+					places[nodeName].position = currentOption[1].replace(/\"/g,"").trim();
+				}
+				if (currentOption[0].trim() == "color"){
+					places[nodeName].color = currentOption[1].replace(/\"/g,"").trim();
+				}
+			}
+
+		}
 
 	}// end of the big for loop
 
@@ -138,8 +158,16 @@ function loadTransmissions(data, callback){
   }
 
 
+	if(!jQuery.isEmptyObject(places)){
+		buildPlaces(places);
+	}
+
 	locations["TreeRoots"] = realroots;
-	callback(locations);
+	if(!jQuery.isEmptyObject(locations)){
+		callback(locations)
+	}
+
+	//callback(locations);
 }
 
 
