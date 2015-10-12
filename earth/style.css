@@ -9,6 +9,42 @@ canvas{
 	height:100%:
 }
 
+#infileBut{
+	background-color: rgb(230, 230, 230);
+	color: black;
+	width: 49%;
+	height:30px;
+	float:left;
+	display:inline;
+	margin:0px;
+	text-align: center;
+	line-height: 30px;
+	cursor:pointer;
+}
+#layerBut{
+	background-color: rgb(230, 230, 230);
+	color: black;
+	width: 49%;
+	height: 30px;
+	margin:0px;
+	display:inline;
+	float:left;
+	text-align: center;
+	line-height: 30px;
+	cursor:pointer;
+}
+
+#buttonPanel{
+	display: inline-block;
+	width:100%;
+	bottom:0px;
+	position:absolute;
+}
+
+.buttonGroup{
+	border: 1px solid black;
+}
+
 #menu{
 	z-index: 3;
 	position:absolute;
