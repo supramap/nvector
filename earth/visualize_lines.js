@@ -250,7 +250,11 @@ function recurseRebuild(current, bigObj){
 		var childPositions = [];
 		var currentLevel = 0;
 		for(var i = 0; i < node.children.length; i++){
+
 				var child = node.children[i];
+				if (child == current){
+					continue
+				}
 				var recRet = recurseRebuild(child, bigObj);
 				// test if the returned Value is higher than the current level
 				// if so then set the current level to be higher.
@@ -376,24 +380,6 @@ function recurseRebuild(current, bigObj){
 				//urvePoints = curvePoints.concat(curvePointsTwo);
 				curvePoints.push(childPositions[i]);
 
-				if(current == "a4" && node.children[i] == "b8"){
-					console.log("this one is messed up")
-					/*var geometry = new THREE.SphereGeometry( .5 ,10, 10 );
-					var material = new THREE.MeshLambertMaterial( {color:0xaa26f1, ambient:0xaa26f1} );
-					material.fog = false;
-					//material.color.setHSL( .4, 0.1, .8 );
-
-
-					for(var purple = 0 ; purple < curvePoints.length; purple++){
-						var sphere = new THREE.Mesh( geometry, material );
-						sphere.position.x = curvePoints[purple].x;
-						sphere.position.y = curvePoints[purple].y;
-						sphere.position.z = curvePoints[purple].z;
-						sphere.name = current;
-						scene.add(sphere);
-					}*/
-
-				}
 				// this still needs work but it may be on the right track
 				var curve = new THREE.SplineCurve3(curvePoints);
 

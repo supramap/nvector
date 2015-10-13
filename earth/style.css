@@ -35,7 +35,6 @@ canvas{
 }
 
 #buttonPanel{
-	display: inline-block;
 	width:100%;
 	bottom:0px;
 	position:absolute;
@@ -53,7 +52,7 @@ canvas{
 	background-color: black;
 	opacity: .5;
 	width: 20%;
-	height: 100px;
+	height: 100%;
 	border-bottom-right-radius: 10px;
 }
 
@@ -68,7 +67,7 @@ canvas{
 #close{
 	position: absolute;
 	right:1px;
-	top:1px;
+	top:3px;
 	border-radius:20px;
 }
 

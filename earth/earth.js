@@ -36,57 +36,6 @@ var particlesExist = false;
 	});
 
 
-	$("#infileBut").click(function(){
-		$("#infile").trigger('click');
-	});
-	$("#layerBut").click(function(){
-		$("#layerFile").trigger('click');
-	});
-
-
-	var chooser = $("#infile");
-	chooser.change(function(evt) {
-	    console.log($(this).val() + " is loaded");
-			// draw file from the input
-			var f = this.files[0]
-
-			if(f){
-				var reader = new FileReader();
-				reader.onload = function(data){
-					// determine the file type. Based on file type call appropriate parser
-					loadTransmissions(data.target.result,addNewGraph);
-				};
-				reader.readAsText(f);
-			}
-	});
-
-	var layerSelection = $("#layerFile")
-
-	layerSelection.change(function(evt){
-		console.log($(this).val() + " is loaded");
-		// draw file from the input
-		var f = this.files[0]
-
-		if(f){
-			var reader = new FileReader();
-			reader.onload = function(data){
-				// determine the file type. Based on file type call appropriate parser
-				loadLayer(data.target.result,addNewLayer);
-			};
-			reader.readAsText(f);
-		}
-	});
-
-// The addNewLines function is designed to be a callback function that
-// applies the newly loaded lines from the input file to the earth.
-	function addNewLines(connections){
-		// At this point add the lines to the earth based on the input from the file
-		for (var origin in connections){
-			var geo = makeLineGeometry(origin, connections[origin], 2000, 'state','state');
-			createLine(geo);
-		}
-		console.log("add the new lines")
-	}
 
 
 	function addNewLayer(layerObj){
@@ -110,7 +59,7 @@ var particlesExist = false;
 		// initialize particle affects
 		particlesExist = true;
 		var particleCloud = initializeParticles();
-		graph.add(particleCloud);
+		//graph.add(particleCloud);
 		//scene.add(graph);
 		console.log("y up");
 	}
