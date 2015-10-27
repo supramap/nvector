@@ -1,4 +1,8 @@
 {
-  "name": "earthview",
-  "main": "index.html"
+  "name": "EarthView",
+  "main": "index.html",
+  "version": "0.1.0",
+  "window":{
+  	"toolbar":true
+  }
 }
