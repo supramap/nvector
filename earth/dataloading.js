@@ -67,13 +67,13 @@ function loadGVFile(data,callback){
 	callback(connections);
 }
 
-function loadLayer(data, callback){
+function loadLayer(data){
 	var	inObject = JSON.parse( data );
-	callback(inObject);
+	addNewLayer(inObject);
 }
 
 
-function loadTransmissions(data, callback){
+function loadTransmissions(data){
 	// locations is used for the transmission of data between two points,
 	locations = {};
 	// places is used for individula points being added
@@ -170,7 +170,7 @@ function loadTransmissions(data, callback){
 
 	locations["TreeRoots"] = realroots;
 	if(!jQuery.isEmptyObject(locations)){
-		callback(locations)
+		addNewGraph(locations)
 	}
 
 	//callback(locations);
@@ -202,17 +202,4 @@ function loadContentData(callback){
 	    }
 	};
 	xhr.send( null );
-}
-
-function loadCountryCodes( callback ){
-	cxhr = new XMLHttpRequest();
-	cxhr.open( 'GET', isoFile, true );
-	cxhr.onreadystatechange = function() {
-		if ( cxhr.readyState === 4 && (cxhr.status === 200 || cxhr.status === 0) ) {
-	    	countryLookup = JSON.parse( cxhr.responseText );
-	    	console.log("loaded country codes");
-	    	callback();
-	    }
-	};
-	cxhr.send( null );
 }

@@ -26,10 +26,8 @@ var particlesExist = false;
 		mapOutlineImage.src = 'images/map_outline.png'
 		loadWorldPins(function(){
 			loadStatePins(function(){
-				loadCountryCodes(function(){
-					outlinedMapTexture = THREE.ImageUtils.loadTexture('images/map_outline.png', {}, function(){
-						buildearth();
-					});
+				outlinedMapTexture = THREE.ImageUtils.loadTexture('images/map_outline.png', {}, function(){
+					buildearth();
 				});
 			});
 		});
@@ -187,7 +185,7 @@ var particlesExist = false;
 
 		// load geo data (country lat lons in this case)
 		console.time('loadGeoData');
-		loadGeoData( latlonData , stateCoords);
+		//loadGeoData( latlonData , stateCoords);
 		console.timeEnd('loadGeoData');
 
 		visualizationMesh = new THREE.Object3D();
