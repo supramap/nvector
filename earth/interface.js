@@ -1,3 +1,5 @@
+var queryroot = "http://192.168.1.14:8080/irods-rest/rest/"
+
 // Make the buttons trigger the file selector
 $("#infileBut").click(function(){
   $("#infile").trigger('click');
@@ -7,6 +9,35 @@ $("#layerBut").click(function(){
   $("#layerFile").trigger('click');
 });
 
+$("#infileButCloud").click(function(){
+  // fire off the query to retrieve collection information.
+  // while waiting for collection information be sure to display the popup
+  // window and a loading animation.
+  var list = "collection/tempZone/home/zach/fda?listing=true"
+
+  $.ajax({
+    type:"GET",
+    url:(queryroot + list),
+    beforeSend: function(xhr){
+      xhr.setRequestHeader("Authorization","Basic " + btoa("earth" + ":" + "!darpa"));
+    },
+    //datatype:'json',
+    success:function(data){
+      console.log(data);
+    }
+  })
+
+  $("#popup").show();
+
+});
+//http://192.168.1.14:8080/irods-rest/rest/collection/tempZone/home/zach/fda?listing=true
+$("#layerButCloud").click(function(){
+
+});
+
+$("#popCancel").click(function(){
+  $("#popup").hide();
+});
 
 // Define what is done when the files are loaded
 var chooser = $("#infile");
@@ -50,8 +81,10 @@ var open = true;
 
 $("#close").click(function(){
   if(open == true){
+    var amount = '-' + $("#menu").width().toString() + 'px';
     $("#menu").animate({
-      left: '-20%'
+
+      left: amount
     });
     $("#close").animate({
       right:'-25px'

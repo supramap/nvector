@@ -26,16 +26,20 @@
 			<button id= "close"><</button>
 
 			<div id="buttonPanel">
-				<div id="infileBut" class="buttonGroup">Plot Local Graph</div>
-				<div id="infileButCloud" class="buttonGroup">Plot Cloud Graph</div>
-				<div id="layerBut" class="buttonGroup">Apply Local Layer</div>
-				<div id="layerButCloud" class="buttonGroup">Apply Cloud Layer</div>
+				<div id="infileBut" class="buttonGroup">Graph Local</div>
+				<div id="infileButCloud" class="buttonGroup">Graph Cloud</div>
+				<div id="layerBut" class="buttonGroup">Layer Local</div>
+				<div id="layerButCloud" class="buttonGroup">Layer Cloud</div>
 				<div id="particleToggle" class="buttonGroup">Particle Guide</div>
 			</div>
 			<input type="file" id="infile" style="display:none">
 			<input type="file" id="layerFile" style="display:none">
 
 		</div>
+
+
+
+
 		<script type="x-shader/x-vertex" id="vertexshader">
 			/*uniform float amplitude;
 			attribute float size;
@@ -128,8 +132,18 @@
 				// gl_FragColor = vec4(texture2D( lookup, vUv ).xyz,1.);
 			}
 		</script>
+		<!-- This is the popup window that provides the interface to irods-->
+		<div id="popup" style="display: none">
+			<button id="popLoad">Load</button>
+			<button id="popCancel">Cancel</button>
+		</div>
 
 		<script src="earth.js" type="text/javascript"></script>
 		<script src="interface.js" type="text/javascript"></script>
+
+
+
+
+
 	</body>
 </html>
