@@ -42,7 +42,7 @@ function loadStatePins(callback){
 	xhr.send( null );
 }
 
-
+/*
 function loadGVFile(data,callback){
 	//I'm assuming the file will come in as one monsterous string, so split on
 	//line seperation
@@ -66,7 +66,7 @@ function loadGVFile(data,callback){
 	}
 	callback(connections);
 }
-
+*/
 function loadLayer(data){
 	var	inObject = JSON.parse( data );
 	addNewLayer(inObject);
