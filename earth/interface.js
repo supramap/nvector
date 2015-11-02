@@ -176,7 +176,17 @@ chooser.change(function(evt) {
     // draw file from the input
     var f = this.files[0]
 
-    if(f){
+    if(f.type == "application/json"){
+      var reader = new FileReader();
+      reader.onload = function(data){
+        // loadTransmissions is defined in dataloading.js and is intended to
+        // load in all of the data provided by a graphviz formatted file.
+        // addNewGraph is housed in the earth.js file as it interfaces with the
+        // THREE.js visualization.
+        loadTransmissionsJson(data.target.result);
+      };
+    }
+    else{
       var reader = new FileReader();
       reader.onload = function(data){
         // loadTransmissions is defined in dataloading.js and is intended to

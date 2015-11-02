@@ -72,6 +72,9 @@ function loadLayer(data){
 	addNewLayer(inObject);
 }
 
+function loadTransmissionsJson(data){
+	locations = JSON.parse( data );
+}
 
 function loadTransmissions(data){
 	// locations is used for the transmission of data between two points,
