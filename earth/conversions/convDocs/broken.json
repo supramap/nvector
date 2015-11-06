@@ -1,0 +1,206 @@
+{
+	"metadata":{
+		"fileName": "broken.json",
+		"author":	"zacharyWitter",
+		"irods": "/irods/file/path",
+		"description": "This is a file that proved to have broken a few visualizations within earthview"
+	},
+	"options":{
+		"rootsCount":1,
+		"time": true,
+		"timeRange":["12-23-2012","12-23-2015"],
+		"roots": ["a10"]
+	},
+	"data":{
+		"a0":{
+			"children":["b7","b6"],
+			"coord":[],
+			"root": false,
+			"desc": "Fun stuff",
+			"links": [],
+			"color": "#FFAA10",
+			"date": ""
+			},
+		"a1":{
+			"children":["b5","b4"],
+			"coord":[],
+			"root": false,
+			"desc": "",
+			"links": [],
+			"color": "#FAAA10",
+			"date": ""
+		},
+		"a2":{
+			"children":["b3","b2"],
+			"coord":[],
+			"root": false,
+			"desc": "",
+			"links": [],
+			"color": "#FFAA10",
+			"date": ""
+		},
+		"a3":{
+			"children":["b1","b0"],
+			"coord":[],
+			"root": false,
+			"desc": "",
+			"links": [],
+			"color": "#FFAA10",
+			"date": ""
+		},
+		"a4":{
+			"children":["b9","b8"],
+			"coord":[],
+			"root": false,
+			"desc": "",
+			"links": [],
+			"color": "#FFAA10",
+			"date": ""
+		},
+		"a5":{
+			"children":["a0"],
+			"coord":[],
+			"root": false,
+			"desc": "",
+			"links": [],
+			"color": "#FFAA10",
+			"date": ""
+		},
+		"a6":{
+			"children":["a1","a2"],
+			"coord":[],
+			"root": false,
+			"desc": "",
+			"links": [],
+			"color": "#FFAA10",
+			"date": ""
+		},
+		"a7":{
+			"children":["a3","a4"],
+			"coord":[],
+			"root": false,
+			"desc": "",
+			"links": [],
+			"color": "#FFAA10",
+			"date": ""
+		},
+		"a8":{
+			"children":["a5"],
+			"coord":[],
+			"root": false,
+			"desc": "These are places where the rain falls backwords",
+			"links": [],
+			"color": "#FFAA10",
+			"date": ""
+		},
+		"a9":{
+			"children":["a6","a7"],
+			"coord":[],
+			"root": false,
+			"desc": "These are places where the rain falls backwords",
+			"links": [],
+			"color": "#FFAA10",
+			"date": ""
+		},
+		"a10":{
+			"children":["a8","a9"],
+			"coord":[],
+			"root": "Insert",
+			"desc": "These are places where the rain falls backwords",
+			"links": [],
+			"color": "#FFAA10",
+			"date": ""
+		},
+		"b0":{
+			"children":[],
+			"coord":[-48.31914140828233,-158.47541877733525],
+			"root": false,
+			"desc": "The rain falls up here",
+			"links": ["http://www.microsoft.com"],
+			"color": "#FFAA10",
+			"date": "12-23-2015"
+			},
+		"b1":{
+			"children":[],
+			"coord":[-5.507035984599426,164.36876159802318],
+			"root": false,
+			"desc": "Even my Grandma can run this",
+			"links": ["http://www.apple.com"],
+			"color": "#FFAA10",
+			"date": "12-23-2012"
+		},
+		"b2":{
+			"children":[],
+			"coord":[-77.10058246972962,-147.5972703553322],
+			"root": false,
+			"desc": "Lol you think that's an OS?",
+			"links": ["http://www.steam.com"],
+			"color": "#FFAA10",
+			"date": "12-23-2015"
+		},
+		"b3":{
+			"children":[],
+			"coord":[-62.05018588433238,56.584107782680775],
+			"root": false,
+			"desc": "Ah... Home",
+			"links": ["http://www.ubuntu.com"],
+			"color": "#FFAA10",
+			"date": "12-23-2013"
+		},
+		"b4":{
+			"children":[],
+			"coord":[68.8841419049966,160.53411696761742],
+			"root": false,
+			"desc": "Too cool for Unity!",
+			"links": ["http://elementary.io"],
+			"color": "#FFAA10",
+			"date": "12-23-2015"
+		},
+		"b5":{
+			"children":[],
+			"coord":[-3.0134816661016544,91.58156546464272],
+			"root": false,
+			"desc": "Pay me for free things!",
+			"links": ["http://redhat.com/en"],
+			"color": "#FFAA10",
+			"date": "12-23-2015"
+		},
+		"b6":{
+			"children":[],
+			"coord":[-25.016184377580018,-36.395058671781214],
+			"root": false,
+			"desc": "Found on the way out of the resteraunt",
+			"links": ["http://peppermintos.org"],
+			"color": "#FFAA10",
+			"date": "12-23-2014"
+		},
+		"b7":{
+			"children":[],
+			"coord":[-54.044614481445564,-82.66029967118455],
+			"root": false,
+			"desc": "Did you say fedora?",
+			"links": ["http://getfedora.org"],
+			"color": "#FFAA10",
+			"date": "12-23-2013"
+		},
+		"b8":{
+			"children":[],
+			"coord":[78.25062165421951,153.43348579122022],
+			"root": false,
+			"desc": "Debian who?",
+			"links": ["http://debian.org"],
+			"color": "#FFAA10",
+			"date": "12-23-2015"
+		},
+		"b9":{
+			"children":[],
+			"coord":[-64.15039947975781,105.59435218075498],
+			"root": false,
+			"desc": "Its a cute wittle guy",
+			"links": ["http://lubuntu.net/"],
+			"color": "#FFAA10",
+			"date": "12-23-2013"
+		}
+
+	}
+}
