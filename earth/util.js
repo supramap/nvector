@@ -1,24 +1,86 @@
+
+// This is all for representatio of date---------------------------------------
+var
+	weekdays = [
+		"Sunday", "Monday", "Tuesday",
+		"Wednesday", "Thursday", "Friday",
+		"Saturday"
+	],
+	months = [
+		"January", "February", "March",
+		"April", "May", "June", "July",
+		"August", "September", "October",
+		"November", "December"
+	];
+
+// Append a suffix to dates.
+// Example: 23 => 23rd, 1 => 1st.
+function nth (d) {
+  if(d>3 && d<21) return 'th';
+  switch (d % 10) {
+        case 1:  return "st";
+        case 2:  return "nd";
+        case 3:  return "rd";
+        default: return "th";
+    }
+}
+
+// Create a string representation of the date.
+function formatDate ( date ) {
+    return months[date.getMonth()] + " " +
+				date.getDate() + nth(date.getDate()) + ", " +
+        date.getFullYear();
+}
+
+function reFormatDate ( date ) {
+    return date.getMonth()+1 + "-" +
+				date.getDate() + "-" +
+        date.getFullYear();
+}
+
+function timestamp(str){
+    return new Date(str).getTime();
+}
+
+// End date -------------------------------------------------------------------
+
+// A function defined to convert latitude and longitude values to 3d vectors for
+// the earth
+function locationToVector(inLat, inLon){
+	var lon = inLon - 90;
+	var lat = inLat;
+
+	var phi = Math.PI/2 - lat * Math.PI / 180 - Math.PI * 0.00//0.01;
+	var theta = 2 * Math.PI - lon * Math.PI / 180 + Math.PI * 0.00//0.06;
+
+	var center = new THREE.Vector3();
+	center.x = Math.sin(phi) * Math.cos(theta) * rad;
+	center.y = Math.cos(phi) * rad;
+	center.z = Math.sin(phi) * Math.sin(theta) * rad;
+	return center;
+}
+
+
+function createSphere(colorc,name,vec){
+	var geometry = new THREE.SphereGeometry( .5 ,10, 10 );
+	var material = new THREE.MeshLambertMaterial( {color: colorc, ambient:colorc} );
+	material.fog = false;
+
+	var sphere = new THREE.Mesh( geometry, material );
+	sphere.position.x = vec.x;
+	sphere.position.y = vec.y;
+	sphere.position.z = vec.z;
+	sphere.name = name;
+
+	return sphere;
+};
+
+
+
 function toTHREEColor( colorString ){
 	return new THREE.Color( parseInt( colorString.substr(1) , 16)  );
 }
 
-var monthNames = new Array(12);
-monthNames[0] = "January";
-monthNames[1] = "February";
-monthNames[2] = "March";
-monthNames[3] = "April";
-monthNames[4] = "May";
-monthNames[5] = "June";
-monthNames[6] = "July";
-monthNames[7] = "August";
-monthNames[8] = "September";
-monthNames[9] = "October";
-monthNames[10] = "November";
-monthNames[11] = "December";			
-
-function toMonthName( monthNumber ){
-	return monthNames[monthNumber];
-}	
 
 function componentToHex(c) {
 	var hex = c.toString(16);
@@ -78,13 +140,13 @@ function screenXY(vec3){
 	result.x = Math.round( vector.x * (windowWidth/2) ) + windowWidth/2;
 	result.y = Math.round( (0-vector.y) * (window.innerHeight/2) ) + window.innerHeight/2;
 	return result;
-}	
+}
 
 function buildHexColumnGeo(rad, height){
 	var points = [];
 	var ang = 0;
 	var sixth = 2*Math.PI / 6;
-	for(var i=0; i<7; i++){					
+	for(var i=0; i<7; i++){
 		var x = Math.cos(ang) * rad;
 		var y = -Math.sin(ang) * rad;
 		points.push( new THREE.Vector2(x,y) );
@@ -99,7 +161,7 @@ function buildHexColumnGeo(rad, height){
 		bevelEnabled:  	false,
 	};
 	var extrudedGeo = new THREE.ExtrudeGeometry(shape, options);
-	return extrudedGeo;	    	
+	return extrudedGeo;
 }
 
 function map(v, i1, i2, o1, o2) {
@@ -116,9 +178,9 @@ function roundNumber(num, dec) {
 }
 
 function save(data, filename, mime) {
-    
+
     window.webkitRequestFileSystem(window.TEMPORARY, 1024 * 1024, initRecord, errorHandler("Error getting file system"));
-    
+
     function initRecord(fs) {
       var create = function() {
         fs.root.getFile("data.tar", {create: true}, function(fileEntry) {

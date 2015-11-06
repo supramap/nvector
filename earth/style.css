@@ -157,3 +157,25 @@ li.selections:nth-child(even){
 .loading{
 		cursor:wait;
 }
+
+/*Time Slider Start------------------------------------------------------*/
+div#timeSlide{
+	position:absolute;
+	height: calc(100% - 60px);
+	top: 44px;
+	left: calc(100% + 10px);
+}
+
+.dateIndicator{
+	width: 155px;
+	left:calc(100% + 35px);
+	background-color: black;
+	position:absolute;
+	color:white;
+	text-align: center;
+	border-radius: 3px;
+}
+
+
+
+/*Time Slider End -------------------------------------------------------*/

@@ -1,72 +1,4 @@
-function loadWorldPins( callback ){
-	// We're going to ask a file for the JSON data.
-	xhr = new XMLHttpRequest();
 
-	// Where do we get the data?
-	xhr.open( 'GET', latlonFile, true );
-
-	// What do we do when we have it?
-	xhr.onreadystatechange = function() {
-	  // If we've received the data
-	  if ( xhr.readyState === 4 && (xhr.status === 200 || xhr.status === 0 )) {
-	      // Parse the JSON
-	      latlonData = JSON.parse( xhr.responseText );
-	      if( callback )
-	      	callback();
-	    }
-	};
-
-	// Begin request
-	xhr.send( null );
-}
-
-function loadStatePins(callback){
-	// We're going to ask a file for the JSON data.
-	xhr = new XMLHttpRequest();
-
-	// Where do we get the data?
-	xhr.open( 'GET', "states.json", true );
-
-	// What do we do when we have it?
-	xhr.onreadystatechange = function() {
-	  // If we've received the data
-	  if ( xhr.readyState === 4 && (xhr.status === 200 || xhr.status === 0 )) {
-	      // Parse the JSON
-	      stateCoords = JSON.parse( xhr.responseText );
-	      if( callback )
-	      	callback();
-	    }
-	};
-
-	// Begin request
-	xhr.send( null );
-}
-
-/*
-function loadGVFile(data,callback){
-	//I'm assuming the file will come in as one monsterous string, so split on
-	//line seperation
-	var connections = {}
-	var lines = data.split("\n");
-	//begin line analysis as started in the nodejs file
-	for (var i = 0; i < lines.length; i++){
-		var current = lines[i];
-		if (current.indexOf("->") > -1){
-		  var sides = current.split("->");
-		  var origin = sides[0];
-		  var destLabel = sides[1].split("[");
-		  var dest = destLabel[0];
-		  var label = destLabel[1].replace(" label = \"","").replace("\" ]", "");
-		  //console.log(origin + " : " + dest);
-			origin = origin.trim().replace("_", " ");
-			dest = dest.trim().replace("_", " ");
-			connections[origin] = dest
-	  }
-		//console.log(current);
-	}
-	callback(connections);
-}
-*/
 function loadLayer(data){
 	var	inObject = JSON.parse( data );
 	addNewLayer(inObject);
@@ -74,11 +6,19 @@ function loadLayer(data){
 
 function loadTransmissionsJson(data){
 	locations = JSON.parse( data );
+	if(!jQuery.isEmptyObject(locations)){
+		addNewGraph(locations)
+	}
+	// Need to check for the presence of a root. If not present with a graph like
+	// structure then it needs to be added.
 }
 
 function loadTransmissions(data){
 	// locations is used for the transmission of data between two points,
 	locations = {};
+	locations['metadata']={"author":"","description":"","filename":"","irods":""};
+	locations['options']={"roots":[],"rootsCount":0, "time":false};
+	locations['data'] = {};
 	// places is used for individula points being added
 	places = {}
 	var lines = data.split("\n");
@@ -111,26 +51,29 @@ function loadTransmissions(data){
 
 	    //Check if variable is in locations
 
-	    if (!(start in locations)){
+	    if (!(start in locations.data)){
 	        // if not then add it and initiate with end position
-
-	        locations[start] = {"children":[end], "root":"true", "coord":options.start}
+					var manipCoord = options.start.split(":");
+					var arrCoord = [parseInt(manipCoord[0]), parseInt(manipCoord[1])];
+	        locations.data[start] = {"children":[end], "root":"true", "coord":arrCoord}
 
 	    }
 	    else{
 	        // if it is in there then we need to append this end to it's children
 
-	        var past = locations[start];
+	        var past = locations.data[start];
 	        var siblings = past.children;
 	        siblings.push(end);
 	        past.children = siblings;
 	    }
 	    // if the end point is not listed then it too needs to be added
-	    if (!(end in locations)){
-	        locations[end] = {"children":[], "root":"false", "coord":options.end};
+	    if (!(end in locations.data)){
+					var manipCoord = options.end.split(":");
+					var arrCoord = [parseInt(manipCoord[0]), parseInt(manipCoord[1])];
+	        locations.data[end] = {"children":[], "root":"false", "coord":arrCoord};
 	    }
-	    else if( (end in locations) && locations[end].root == "true"){
-	    		locations[end].root = false;
+	    else if( (end in locations.data) && locations.data[end].root == "true"){
+	    		locations.data[end].root = false;
 	    }
 
 	  }
@@ -156,11 +99,11 @@ function loadTransmissions(data){
 
 	var realroots = [];
 
-	var keys = Object.keys(locations);
+	var keys = Object.keys(locations.data);
   // iterate through all of the existing keys and check for their root values
   for(var i = 0; i < keys.length; i++){
       // if its a root then add it to my list of roots for future reference.
-      var current = locations[keys[i]];
+      var current = locations.data[keys[i]];
       if (current.root == "true"){
         realroots.push(keys[i]);
       }
@@ -171,7 +114,7 @@ function loadTransmissions(data){
 		buildPlaces(places);
 	}
 
-	locations["TreeRoots"] = realroots;
+	locations.options["roots"] = realroots;
 	if(!jQuery.isEmptyObject(locations)){
 		addNewGraph(locations)
 	}

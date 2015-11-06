@@ -10,10 +10,12 @@ var cube;
 var countryLookup;
 var raycaster = new THREE.Raycaster();
 var graph = new THREE.Object3D();
+var particleCloud;
 var layers = new THREE.Object3D();
 var countryData = new Object();
 var stateData = new Object();
 var particlesExist = false;
+var rootObject;
 
 //window.onload = function(){
 	var outlinedMapTexture;
@@ -24,12 +26,8 @@ var particlesExist = false;
 	var indexedMapTexture = THREE.ImageUtils.loadTexture('images/map_indexed.png', {}, function(){
 		mapOutlineImage = new Image();
 		mapOutlineImage.src = 'images/map_outline.png'
-		loadWorldPins(function(){
-			loadStatePins(function(){
-				outlinedMapTexture = THREE.ImageUtils.loadTexture('images/map_outline.png', {}, function(){
-					buildearth();
-				});
-			});
+		outlinedMapTexture = THREE.ImageUtils.loadTexture('images/map_outline.png', {}, function(){
+			buildearth();
 		});
 	});
 
@@ -46,6 +44,10 @@ var particlesExist = false;
 	}
 
 	function addNewGraph(connectionObj){
+		rootObject = JSON.parse(JSON.stringify(connectionObj))
+		if(connectionObj.options.time == true){
+			generateSlider(connectionObj.options.timeRange);
+		}
 		var connectGeo = makeGraphGeometry(connectionObj);
 
 		for(var i = 0; i < connectGeo.length; i++){
@@ -55,11 +57,31 @@ var particlesExist = false;
 			graph.add(freshNodes[i]);
 		}
 		// initialize particle affects
-		particlesExist = true;
-		var particleCloud = initializeParticles();
+		//particlesExist = true;
+		particleCloud = initializeParticles();
 		//graph.add(particleCloud);
 		//scene.add(graph);
 		console.log("y up");
+		connectionObj = {};
+	}
+
+	function redrawGraph(sTime,eTime){
+		var rootClone = JSON.parse(JSON.stringify(rootObject))
+		scene.remove(graph);
+		graph = new THREE.Object3D();
+		var connectGeo = makeGraphGeometry(rootClone,sTime,eTime);
+
+		for(var i = 0; i < connectGeo.length; i++){
+			graph.add(connectGeo[i]);
+		}
+		for(var i = 0; i < freshNodes.length; i++){
+			graph.add(freshNodes[i]);
+		}
+		// initialize particle affects
+		//particlesExist = true;
+		particleCloud = initializeParticles();
+		scene.add(graph);
+
 	}
 
 	function buildearth(){
@@ -160,61 +182,10 @@ var particlesExist = false;
 
 		rotating.add( sphere );
 
-
-		/*for( var i in timeBins ){
-			var bin = timeBins[i].data;
-			for( var s in bin ){
-				var set = bin[s];
-				// if( set.v < 1000000 )
-				// 	continue;
-
-				var exporterName = set.e.toUpperCase();
-				var importerName = set.i.toUpperCase();
-
-				//	let's track a list of actual countries listed in this data set
-				//	this is actually really slow... consider re-doing this with a map
-				if( $.inArray(exporterName, selectableCountries) < 0 )
-					selectableCountries.push( exporterName );
-
-				if( $.inArray(importerName, selectableCountries) < 0 )
-					selectableCountries.push( importerName );
-			}
-		}*/
-
 		//console.log( selectableCountries );
-
-		// load geo data (country lat lons in this case)
-		console.time('loadGeoData');
-		//loadGeoData( latlonData , stateCoords);
-		console.timeEnd('loadGeoData');
 
 		visualizationMesh = new THREE.Object3D();
 		rotating.add(visualizationMesh);
-
-
-		//Create the geometry for a line between two countries.
-		//var geometry = makeLineGeometry('UNITED STATES','CANADA', 2000,'country','country');
-
-		//var stateGeo1 = makeLineGeometry('Alabama', 'New York', 2000, 'state','state');
-
-
-		//for (var i in stateData){
-		//	var firstMarker = createMarker(i, 'state');
-
-		//var nextGeo = makeLineGeometry('UNITED STATES','RUSSIAN FEDERATION', 100, 'country','country');
-		//Try and create the mesh for the fresh geometry
-
-		//	createLine(firstMarker);
-		//}
-		//createLine(nextGeo);
-
-
-		//console.time('buildDataVizGeometries');
-		//var vizilines = buildDataVizGeometries(timeBins);
-		//console.timeEnd('buildDataVizGeometries');
-
-		//visualizationMesh = new THREE.Object3D();
-		//rotating.add(visualizationMesh);
 
 
 		renderer = new THREE.WebGLRenderer({antialias:false});

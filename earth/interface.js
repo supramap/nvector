@@ -1,4 +1,4 @@
-var queryroot = "http://10.16.56.69:8080/irods-rest/rest/"
+var queryroot = "http://192.168.1.14:8080/irods-rest/rest/"
 
 // Make the buttons trigger the file selector
 $("#infileBut").click(function(){
@@ -152,6 +152,26 @@ $("#popLoad").click(function(){
 });
 
 
+// particle cloud toggle button
+
+$("#particleToggle").click(function(){
+  if(particleCloud != undefined && graph != undefined){
+    if(!particlesExist){
+      graph.add(particleCloud);
+      particlesExist = true;
+    }
+    else{
+      graph.remove(particleCloud)
+      particlesExist = false;
+    }
+  }
+});
+
+
+
+
+
+
 // define what happens when a list item is selected within the popup
 var fileSelection;
 $("#selectionList").on("click",".selections",function(event){
@@ -176,7 +196,7 @@ chooser.change(function(evt) {
     // draw file from the input
     var f = this.files[0]
 
-    if(f.type == "application/json"){
+    if(f.name.indexOf(".json") > -1){
       var reader = new FileReader();
       reader.onload = function(data){
         // loadTransmissions is defined in dataloading.js and is intended to
@@ -185,8 +205,12 @@ chooser.change(function(evt) {
         // THREE.js visualization.
         loadTransmissionsJson(data.target.result);
       };
+      reader.onerror= function(err){
+          console.log(err);
+      };
+      reader.readAsText(f);
     }
-    else{
+    else if(f.name.indexOf(".gv") > -1 || f.name.indexOf(".dot") > -1){
       var reader = new FileReader();
       reader.onload = function(data){
         // loadTransmissions is defined in dataloading.js and is intended to
@@ -196,6 +220,9 @@ chooser.change(function(evt) {
         loadTransmissions(data.target.result);
       };
       reader.readAsText(f);
+    }
+    else{
+      alert("This application only accepts files of the following extension:\n .json, .gv, .dot");
     }
 });
 
@@ -227,7 +254,7 @@ $("#close").click(function(){
       left: amount
     });
     $("#close").animate({
-      right:'-25px'
+      right:'-30px'
     }).html(">");
     open = false;
   }
@@ -251,6 +278,77 @@ function loading(){
 function doneLoading(){
   $("body").removeClass("loading");
 }
+
+
+// THIS IS FOR THE TIME SLIDER--------------------------------------------------
+var dateScroll = false;
+var sliderExists = false;
+function generateSlider(irange){
+  sliderExists = true;
+  var slider = document.getElementById('timeSlide');
+  noUiSlider.create(slider,{
+    start:[timestamp(irange[0]),timestamp(irange[1])],
+    step: 7*24*60*60*1000,
+    margin:20,
+    connect: true,
+    direction: 'rtl',
+    orientation: 'vertical',
+    behaviour: 'tap-drag',
+    range:{
+      'min': timestamp(irange[0]),
+      'max': timestamp(irange[1])
+    }
+    /*format: wNumb({
+      decimals:0
+    })*/
+    /*pips:{
+      mode:'steps',
+      density: 2
+    }*/
+  });
+
+  var dateValues = [
+	   document.getElementById('event-start'),
+     document.getElementById('event-end')
+  ];
+
+  slider.noUiSlider.on('update', function( values, handle ) {
+	   dateValues[handle].innerHTML = formatDate(new Date(+values[handle]));
+     $("#event-start").css({
+       top: function(){
+         return $(".noUi-handle-lower").offset().top + 5;
+       }
+     });
+
+     $("#event-end").css({
+       top: function(){
+         return $(".noUi-handle-upper").offset().top + 5;
+       }
+     });
+  });
+
+  $("#event-end").hide();
+  $("#event-start").hide();
+
+  $(".noUi-handle")
+  .mousedown(function(){
+    $("#event-end").show();
+    $("#event-start").show();
+    dateScroll = true;
+  });
+  $("body").mouseup(function(){
+    if(dateScroll){
+      $("#event-end").hide(300);
+      $("#event-start").hide(300);
+      dateScroll = false;
+      // Update the graph to display the different time range
+      var slideEnds = slider.noUiSlider.get();
+      redrawGraph(reFormatDate(new Date(+slideEnds[0])),reFormatDate(new Date(+slideEnds[1])));
+    }
+  });
+
+}
+// THIS IS FOR THE TIME SLIDER--------------------------------------------------
 
 
 
