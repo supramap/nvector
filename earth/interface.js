@@ -1,4 +1,4 @@
-var queryroot = "http://192.168.1.14:8080/irods-rest/rest/"
+var queryroot = "http://10.16.56.69:8080/irods-rest/rest/"
 
 // Make the buttons trigger the file selector
 $("#infileBut").click(function(){
@@ -109,7 +109,12 @@ $("#popLoad").click(function(){
         text: 'application/json'
       },*/
       success:function(data){
-        loadTransmissions(data);
+        // test if the selected file is json. Otherwise assume that it is gv
+        try {
+          loadTransmissionsJson(JSON.parse(data));
+        } catch (e) {
+          loadTransmissions(data);
+        }
         $("#popup").hide();
         doneLoading();
       },
@@ -192,6 +197,7 @@ $("#selectionList").on("click",".selections",function(event){
 // Define what is done when the files are loaded
 var chooser = $("#infile");
 chooser.change(function(evt) {
+    loading();
     console.log($(this).val() + " is loaded");
     // draw file from the input
     var f = this.files[0]
@@ -204,6 +210,7 @@ chooser.change(function(evt) {
         // addNewGraph is housed in the earth.js file as it interfaces with the
         // THREE.js visualization.
         loadTransmissionsJson(data.target.result);
+        doneLoading();
       };
       reader.onerror= function(err){
           console.log(err);
@@ -218,6 +225,7 @@ chooser.change(function(evt) {
         // addNewGraph is housed in the earth.js file as it interfaces with the
         // THREE.js visualization.
         loadTransmissions(data.target.result);
+        doneLoading();
       };
       reader.readAsText(f);
     }

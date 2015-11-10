@@ -66,9 +66,11 @@ var rootObject;
 	}
 
 	function redrawGraph(sTime,eTime){
+		loading();
 		var rootClone = JSON.parse(JSON.stringify(rootObject))
 		scene.remove(graph);
 		graph = new THREE.Object3D();
+		render();
 		var connectGeo = makeGraphGeometry(rootClone,sTime,eTime);
 
 		for(var i = 0; i < connectGeo.length; i++){
@@ -81,6 +83,7 @@ var rootObject;
 		//particlesExist = true;
 		particleCloud = initializeParticles();
 		scene.add(graph);
+		doneLoading();
 
 	}
 

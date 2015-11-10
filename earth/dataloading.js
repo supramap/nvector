@@ -5,7 +5,45 @@ function loadLayer(data){
 }
 
 function loadTransmissionsJson(data){
-	locations = JSON.parse( data );
+	if(typeof data == "string"){
+		locations = JSON.parse( data );
+	}
+	else{
+		locations = data;
+	}
+
+	// calculate the time range if not presant.
+	if(locations.options.time == true && locations.options.timeRange.length < 2){
+		var coreData = locations.data;
+		var objKeys = Object.keys(coreData);
+		var minDate;
+		var maxDate;
+		for(var i = 0; i < objKeys.length; i++){
+			var currentObj = coreData[objKeys[i]]
+
+			if(currentObj.date.length < 1){
+				continue;
+			}
+
+			if(minDate == undefined){
+				minDate = currentObj.date
+			}
+			if(maxDate == undefined){
+				maxDate = currentObj.date
+			}
+
+			if(new Date(currentObj.date) < new Date(minDate)){
+				minDate = currentObj.date;
+			}
+			if(new Date(currentObj.date) > new Date(maxDate)){
+				maxDate = currentObj.date;
+			}
+		}
+
+		locations["options"].timeRange = [minDate,maxDate];
+	}
+
+
 	if(!jQuery.isEmptyObject(locations)){
 		addNewGraph(locations)
 	}
