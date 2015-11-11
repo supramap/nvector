@@ -4,9 +4,18 @@ var parser = require('biojs-io-newick');
 var request = require('request')
 var metaData = {}
 
+
+var args = process.argv.slice(2);
+
+var tsv = args[0];
+var newick = args[1];
+var outFile = args[2];
+
+
+
 function compare(){
   var fileDate;
-  fs.readFile('sample/sample.tsv',function(err, content){
+  fs.readFile(tsv,function(err, content){
     //console.log(content.toString());
     var acdata = content.toString().split("\n");
     for(var i = 0; i < acdata.length; i++){
@@ -26,7 +35,7 @@ function compare(){
 
 
 function loadNewick(){
-  fs.readFile('sample/sample.newick',function(err,content){
+  fs.readFile(newick,function(err,content){
     var lotsOStuff = content.toString();
     var tree = parser.parse_newick(lotsOStuff);
     //console.log(metaData);
@@ -140,7 +149,7 @@ function finishCoding(total){
         earthStructure.data[objKeys[i]].coord = coords;
     }
 
-    fs.writeFile("sample.json",JSON.stringify(earthStructure),function(){
+    fs.writeFile(outFile,JSON.stringify(earthStructure),function(){
       console.log("conversion successful")
     });
   }

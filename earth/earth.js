@@ -71,7 +71,7 @@ var rootObject;
 		scene.remove(graph);
 		graph = new THREE.Object3D();
 		render();
-		var connectGeo = makeGraphGeometry(rootClone,sTime,eTime);
+		var connectGeo	 = makeGraphGeometry(rootClone,sTime,eTime);
 
 		for(var i = 0; i < connectGeo.length; i++){
 			graph.add(connectGeo[i]);
@@ -86,6 +86,49 @@ var rootObject;
 		doneLoading();
 
 	}
+
+
+	function jumpToTree(){
+		var target = new THREE.Vector3(0,0,180);
+
+		var midPoint = camera.position.clone().lerp(target,.5);
+		midPoint.setLength(200);
+
+
+
+		var pathCurve = new THREE.QuadraticBezierCurve3(camera.position,midPoint,target);
+		var path = pathCurve.getPoints(100);
+		camera.path = path;
+		camera.pip = 0;
+		camera.nlerp = 1;
+
+		cameraRelocate = true;
+
+	}
+
+	var cameraRelocate = false;
+	function slideCamera(){
+
+		camera.pip += 1
+		//camera.nlerp = 0;
+		if(camera.pip + 1 >= camera.path.length){
+			cameraRelocate = false;
+			return;
+		}
+
+		var currentPoint = camera.path[camera.pip];
+		var nextPoint = camera.path[camera.pip + 1];
+
+		var newPosition = currentPoint.lerp(nextPoint,camera.nlerp);
+		camera.position.set(newPosition.x,newPosition.y,newPosition.z);
+
+		camera.lookAt(new THREE.Vector3(0,0,0));
+
+		//camera.nlerp += .5;
+	}
+
+
+
 
 	function buildearth(){
 		var rotating
@@ -198,11 +241,6 @@ var rootObject;
 		renderer.sortObjects = false;
 		renderer.generateMipmaps = false;
 
-		/*camera = new THREE.PerspectiveCamera( 12, window.innerWidth / window.innerHeight, 1, 20000 );
-		camera.position.z = 1400;
-		camera.position.y = 0;
-		camera.lookAt(scene.width/2, scene.height/2);
-		scene.add( camera );*/
 
 		var skyBoxGeometry = new THREE.SphereGeometry( 300, 50, 50 );
 		// BackSide: render faces from inside of the cube, instead of from outside (default).
@@ -271,6 +309,11 @@ var rootObject;
 		if(particlesExist){
 			pSystem.update();
 		}
+		if(cameraRelocate){
+			slideCamera();
+		}
+
+
 		render();
 		requestAnimationFrame( animate );
 	}
