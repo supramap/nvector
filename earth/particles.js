@@ -32,7 +32,7 @@ function initializeParticles(){
 	// after the shaders are loaded build the particle system
 
 
-	pSystem = new THREE.PointCloud(particlesGeo,particleMaterial)
+	pSystem = new THREE.PointCloud(particlesGeo,particleMaterial);
 
 	var values_size = particleAttributes.size.value;
 	var values_color = particleAttributes.customColor.value

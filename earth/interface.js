@@ -360,4 +360,13 @@ function generateSlider(irange){
 
 
 
+// THIS IS FOR THE TREE VIEW----------------------------------------------------
+  $("#treeToggle").click(function(){
+    jumpToTree();
+  });
+
+// THIS IS FOR THE TREE VIEW----------------------------------------------------
+
+
+
 // Make the control panel slide.
