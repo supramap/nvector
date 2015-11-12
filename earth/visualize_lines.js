@@ -40,6 +40,8 @@ function recurseRebuild(current, bigObj,dateStart,dateEnd){
 					return 1;
 				}
 			//	take the lat lon from the data and convert this to 3d globe space
+				
+
 				var center = locationToVector(node.coord[0], node.coord[1]);
 				if(node.coord[0] == undefined || node.coord[1] == undefined){
 					cantPlace.push(current);
