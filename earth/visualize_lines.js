@@ -278,14 +278,44 @@ function calcLeaves(data){
 	}
 }
 
-/*The recursive function is built to  */
+function calcDepth(current,bigObj){
+	var node = bigObj[current];
+
+	if(node.children.length < 1){
+		return 1;
+	}
+
+	var count;
+	for(var i = 0; i < node.children.length; i++){
+		var result = calcDepth(node.children[i],bigObj);
+		if(count == undefined || result > count){
+			count = result;
+		}
+	}
+	return count;
+
+
+}
+
+
+var totalDepth = 0;
+var totalBreadth = 0;
+var leafPlace = 0;
+function build2d(coreObject){
+	totalBreadth = calcLeaves();
+	totalDepth = calcDepth();
+	recurseBuild2d();
+}
+
+
+/*The recursive function is built to generate 2d graphs in a 3d context */
 function recurseBuild2d(current, bigObj,depth,breadth,dateStart,dateEnd){
 	if(node.children.length == 0){
 			if(node.coord instanceof THREE.Vector3 || ( (dateStart != undefined && dateEnd != undefined) && !(new Date(node.date) >= new Date(dateStart) && new Date(node.date) <= new Date(dateEnd)))){
 				return 1;
 			}
-			//	take the lat lon from the data and convert this to 3d globe space
-			var center = locationToVector(node.coord[0], node.coord[1]);
+			// This is a leaf node and so needs to be placed in its relative position
+			// based upon depth and breadth
 
 			node.coord = center;
 
