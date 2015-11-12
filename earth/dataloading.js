@@ -92,9 +92,13 @@ function loadTransmissions(data){
 	    if (!(start in locations.data)){
 	        // if not then add it and initiate with end position
 					var manipCoord = options.start.split(":");
-					var arrCoord = [parseInt(manipCoord[0]), parseInt(manipCoord[1])];
-	        locations.data[start] = {"children":[end], "root":"true", "coord":arrCoord}
-
+					if(manipCoord == "NONE"){
+						locations.data[start] = {"children":[end], "root":"true", "coord":"NONE"}
+					}
+					else{
+						var arrCoord = [parseInt(manipCoord[0]), parseInt(manipCoord[1])];
+	        	locations.data[start] = {"children":[end], "root":"true", "coord":arrCoord}
+					}
 	    }
 	    else{
 	        // if it is in there then we need to append this end to it's children
@@ -107,8 +111,13 @@ function loadTransmissions(data){
 	    // if the end point is not listed then it too needs to be added
 	    if (!(end in locations.data)){
 					var manipCoord = options.end.split(":");
-					var arrCoord = [parseInt(manipCoord[0]), parseInt(manipCoord[1])];
-	        locations.data[end] = {"children":[], "root":"false", "coord":arrCoord};
+					if(manipCoord == "NONE"){
+						locations.data[end] = {"children":[], "root":"false", "coord":"NONE"}
+					}
+					else{
+						var arrCoord = [parseInt(manipCoord[0]), parseInt(manipCoord[1])];
+	        	locations.data[end] = {"children":[], "root":"false", "coord":arrCoord};
+					}
 	    }
 	    else if( (end in locations.data) && locations.data[end].root == "true"){
 	    		locations.data[end].root = false;
