@@ -15,7 +15,7 @@ var layers = new THREE.Object3D();
 var countryData = new Object();
 var stateData = new Object();
 var particlesExist = false;
-var rootObject;
+var rootObject, rotating;
 
 //window.onload = function(){
 	var outlinedMapTexture;
@@ -89,6 +89,7 @@ var rootObject;
 
 
 	function jumpToTree(){
+		build2d(rootObject);
 		var target = new THREE.Vector3(0,0,180);
 
 		var midPoint = camera.position.clone().lerp(target,.5);
@@ -131,7 +132,6 @@ var rootObject;
 
 
 	function buildearth(){
-		var rotating
 		scene = new THREE.Scene();
 		scene.matrixAutoUpdate = false;
 		//scene.fog = new THREE.FogExp2( 0xBBBBBB, 0.00003 );
@@ -242,7 +242,7 @@ var rootObject;
 		renderer.generateMipmaps = false;
 
 
-		var skyBoxGeometry = new THREE.SphereGeometry( 300, 50, 50 );
+		var skyBoxGeometry = new THREE.SphereGeometry( 800, 50, 50 );
 		// BackSide: render faces from inside of the cube, instead of from outside (default).
 		var skyBoxMaterial = new THREE.MeshBasicMaterial( { side: THREE.BackSide,map: THREE.ImageUtils.loadTexture('images/starfield.png') } );
 		var skyBox = new THREE.Mesh( skyBoxGeometry, skyBoxMaterial );

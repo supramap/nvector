@@ -40,7 +40,7 @@ function recurseRebuild(current, bigObj,dateStart,dateEnd){
 					return 1;
 				}
 			//	take the lat lon from the data and convert this to 3d globe space
-				
+
 
 				var center = locationToVector(node.coord[0], node.coord[1]);
 				if(node.coord[0] == undefined || node.coord[1] == undefined){
@@ -269,8 +269,8 @@ function segmentLine(startPoint, endPoint, restraint){
 
 }
 
-var leafCount = 0;
 function calcLeaves(data){
+	var leafCount = 0;
 	var allKeys = Object.keys(data);
 	for(var i = 0; i < allKeys.length; i++){
 		var current = data[allKeys[i]];
@@ -278,6 +278,7 @@ function calcLeaves(data){
 			leafCount++;
 		}
 	}
+	return leafCount;
 }
 
 function calcDepth(current,bigObj){
@@ -290,11 +291,16 @@ function calcDepth(current,bigObj){
 	var count;
 	for(var i = 0; i < node.children.length; i++){
 		var result = calcDepth(node.children[i],bigObj);
-		if(count == undefined || result > count){
+		if(count == undefined){
 			count = result;
 		}
+		else{
+			if(result > count){
+					count = result;
+			}
+		}
 	}
-	return count;
+	return count + 1;
 
 
 }
@@ -304,14 +310,41 @@ var totalDepth = 0;
 var totalBreadth = 0;
 var leafPlace = 0;
 function build2d(coreObject){
-	totalBreadth = calcLeaves();
-	totalDepth = calcDepth();
-	recurseBuild2d();
+	totalBreadth = calcLeaves(coreObject.data);
+	totalDepth = calcDepth(coreObject.options.roots[0],coreObject.data);
+	freshLines = [];
+	freshNodes = [];
+	graph.children = [];
+	render();
+
+	// test the potential use of webworkers
+	if(typeof(Worker) !== "undefined"){
+		console.log("yup web workers are a go")
+
+		var graphWorker = new Worker("graphWorker.js");
+		graphWorker.postMessage(JSON.stringify(coreObject));
+		graphWorker.onmessage = function(e){
+			var threadResult = JSON.parse(e.data);
+			freshNodes = threadResult.nodes;
+			freshLines = threadResult.lines;
+			graph.children = freshLines.concat(freshNodes);
+		}
+	}
+	else{
+		console.log("Nope you can not use webworkers")
+	}
+
+	//recurseBuild2d(coreObject.options.roots[0],coreObject.data,0);
+	scene.remove(rotating);
+
+	graph.children = freshLines.concat(freshNodes);
 }
 
 
 /*The recursive function is built to generate 2d graphs in a 3d context */
-function recurseBuild2d(current, bigObj,depth,breadth,dateStart,dateEnd){
+function recurseBuild2d(current, bigObj,depth,dateStart,dateEnd){
+	var node = bigObj[current];
+	var depthFactor = 5;
 	if(node.children.length == 0){
 			if(node.coord instanceof THREE.Vector3 || ( (dateStart != undefined && dateEnd != undefined) && !(new Date(node.date) >= new Date(dateStart) && new Date(node.date) <= new Date(dateEnd)))){
 				return 1;
@@ -319,12 +352,23 @@ function recurseBuild2d(current, bigObj,depth,breadth,dateStart,dateEnd){
 			// This is a leaf node and so needs to be placed in its relative position
 			// based upon depth and breadth
 
-			node.coord = center;
+			// z is easy as we are building to 2 dimensions
+			var z = 0;
+			// x is going to be the maximum depth;
+			var x = (totalDepth * depthFactor)/2;
+			// calculate y:
+			var sepFactor = .3;
+			var halved = totalBreadth/2;
+			var relHalf = halved +(halved * sepFactor);
+			var y = relHalf - (leafPlace + (leafPlace * sepFactor));
+
+			node.coord = new THREE.Vector3(x,y,z);
 
 			// make a sphere to represent this node, I'll give it a color to indicate
 			// that it is a leaf
-			var sphere = createSphere(0xfffc32, current,center);
+			var sphere = createSphere(0xfffc32, current,node.coord);
 			freshNodes.push(sphere);
+			leafPlace++;
 
 			return 1;
 	}
@@ -333,19 +377,15 @@ function recurseBuild2d(current, bigObj,depth,breadth,dateStart,dateEnd){
 	else{
 		var childPositions = [];
 		var childDates = [];
-		var currentLevel = 0;
 		for(var i = 0; i < node.children.length; i++){
 
 				var child = node.children[i];
+				// This handles the case where a node may be recursive
 				if (child == current){
 					continue
 				}
-				var recRet = recurseRebuild(child, bigObj,dateStart, dateEnd);
-				// test if the returned Value is higher than the current level
-				// if so then set the current level to be higher.
-				if(recRet > currentLevel){
-					currentLevel = recRet;
-				}
+
+				var recRet = recurseBuild2d(child, bigObj,depth + 1,dateStart, dateEnd);
 
 				//conlines.push.apply(conlines,recRet);
 				var childCoord = bigObj[child].coord
@@ -368,7 +408,6 @@ function recurseBuild2d(current, bigObj,depth,breadth,dateStart,dateEnd){
 		//midPoint.multiplyScalar( midLength + distanceBetweenCenter * 0.4 );
 		var avg = 0;
 
-		var highestChildLength = 0;
 
 		// calculate the date of the current point based upon the date of its children
 
@@ -395,8 +434,12 @@ function recurseBuild2d(current, bigObj,depth,breadth,dateStart,dateEnd){
 				// of the earth
 				if(childPositions.length == 1){
 					midPoint = childPositions[i].clone();
-					distanceBetweenCenter = 12;
-					highestChildLength = midPoint.length();
+
+					// calculate the nodes x position:
+					var x = depth * 5 - ((totalDepth * 5)/2);
+					midPoint.setX(x);
+					midPoint.setZ(0);
+
 				}
 				// Otherwise start calculating the midpoint between all of the
 				// current point's children.
@@ -405,23 +448,19 @@ function recurseBuild2d(current, bigObj,depth,breadth,dateStart,dateEnd){
 					i= i + 1;
 					var secondPoint = childPositions[i];
 
-					if(firstPoint.length() > highestChildLength){
-						highestChildLength = firstPoint.length();
-					}
-					if(secondPoint.length() > highestChildLength){
-						highestChildLength = secondPoint.length();
-					}
 
 					midPoint = firstPoint.clone().lerp(secondPoint.clone(),.5);
-					distanceBetweenCenter = firstPoint.distanceTo(secondPoint);
+					var x = depth * 5 - ((totalDepth * 5)/2);
+					midPoint.setX(x);
+					midPoint.setZ(0);
 				}
 			}
 			else{
 				var nextPoint = childPositions[i];
 				midPoint = midPoint.clone().lerp(nextPoint,.5);
-				if(nextPoint.length() > highestChildLength){
-					highestChildLength = nextPoint.length()
-				}
+				var x = depth * 5 - ((totalDepth * 5)/2);
+				midPoint.setX(x);
+				midPoint.setZ(0);
 
 			}
 		}
@@ -432,20 +471,8 @@ function recurseBuild2d(current, bigObj,depth,breadth,dateStart,dateEnd){
 			return currentLevel + 1;
 		}
 
-		var midLength = midPoint.length();
-		midPoint.normalize();
-		if (distanceBetweenCenter < 3){
-			distanceBetweenCenter = 3;
-		}
-		//console.log(distanceBetweenCenter);
-		var test = midLength + distanceBetweenCenter * 0.4;
-		// 100 + currentLevel * 3
-		// develop the distance scalling factor
-		scaling = highestChildLength + ((.5/currentLevel) * (distanceBetweenCenter * ((200 - distanceBetweenCenter)/200)));
-
-		midPoint.multiplyScalar(scaling);
 		bigObj[current].coord = midPoint;
-		bigObj[current].level = currentLevel;
+//		bigObj[current].level = currentLevel;
 
 		// create the node's circle
 		var sphere = createSphere(0xfff4234, current,midPoint);
@@ -465,18 +492,12 @@ function recurseBuild2d(current, bigObj,depth,breadth,dateStart,dateEnd){
 
 			if (distOfLine > 35){
 				var linepeak = midPoint.clone().lerp(childPositions[i],.5);
-				linepeak.setLength(midPoint.length());
+				//linepeak.setLength(midPoint.length());
 
 
 				var latepeak = linepeak.clone().lerp(childPositions[i],.5);
-				latepeak.setLength(midPoint.length());
+				//latepeak.setLength(midPoint.length());
 
-
-
-				var geometry = new THREE.SphereGeometry( .5 ,10, 10 );
-
-				var material = new THREE.MeshLambertMaterial( {color:0xaa26f1, ambient:0xaa26f1} );
-				material.fog = false;
 				//material.color.setHSL( .4, 0.1, .8 );
 
 
@@ -488,8 +509,9 @@ function recurseBuild2d(current, bigObj,depth,breadth,dateStart,dateEnd){
 
 				var curvePoints = []
 				curvePoints.push(midPoint);
+				curvePoints.push(latepeak);
 				//curvePoints = curvePoints.concat(curvePointsOne);
-				curvePoints = curvePoints.concat(segmentLine(midPoint,childPositions[i],10));
+				//curvePoints = curvePoints.concat(segmentLine(midPoint,childPositions[i],10));
 				//curvePoints.push(linepeak);
 				//urvePoints = curvePoints.concat(curvePointsTwo);
 				curvePoints.push(childPositions[i]);
@@ -498,7 +520,7 @@ function recurseBuild2d(current, bigObj,depth,breadth,dateStart,dateEnd){
 				var curve = new THREE.SplineCurve3(curvePoints);
 
 				currentGeometry.vertices = curve.getPoints(50);
-				generateParticles(currentGeometry.vertices, curve.getLength());
+				//generateParticles(currentGeometry.vertices, curve.getLength());
 				var currentLine = new THREE.Line(currentGeometry,lineMat);
 				//currentLine.name = current + " -> " + node.children[i]
 				freshLines.push(currentLine);
@@ -507,7 +529,7 @@ function recurseBuild2d(current, bigObj,depth,breadth,dateStart,dateEnd){
 				//currentGeometry.vertices.push(midPoint,childPositions[i]);
 				var streightCurve = new THREE.LineCurve3(midPoint,childPositions[i])
 				currentGeometry.vertices = streightCurve.getPoints(50);
-				generateParticles(currentGeometry.vertices,streightCurve.getLength());
+				//generateParticles(currentGeometry.vertices,streightCurve.getLength());
 				var lineMat = new THREE.LineBasicMaterial({color: 0xc5c5c5});
 				var currentLine = new THREE.Line(currentGeometry,lineMat);
 				//currentLine.name = current + " -> " + node.children[i]
@@ -516,7 +538,7 @@ function recurseBuild2d(current, bigObj,depth,breadth,dateStart,dateEnd){
 
 		}
 		//console.log(conlines);
-		return currentLevel + 1;
+		return 1;
 	}
 
 }
