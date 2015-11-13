@@ -6,6 +6,8 @@ onmessage = function(e){
   console.log("Message has been recieved. Testing the calculations");
   var dataset = JSON.parse(e.data);
   build2d(dataset);
+  //var returnObject = new THREE.Object3D();
+  //returnObject.children = freshNodes.concat(freshLines)
   var toReturn = {'nodes':freshNodes, 'lines':freshLines};
   postMessage(JSON.stringify(toReturn));
   close();
@@ -65,8 +67,6 @@ function build2d(coreObject){
 
 
 
-
-
 /*The recursive function is built to generate 2d graphs in a 3d context */
 function recurseBuild2d(current, bigObj,depth,dateStart,dateEnd){
 	var node = bigObj[current];
@@ -90,10 +90,11 @@ function recurseBuild2d(current, bigObj,depth,dateStart,dateEnd){
 
 			node.coord = new THREE.Vector3(x,y,z);
 
+      var nodeObj = {"name":current,"desc":node.desc,"color":node.color,"links":node.links,"location":[x,y,z]}
 			// make a sphere to represent this node, I'll give it a color to indicate
 			// that it is a leaf
-			var sphere = createSphere(0xfffc32, current,node.coord);
-			freshNodes.push(sphere);
+			//var sphere = createSphere(0xfffc32, current,node.coord);
+			freshNodes.push(nodeObj);
 			leafPlace++;
 
 			return 1;
@@ -198,11 +199,12 @@ function recurseBuild2d(current, bigObj,depth,dateStart,dateEnd){
 		}
 
 		bigObj[current].coord = midPoint;
-//		bigObj[current].level = currentLevel;
+    //		bigObj[current].level = currentLevel;
 
 		// create the node's circle
-		var sphere = createSphere(0xfff4234, current,midPoint);
-		freshNodes.push(sphere);
+		//var sphere = createSphere(0xfff4234, current,midPoint);
+    var nodeObj = {"name":current,"desc":node.desc,"links":node.links,"color":node.color,"location":[midPoint.x,midPoint.y,midPoint.z]}
+		freshNodes.push(nodeObj);
 
 
 
@@ -246,20 +248,33 @@ function recurseBuild2d(current, bigObj,depth,dateStart,dateEnd){
 				var curve = new THREE.SplineCurve3(curvePoints);
 
 				currentGeometry.vertices = curve.getPoints(50);
+
+        var geoArr = [];
+        for(var vert = 0 ; vert < currentGeometry.vertices.length; vert++){
+          var subArr = currentGeometry.vertices[vert].toArray();
+          geoArr.push(subArr);
+        }
+
 				//generateParticles(currentGeometry.vertices, curve.getLength());
-				var currentLine = new THREE.Line(currentGeometry,lineMat);
+				//var currentLine = new THREE.Line(currentGeometry,lineMat);
 				//currentLine.name = current + " -> " + node.children[i]
-				freshLines.push(currentLine);
+				freshLines.push(geoArr);
 			}
 			else{
 				//currentGeometry.vertices.push(midPoint,childPositions[i]);
 				var streightCurve = new THREE.LineCurve3(midPoint,childPositions[i])
 				currentGeometry.vertices = streightCurve.getPoints(50);
 				//generateParticles(currentGeometry.vertices,streightCurve.getLength());
-				var lineMat = new THREE.LineBasicMaterial({color: 0xc5c5c5});
-				var currentLine = new THREE.Line(currentGeometry,lineMat);
+
+        var geoArr = [];
+        for(var vert = 0 ; vert < currentGeometry.vertices.length; vert++){
+          var subArr = currentGeometry.vertices[vert].toArray();
+          geoArr.push(subArr);
+        }
+				//var lineMat = new THREE.LineBasicMaterial({color: 0xc5c5c5});
+				//var currentLine = new THREE.Line(currentGeometry,lineMat);
 				//currentLine.name = current + " -> " + node.children[i]
-				freshLines.push(currentLine);
+				freshLines.push(geoArr);
 			}
 
 		}

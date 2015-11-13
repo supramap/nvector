@@ -324,20 +324,38 @@ function build2d(coreObject){
 		var graphWorker = new Worker("graphWorker.js");
 		graphWorker.postMessage(JSON.stringify(coreObject));
 		graphWorker.onmessage = function(e){
+			//var loader = new THREE.ObjectLoader();
 			var threadResult = JSON.parse(e.data);
-			freshNodes = threadResult.nodes;
-			freshLines = threadResult.lines;
+			console.log("Graph returned from the thread");
+			for(var i = 0; i < threadResult.nodes.length; i++){
+				var currentNode = threadResult.nodes[i];
+				var sphere = createSphere(currentNode.color,currentNode.name,new THREE.Vector3(currentNode.location[0],currentNode.location[1],currentNode.location[2]));
+				freshNodes.push(sphere);
+			}
+			for(var i =0; i < threadResult.lines.length; i++){
+				var currentGeometry = new THREE.Geometry();
+				var currentL = threadResult.lines[i];
+				for(var vec = 0; vec < currentL.length; vec++){
+					var currentPoint = currentL[vec];
+					currentGeometry.vertices.push(new THREE.Vector3(currentPoint[0],currentPoint[1],currentPoint[2]));
+				}
+				var lineMat = new THREE.LineBasicMaterial({color: 0xc5c5c5});
+				var theLine = new THREE.Line(currentGeometry,lineMat);
+				freshLines.push(theLine);
+			}
 			graph.children = freshLines.concat(freshNodes);
+			//graph.add(threadResult);
+			console.log("calculations are done...left to rendering");
+			scene.remove(rotating);
 		}
 	}
 	else{
-		console.log("Nope you can not use webworkers")
+		console.log("Nope you can not use webworkers");
+		recurseBuild2d(coreObject.options.roots[0],coreObject.data,0);
+		graph.children = freshLines.concat(freshNodes);
 	}
+	//scene.remove(rotating);
 
-	//recurseBuild2d(coreObject.options.roots[0],coreObject.data,0);
-	scene.remove(rotating);
-
-	graph.children = freshLines.concat(freshNodes);
 }
 
 
@@ -472,7 +490,7 @@ function recurseBuild2d(current, bigObj,depth,dateStart,dateEnd){
 		}
 
 		bigObj[current].coord = midPoint;
-//		bigObj[current].level = currentLevel;
+		//		bigObj[current].level = currentLevel;
 
 		// create the node's circle
 		var sphere = createSphere(0xfff4234, current,midPoint);
