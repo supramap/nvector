@@ -195,19 +195,10 @@ var rootObject, rotating;
 
 		mapUniforms = uniforms;
 
-		var shaderMaterial = new THREE.ShaderMaterial( {
-
-			uniforms: 		uniforms,
-			// attributes:     attributes,
-			vertexShader:   document.getElementById( 'globeVertexShader' ).textContent,
-			fragmentShader: document.getElementById( 'globeFragmentShader' ).textContent,
-			// sizeAttenuation: true,
-		});
 
 		//shaderMaterial.needsUpdate = true;
-		var sphereMaterial = new THREE.MeshPhongMaterial({map: outlinedMapTexture})
+		var sphereMaterial = new THREE.MeshPhongMaterial({map: outlinedMapTexture});
 
-		shaderMaterial.index0AttributeName = "position";
 		//	-----------------------------------------------------------------------------
 		//	Create the backing (sphere)
 		// var mapGraphic = new THREE.Texture(worldCanvas);//THREE.ImageUtils.loadTexture("images/map.png");
@@ -215,7 +206,6 @@ var rootObject, rotating;
 		// mapGraphic.needsUpdate = true;
 
 		// backMat.ambient = new THREE.Color(255,255,255);
-		var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
 		sphere = new THREE.Mesh( new THREE.SphereGeometry( 100, 40, 40 ), sphereMaterial /*shaderMaterial*/ );
 		//sphere.receiveShadow = true;
 		//sphere.castShadow = true;

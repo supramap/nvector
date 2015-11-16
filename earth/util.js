@@ -61,7 +61,51 @@ function locationToVector(inLat, inLon){
 }
 
 
+var sphereAttributes = {
+
+	customColor: { type: 'c', value: [] }
+
+};
+
+var sphereUniforms = {
+
+//	amplitude: { type: "f", value: 1.0 },
+	color:     { type: "c", value: new THREE.Color( 0xffaa00 ) },
+	//texture:   { type: "t", value: THREE.ImageUtils.loadTexture( "images/particleA.png" ) },
+
+};
+
+var sphereMaterial = new THREE.ShaderMaterial( {
+
+	uniforms:       sphereUniforms,
+	attributes:     sphereAttributes,
+	vertexShader:   document.getElementById( 'sphereVertex' ).textContent,
+	fragmentShader: document.getElementById( 'sphereFragment' ).textContent,
+
+	blending:       THREE.AdditiveBlending,
+	depthTest:      false,
+	transparent:    true
+
+});
+
+
+
 function createSphere(colorc,name,vec){
+	//sphereUniforms.color.value = new THREE.Color(colorc);
+	var geometry = new THREE.SphereGeometry( .5 ,10, 10 );
+	var material = sphereMaterial;
+//	material.fog = false;
+
+	var sphere = new THREE.Mesh( geometry,material);
+	sphere.position.x = vec.x;
+	sphere.position.y = vec.y;
+	sphere.position.z = vec.z;
+	sphere.name = name;
+
+	return sphere;
+};
+
+function createPlainSphere(colorc,name,vec){
 	var geometry = new THREE.SphereGeometry( .5 ,10, 10 );
 	var material = new THREE.MeshLambertMaterial( {color: colorc, ambient:colorc} );
 	material.fog = false;
