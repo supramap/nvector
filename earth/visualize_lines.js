@@ -8,25 +8,42 @@ var cantPlace = [];
 function makeGraphGeometry(connectionObj, startP, endP){
 		freshNodes = [];
 		freshLines = [];
-		var roots = connectionObj.options.roots;
-		particlesGeo = new THREE.Geometry();
-		for (var i = 0; i < roots.length; i++){
-			var current = roots[i];
-			if(connectionObj.options.time == true){
-					if(startP == undefined || endP == undefined){
-						var range = connectionObj.options.timeRange
-						recurseRebuild(current,connectionObj.data,range[0],range[1]);
-					}
-					else{
-						recurseRebuild(current,connectionObj.data,startP,endP);
-					}
-			}
-			else{
-					recurseRebuild(current,connectionObj.data);
-			}
 
+		if(typeof(Worker) !== "undefined"){
+			console.log("web workers are a go")
+			var graphWorker = new Worker("graphWorker.js");
+			var sendObject = {"type":"3d","obj":connectionObj,"stt":startP,"stp":endP}
+			graphWorker.postMessage(JSON.stringify(sendObject));
+			graphWorker.onmessage = function(e){
+				// do work on data returned from the thread
+				var dataset = JSON.parse(e.data);
+				var allspheres = initializeSpheres(dataset.nodes);
+				scene.add(allspheres);
+				//initializeLines(dataset.lines);
+				console.log("message returned")
+			}
 		}
-		return freshLines;
+		else{
+			var roots = connectionObj.options.roots;
+			particlesGeo = new THREE.Geometry();
+			for (var i = 0; i < roots.length; i++){
+				var current = roots[i];
+				if(connectionObj.options.time == true){
+						if(startP == undefined || endP == undefined){
+							var range = connectionObj.options.timeRange
+							recurseRebuild(current,connectionObj.data,range[0],range[1]);
+						}
+						else{
+							recurseRebuild(current,connectionObj.data,startP,endP);
+						}
+				}
+				else{
+						recurseRebuild(current,connectionObj.data);
+				}
+
+			}
+			return freshLines;
+		}
 }
 
 // recursive function to iterate through the object and construct the places.
@@ -251,23 +268,6 @@ function recurseRebuild(current, bigObj,dateStart,dateEnd){
 	}
 }
 
-/*
-	A recursive function designed to segment a curve appropriately to produce
-	a fluid arc that stays above the earth
-*/
-function segmentLine(startPoint, endPoint, restraint){
-	var lineLength = startPoint.distanceTo(endPoint)
-	if(lineLength < restraint){
-		return []
-	}
-	var currentMid = startPoint.clone().lerp(endPoint.clone(),.5);
-	currentMid.setLength((startPoint.length() + endPoint.length())/2)
-	var firstRetArray = segmentLine(startPoint,currentMid,restraint);
-	var secRetArray = segmentLine(currentMid,endPoint, restraint);
-	firstRetArray.push(currentMid)
-	return firstRetArray.concat(secRetArray);
-
-}
 
 function calcLeaves(data){
 	var leafCount = 0;
@@ -310,8 +310,6 @@ var totalDepth = 0;
 var totalBreadth = 0;
 var leafPlace = 0;
 function build2d(coreObject){
-	totalBreadth = calcLeaves(coreObject.data);
-	totalDepth = calcDepth(coreObject.options.roots[0],coreObject.data);
 	freshLines = [];
 	freshNodes = [];
 	graph.children = [];
@@ -322,7 +320,7 @@ function build2d(coreObject){
 		console.log("yup web workers are a go")
 
 		var graphWorker = new Worker("graphWorker.js");
-		graphWorker.postMessage(JSON.stringify(coreObject));
+		graphWorker.postMessage(JSON.stringify({"type":"2dlin","obj":coreObject}));
 		graphWorker.onmessage = function(e){
 			//var loader = new THREE.ObjectLoader();
 			var threadResult = JSON.parse(e.data);
@@ -351,6 +349,8 @@ function build2d(coreObject){
 	}
 	else{
 		console.log("Nope you can not use webworkers");
+		totalBreadth = calcLeaves(coreObject.data);
+		totalDepth = calcDepth(coreObject.options.roots[0],coreObject.data);
 		recurseBuild2d(coreObject.options.roots[0],coreObject.data,0);
 		graph.children = freshLines.concat(freshNodes);
 	}

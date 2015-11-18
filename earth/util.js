@@ -60,7 +60,7 @@ function locationToVector(inLat, inLon){
 	return center;
 }
 
-
+/*
 var sphereAttributes = {
 
 	customColor: { type: 'c', value: [] }
@@ -88,9 +88,9 @@ var sphereMaterial = new THREE.ShaderMaterial( {
 
 });
 
+*/
 
-
-function createSphere(colorc,name,vec){
+/*function createSphere(colorc,name,vec){
 	//sphereUniforms.color.value = new THREE.Color(colorc);
 	var geometry = new THREE.SphereGeometry( .5 ,10, 10 );
 	var material = sphereMaterial;
@@ -103,7 +103,7 @@ function createSphere(colorc,name,vec){
 	sphere.name = name;
 
 	return sphere;
-};
+};*/
 
 function createPlainSphere(colorc,name,vec){
 	var geometry = new THREE.SphereGeometry( .5 ,10, 10 );
@@ -330,4 +330,60 @@ function wrap(value, min, rangeSize) {
       value += rangeSize;
   }
   return value % rangeSize;
+}
+
+
+// calculate details regarding the tree structure
+function calcLeaves(data){
+	var leafCount = 0;
+	var allKeys = Object.keys(data);
+	for(var i = 0; i < allKeys.length; i++){
+		var current = data[allKeys[i]];
+		if(current.children.length < 1){
+			leafCount++;
+		}
+	}
+	return leafCount;
+}
+
+function calcDepth(current,bigObj){
+	var node = bigObj[current];
+
+	if(node.children.length < 1){
+		return 1;
+	}
+
+	var count;
+	for(var i = 0; i < node.children.length; i++){
+		var result = calcDepth(node.children[i],bigObj);
+		if(count == undefined){
+			count = result;
+		}
+		else{
+			if(result > count){
+					count = result;
+			}
+		}
+	}
+	return count + 1;
+
+
+}
+
+/*
+	A recursive function designed to segment a curve appropriately to produce
+	a fluid arc that stays above the earth
+*/
+function segmentLine(startPoint, endPoint, restraint){
+	var lineLength = startPoint.distanceTo(endPoint)
+	if(lineLength < restraint){
+		return []
+	}
+	var currentMid = startPoint.clone().lerp(endPoint.clone(),.5);
+	currentMid.setLength((startPoint.length() + endPoint.length())/2)
+	var firstRetArray = segmentLine(startPoint,currentMid,restraint);
+	var secRetArray = segmentLine(currentMid,endPoint, restraint);
+	firstRetArray.push(currentMid)
+	return firstRetArray.concat(secRetArray);
+
 }

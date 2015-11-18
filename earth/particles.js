@@ -101,36 +101,57 @@ function generateParticles(points,lineLength){
 }
 
 
+function initializeSpheres(ingeometry){
+	var spheresGeometry = new THREE.Geometry();
 
+	var sphereAttributes = {
+		size: {	type: 'f', value: [] },
+    customColor: { type: 'c', value: [] }
+	}
 
+	var sphereUniforms ={
+		amplitude: { type: "f", value: 1.0 },
+		color:     { type: "c", value: new THREE.Color( 0xffaa00 ) },
+		texture:   { type: "t", value: THREE.ImageUtils.loadTexture( "ball.png" ) }
+	}
 
-function createLine(geometry){
-	var set = geometry
-
-	var lineColor = new THREE.Color(0x154492);
-
-	var material = new THREE.LineBasicMaterial({
-		color: 0xff4b49,
-		linewidth:3
+	var sphmat = new THREE.ShaderMaterial({
+  uniforms: sphereUniforms,
+  attributes: sphereAttributes,
+  vertexShader: document.getElementById( 'sphereVertex' ).textContent,
+  fragmentShader: document.getElementById( 'sphereFragment' ).textContent,
 	});
 
+	for(var i = 0; i < ingeometry.length;i++){
+		var currentGeo = ingeometry[i];
+		var vertex = new THREE.Vector3(currentGeo['location'][0],currentGeo['location'][1],currentGeo['location'][2]);
+		spheresGeometry.vertices.push(vertex);
+		sphereAttributes.size.value[i] = 5;
+		sphereAttributes.customColor.value[i] = new THREE.Color(currentGeo.color);
+	}
 
-	var line = new THREE.Line(geometry,material);
 
 
-	visualizationMesh.add(line);
-	//	add it to scene graph
-//	visualizationMesh.add( mesh );
+
+	var spherePSystem = new THREE.PointCloud(spheresGeometry,sphmat);
+
+
+
+
+	// still need to add to the custom color based upon the values provided
+	// in ingeometry
+	return spherePSystem;
 }
 
-function createSquare(geometry){
+function initializeLines(){
 
-	var material = new THREE.LineBasicMaterial({
-		color: 0xd75b49,
-		linewidth:5
-	});
+}
 
-	var square = new THREE.Mesh(geometry, material)
 
-	vizualizationMesh.add()
+function generateSpheres(){
+
+}
+
+function generateLines(){
+
 }

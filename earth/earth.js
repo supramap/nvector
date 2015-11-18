@@ -50,7 +50,7 @@ var rootObject, rotating;
 		}
 		var connectGeo = makeGraphGeometry(connectionObj);
 
-		for(var i = 0; i < connectGeo.length; i++){
+		/*for(var i = 0; i < connectGeo.length; i++){
 			graph.add(connectGeo[i]);
 		}
 		for(var i = 0; i < freshNodes.length; i++){
@@ -62,7 +62,7 @@ var rootObject, rotating;
 		//graph.add(particleCloud);
 		//scene.add(graph);
 		console.log("y up");
-		connectionObj = {};
+		connectionObj = {};*/
 	}
 
 	function redrawGraph(sTime,eTime){
