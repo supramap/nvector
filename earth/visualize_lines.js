@@ -19,7 +19,9 @@ function makeGraphGeometry(connectionObj, startP, endP){
 				var dataset = JSON.parse(e.data);
 				var allspheres = initializeSpheres(dataset.nodes);
 				scene.add(allspheres);
-				//initializeLines(dataset.lines);
+				var allLines = initializeLines(dataset.lines);
+				console.log("returned from initializeLines")
+				scene.add(allLines);
 				console.log("message returned")
 			}
 		}

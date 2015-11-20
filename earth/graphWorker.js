@@ -255,7 +255,7 @@ function recurseRebuild(current, bigObj,dateStart,dateEnd){
         var geoArr = [];
         for(var vert = 0 ; vert < currentGeometry.vertices.length; vert++){
           var subArr = currentGeometry.vertices[vert].toArray();
-          geoArr.push(subArr);
+          geoArr= geoArr.concat(subArr)
         }
 
         //generateParticles(currentGeometry.vertices, curve.getLength());
@@ -272,7 +272,7 @@ function recurseRebuild(current, bigObj,dateStart,dateEnd){
         var geoArr = [];
         for(var vert = 0 ; vert < currentGeometry.vertices.length; vert++){
           var subArr = currentGeometry.vertices[vert].toArray();
-          geoArr.push(subArr);
+          geoArr = geoArr.concat(subArr);
         }
 
 				//var lineMat = new THREE.LineBasicMaterial({color: 0xc5c5c5});

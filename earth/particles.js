@@ -143,15 +143,36 @@ function initializeSpheres(ingeometry){
 	return spherePSystem;
 }
 
-function initializeLines(){
+function initializeLines(lineData){
 
-}
+	var lineGeo = new THREE.BufferGeometry();
+	var lineMat = new THREE.LineBasicMaterial();
 
+	var linepos = []
+	var posIndex = 0;
+	var colors = [];
+	var indicesArr = []
 
-function generateSpheres(){
+	console.log("starting calculations");
+	for(var i = 0; i < lineData.length;i++){
+		//linepos = linepos.concat(lineData[i]);
+		$.merge(linepos,lineData[i])
+		var calcLength = (lineData[0].length/3) -1;
+		for(var seg = 0; seg < calcLength; ++seg ){
+			indicesArr.push(posIndex + seg,posIndex + seg +1);
+		}
+		posIndex = posIndex + calcLength + 1;
 
-}
+		colors.push(Math.random()*0.5+0.5, Math.random()*0.5+0.5, 1);
+	}
+	console.log("finished calculations");
 
-function generateLines(){
+	lineGeo.addAttribute( 'index', new THREE.BufferAttribute( new Uint32Array( indicesArr ), 1 ) );
+	lineGeo.addAttribute( 'position', new THREE.BufferAttribute( new Float32Array( linepos ), 3 ) );
+	lineGeo.addAttribute( 'color', new THREE.BufferAttribute( new Float32Array( colors ), 3 ) );
+	lineGeo.computeBoundingSphere();
 
+	var mesh = new THREE.Line(lineGeo, lineMat, THREE.LinePieces);
+
+	return mesh;
 }
