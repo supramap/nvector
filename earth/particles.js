@@ -153,7 +153,6 @@ function initializeLines(lineData){
 	var colors = [];
 	var indicesArr = []
 
-	console.log("starting calculations");
 	for(var i = 0; i < lineData.length;i++){
 		//linepos = linepos.concat(lineData[i]);
 		$.merge(linepos,lineData[i])
@@ -165,7 +164,6 @@ function initializeLines(lineData){
 
 		colors.push(Math.random()*0.5+0.5, Math.random()*0.5+0.5, 1);
 	}
-	console.log("finished calculations");
 
 	lineGeo.addAttribute( 'index', new THREE.BufferAttribute( new Uint32Array( indicesArr ), 1 ) );
 	lineGeo.addAttribute( 'position', new THREE.BufferAttribute( new Float32Array( linepos ), 3 ) );

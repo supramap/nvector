@@ -48,21 +48,16 @@ var rootObject, rotating;
 		if(connectionObj.options.time == true){
 			generateSlider(connectionObj.options.timeRange);
 		}
-		var connectGeo = makeGraphGeometry(connectionObj);
+		makeGraphGeometry(connectionObj);
 
-		/*for(var i = 0; i < connectGeo.length; i++){
-			graph.add(connectGeo[i]);
-		}
-		for(var i = 0; i < freshNodes.length; i++){
-			graph.add(freshNodes[i]);
-		}
+		scene.add(graph);
 		// initialize particle affects
 		//particlesExist = true;
-		particleCloud = initializeParticles();
+		//particleCloud = initializeParticles();
 		//graph.add(particleCloud);
 		//scene.add(graph);
-		console.log("y up");
-		connectionObj = {};*/
+		//console.log("y up");
+		//connectionObj = {};*/
 	}
 
 	function redrawGraph(sTime,eTime){
@@ -247,7 +242,7 @@ var rootObject, rotating;
 		var controls = new THREE.OrbitControls( camera, renderer.domElement );
 		controls.noPan = true;
 		controls.minDistance = 140;
-		controls.maxDistance = 280;
+		//controls.maxDistance = 280;
 		controls.zoomSpeed = .15;
 
 		var atlas = document.getElementById('atlas')

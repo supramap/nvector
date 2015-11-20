@@ -15,14 +15,16 @@ function makeGraphGeometry(connectionObj, startP, endP){
 			var sendObject = {"type":"3d","obj":connectionObj,"stt":startP,"stp":endP}
 			graphWorker.postMessage(JSON.stringify(sendObject));
 			graphWorker.onmessage = function(e){
-				// do work on data returned from the thread
+				// Take the data returned from the thread and convert it into the
+				// appropriate systems for gpu rendering
 				var dataset = JSON.parse(e.data);
-				var allspheres = initializeSpheres(dataset.nodes);
-				scene.add(allspheres);
+				var allSpheres = initializeSpheres(dataset.nodes);
 				var allLines = initializeLines(dataset.lines);
-				console.log("returned from initializeLines")
-				scene.add(allLines);
-				console.log("message returned")
+				var graphObject = new THREE.Object3D();
+				graphObject.add(allSpheres);
+				graphObject.add(allLines);
+				//scene.add(graphObject);
+				graph.add(graphObject);
 			}
 		}
 		else{
@@ -44,7 +46,13 @@ function makeGraphGeometry(connectionObj, startP, endP){
 				}
 
 			}
-			return freshLines;
+			var allSpheres = initializeSpheres(freshNodes);
+			var allLines = initializeLines(freshLines);
+			var graphObject = new THREE.Object3D();
+			graphObject.add(allSpheres);
+			graphObject.add(allLines);
+			//scene.add(graphObject);
+			graph.add(graphObject);
 		}
 }
 
@@ -69,8 +77,9 @@ function recurseRebuild(current, bigObj,dateStart,dateEnd){
 
 				// make a sphere to represent this node, I'll give it a color to indicate
 				// that it is a leaf
-				var sphere = createSphere(0xfffc32, current,center);
-				freshNodes.push(sphere);
+				//var sphere = createSphere(0xfffc32, current,center);
+        var nodeObj = {"name":current,"desc":node.desc,"color":node.color,"links":node.links,"location":[center.x,center.y,center.z]}
+				freshNodes.push(nodeObj);
 
 		}
 		return 1;
@@ -198,8 +207,9 @@ function recurseRebuild(current, bigObj,dateStart,dateEnd){
 		bigObj[current].level = currentLevel;
 
 		// create the node's circle
-		var sphere = createSphere(0xfff4234, current,midPoint);
-		freshNodes.push(sphere);
+		//var sphere = createSphere(0xfff4234, current,midPoint);
+    var nodeObj = {"name":current,"desc":node.desc,"color":node.color,"links":node.links,"location":[midPoint.x,midPoint.y,midPoint.z]}
+		freshNodes.push(nodeObj);
 
 
 
@@ -248,20 +258,34 @@ function recurseRebuild(current, bigObj,dateStart,dateEnd){
 				var curve = new THREE.SplineCurve3(curvePoints);
 
 				currentGeometry.vertices = curve.getPoints(50);
-				generateParticles(currentGeometry.vertices, curve.getLength());
-				var currentLine = new THREE.Line(currentGeometry,lineMat);
+
+        var geoArr = [];
+        for(var vert = 0 ; vert < currentGeometry.vertices.length; vert++){
+          var subArr = currentGeometry.vertices[vert].toArray();
+          geoArr= geoArr.concat(subArr)
+        }
+
+        //generateParticles(currentGeometry.vertices, curve.getLength());
+				//var currentLine = new THREE.Line(currentGeometry,lineMat);
 				//currentLine.name = current + " -> " + node.children[i]
-				freshLines.push(currentLine);
+				freshLines.push(geoArr);
 			}
 			else{
 				//currentGeometry.vertices.push(midPoint,childPositions[i]);
 				var streightCurve = new THREE.LineCurve3(midPoint,childPositions[i])
 				currentGeometry.vertices = streightCurve.getPoints(50);
-				generateParticles(currentGeometry.vertices,streightCurve.getLength());
-				var lineMat = new THREE.LineBasicMaterial({color: 0xc5c5c5});
-				var currentLine = new THREE.Line(currentGeometry,lineMat);
+				//generateParticles(currentGeometry.vertices,streightCurve.getLength());
+
+        var geoArr = [];
+        for(var vert = 0 ; vert < currentGeometry.vertices.length; vert++){
+          var subArr = currentGeometry.vertices[vert].toArray();
+          geoArr = geoArr.concat(subArr);
+        }
+
+				//var lineMat = new THREE.LineBasicMaterial({color: 0xc5c5c5});
+				//var currentLine = new THREE.Line(currentGeometry,lineMat);
 				//currentLine.name = current + " -> " + node.children[i]
-				freshLines.push(currentLine);
+				freshLines.push(geoArr);
 			}
 
 		}
@@ -269,44 +293,6 @@ function recurseRebuild(current, bigObj,dateStart,dateEnd){
 		return currentLevel + 1;
 	}
 }
-
-
-function calcLeaves(data){
-	var leafCount = 0;
-	var allKeys = Object.keys(data);
-	for(var i = 0; i < allKeys.length; i++){
-		var current = data[allKeys[i]];
-		if(current.children.length < 1){
-			leafCount++;
-		}
-	}
-	return leafCount;
-}
-
-function calcDepth(current,bigObj){
-	var node = bigObj[current];
-
-	if(node.children.length < 1){
-		return 1;
-	}
-
-	var count;
-	for(var i = 0; i < node.children.length; i++){
-		var result = calcDepth(node.children[i],bigObj);
-		if(count == undefined){
-			count = result;
-		}
-		else{
-			if(result > count){
-					count = result;
-			}
-		}
-	}
-	return count + 1;
-
-
-}
-
 
 var totalDepth = 0;
 var totalBreadth = 0;
@@ -325,27 +311,13 @@ function build2d(coreObject){
 		graphWorker.postMessage(JSON.stringify({"type":"2dlin","obj":coreObject}));
 		graphWorker.onmessage = function(e){
 			//var loader = new THREE.ObjectLoader();
-			var threadResult = JSON.parse(e.data);
-			console.log("Graph returned from the thread");
-			for(var i = 0; i < threadResult.nodes.length; i++){
-				var currentNode = threadResult.nodes[i];
-				var sphere = createSphere(currentNode.color,currentNode.name,new THREE.Vector3(currentNode.location[0],currentNode.location[1],currentNode.location[2]));
-				freshNodes.push(sphere);
-			}
-			for(var i =0; i < threadResult.lines.length; i++){
-				var currentGeometry = new THREE.Geometry();
-				var currentL = threadResult.lines[i];
-				for(var vec = 0; vec < currentL.length; vec++){
-					var currentPoint = currentL[vec];
-					currentGeometry.vertices.push(new THREE.Vector3(currentPoint[0],currentPoint[1],currentPoint[2]));
-				}
-				var lineMat = new THREE.LineBasicMaterial({color: 0xc5c5c5});
-				var theLine = new THREE.Line(currentGeometry,lineMat);
-				freshLines.push(theLine);
-			}
-			graph.children = freshLines.concat(freshNodes);
-			//graph.add(threadResult);
-			console.log("calculations are done...left to rendering");
+			var dataset = JSON.parse(e.data);
+			var allSpheres = initializeSpheres(dataset.nodes);
+			var allLines = initializeLines(dataset.lines);
+			var graphObject = new THREE.Object3D();
+			graphObject.add(allSpheres);
+			graphObject.add(allLines);
+			scene.add(graphObject);
 			scene.remove(rotating);
 		}
 	}
