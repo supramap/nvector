@@ -14,7 +14,7 @@ var particleCloud;
 var layers = new THREE.Object3D();
 var countryData = new Object();
 var stateData = new Object();
-var particlesExist = false;
+var particlesExist = false,treeState = false;
 var rootObject, rotating;
 
 //window.onload = function(){
@@ -64,19 +64,19 @@ var rootObject, rotating;
 		loading();
 		var rootClone = JSON.parse(JSON.stringify(rootObject))
 		scene.remove(graph);
+		//graph.dispose();
 		graph = new THREE.Object3D();
 		render();
-		var connectGeo	 = makeGraphGeometry(rootClone,sTime,eTime);
+		if(treeState){
+			build2d(rootClone,sTime,eTime);
+		}
+		else{
+			makeGraphGeometry(rootClone,sTime,eTime);
+		}
 
-		for(var i = 0; i < connectGeo.length; i++){
-			graph.add(connectGeo[i]);
-		}
-		for(var i = 0; i < freshNodes.length; i++){
-			graph.add(freshNodes[i]);
-		}
 		// initialize particle affects
 		//particlesExist = true;
-		particleCloud = initializeParticles();
+		//particleCloud = initializeParticles();
 		scene.add(graph);
 		doneLoading();
 
@@ -84,21 +84,73 @@ var rootObject, rotating;
 
 
 	function jumpToTree(){
-		build2d(rootObject);
-		var target = new THREE.Vector3(0,0,180);
+		// going to need to fetch the current state of the time if it is enabled
 
-		var midPoint = camera.position.clone().lerp(target,.5);
-		midPoint.setLength(200);
+		scene.remove(graph);
+		//graph.dispose();
+		graph = new THREE.Object3D();
+		render()
+		// if currently in the tree state then switch back to display the earth
+		if(treeState){
+			if(sliderExists){
+
+				render();
+				var slideEnds = slider.noUiSlider.get();
+
+				makeGraphGeometry(rootObject,reFormatDate(new Date(+slideEnds[0])),reFormatDate(new Date(+slideEnds[1])));
+			}
+			else{
+				makeGraphGeometry(rootObject);
+			}
+			treeState = false;
+			scene.add(rotating);
+
+			var midPoint = camera._position.clone().lerp(camera.position,.5);
+			midPoint.setLength(200);
 
 
 
-		var pathCurve = new THREE.QuadraticBezierCurve3(camera.position,midPoint,target);
-		var path = pathCurve.getPoints(100);
-		camera.path = path;
-		camera.pip = 0;
-		camera.nlerp = 1;
+			var pathCurve = new THREE.QuadraticBezierCurve3(camera.position,midPoint,camera._position);
+			var path = pathCurve.getPoints(100);
+			camera.path = path;
+			camera.pip = 0;
+			camera.nlerp = 1;
 
-		cameraRelocate = true;
+			cameraRelocate = true;
+
+
+		}
+		else{
+
+			scene.remove(rotating);
+			if(sliderExists){
+				var slideEnds = slider.noUiSlider.get();
+	      build2d(rootObject,reFormatDate(new Date(+slideEnds[0])),reFormatDate(new Date(+slideEnds[1])));
+			}
+			else{
+				build2d(rootObject);
+			}
+			treeState = true;
+			var target = new THREE.Vector3(0,0,180);
+
+			var midPoint = camera.position.clone().lerp(target,.5);
+			midPoint.setLength(200);
+
+
+			camera._position = camera.position.clone();
+			var pathCurve = new THREE.QuadraticBezierCurve3(camera.position,midPoint,target);
+			var path = pathCurve.getPoints(100);
+			camera.path = path;
+			camera.pip = 0;
+			camera.nlerp = 1;
+
+			cameraRelocate = true;
+
+		}
+		scene.add(graph);
+
+		//build2d(rootObject);
+
 
 	}
 
@@ -139,7 +191,7 @@ var rootObject, rotating;
   	point.target.position.set(150,10,-10);
   	//scene.add(point)
 
-/*
+		/*
 		light1 = new THREE.SpotLight( 0xeeeeee, 100 );
 		light1.position.x = 0;
 		light1.position.y = 0;

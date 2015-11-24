@@ -291,9 +291,10 @@ function doneLoading(){
 // THIS IS FOR THE TIME SLIDER--------------------------------------------------
 var dateScroll = false;
 var sliderExists = false;
+var slider;
 function generateSlider(irange){
   sliderExists = true;
-  var slider = document.getElementById('timeSlide');
+  slider = document.getElementById('timeSlide');
   noUiSlider.create(slider,{
     start:[timestamp(irange[0]),timestamp(irange[1])],
     step: 7*24*60*60*1000,

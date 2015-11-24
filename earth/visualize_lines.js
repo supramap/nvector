@@ -297,7 +297,7 @@ function recurseRebuild(current, bigObj,dateStart,dateEnd){
 var totalDepth = 0;
 var totalBreadth = 0;
 var leafPlace = 0;
-function build2d(coreObject){
+function build2d(coreObject,startP,endP){
 	freshLines = [];
 	freshNodes = [];
 	graph.children = [];
@@ -308,7 +308,7 @@ function build2d(coreObject){
 		console.log("yup web workers are a go")
 
 		var graphWorker = new Worker("graphWorker.js");
-		graphWorker.postMessage(JSON.stringify({"type":"2dlin","obj":coreObject}));
+		graphWorker.postMessage(JSON.stringify({"type":"2dlin","obj":coreObject,"stt":startP,"stp":endP}));
 		graphWorker.onmessage = function(e){
 			//var loader = new THREE.ObjectLoader();
 			var dataset = JSON.parse(e.data);
@@ -317,14 +317,26 @@ function build2d(coreObject){
 			var graphObject = new THREE.Object3D();
 			graphObject.add(allSpheres);
 			graphObject.add(allLines);
-			scene.add(graphObject);
-			scene.remove(rotating);
+			graph.add(graphObject);
+			//graph.remove(rotating);
 		}
 	}
 	else{
 		console.log("Nope you can not use webworkers");
 		totalBreadth = calcLeaves(coreObject.data);
 		totalDepth = calcDepth(coreObject.options.roots[0],coreObject.data);
+		if(coreObject.options.time == true){
+				if(startP == undefined || endP == undefined){
+					var range = coreObject.options.timeRange
+					recurseBuild2d(coreObject.options.roots[0],coreObject.data,range[0],range[1]);
+				}
+				else{
+					recurseBuild2d(coreObject.options.roots[0],coreObject.data,startP,endP);
+				}
+		}
+		else{
+				recurseBuild2d(coreObject.options.roots[0],coreObject.data);
+		}
 		recurseBuild2d(coreObject.options.roots[0],coreObject.data,0);
 		graph.children = freshLines.concat(freshNodes);
 	}

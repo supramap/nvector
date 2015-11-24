@@ -11,7 +11,7 @@ onmessage = function(e){
     makeGraphGeometry(dataset.obj,dataset.stt,dataset.stp);
   }
   if(dataset.type == "2dlin"){
-    build2d(dataset.obj);
+    build2d(dataset.obj,dataset.stt,dataset.stp);
   }
 
   //var returnObject = new THREE.Object3D();
@@ -312,12 +312,24 @@ function recurseRebuild(current, bigObj,dateStart,dateEnd){
 var totalDepth = 0;
 var totalBreadth = 0;
 var leafPlace = 0;
-function build2d(coreObject){
+function build2d(coreObject,startP,endP){
 	totalBreadth = calcLeaves(coreObject.data);
 	totalDepth = calcDepth(coreObject.options.roots[0],coreObject.data);
-	freshLines = [];
-	freshNodes = [];
-  recurseBuild2d(coreObject.options.roots[0],coreObject.data,0);
+  freshLines = [];
+  freshNodes = [];
+  if(coreObject.options.time == true){
+      if(startP == undefined || endP == undefined){
+        var range = coreObject.options.timeRange
+        recurseBuild2d(coreObject.options.roots[0],coreObject.data,0,range[0],range[1]);
+      }
+      else{
+        recurseBuild2d(coreObject.options.roots[0],coreObject.data,0,startP,endP);
+      }
+  }
+  else{
+      recurseBuild2d(coreObject.options.roots[0],coreObject.data,0);
+  }
+  //recurseBuild2d(coreObject.options.roots[0],coreObject.data,0);
 }
 
 
@@ -451,7 +463,7 @@ function recurseBuild2d(current, bigObj,depth,dateStart,dateEnd){
 		// if at this point the midPoint does not exist then assume that this branch
 		// should not exist. This is likely going to be due to a date restriction.
 		if(midPoint == null){
-			return currentLevel + 1;
+			return  1;
 		}
 
 		bigObj[current].coord = midPoint;
