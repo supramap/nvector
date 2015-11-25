@@ -1,8 +1,10 @@
 {
-  "name": "EarthView",
+  "name": "NVector",
   "main": "index.html",
+  "description":"An application for plotting and editing graphs in a 3d context",
   "version": "0.1.0",
   "window":{
   	"toolbar":true
-  }
+  },
+  "author": "Zachary Witter - zacharywsoftware@gmail.com"
 }
