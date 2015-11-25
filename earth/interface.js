@@ -320,9 +320,21 @@ function generateSlider(irange){
 	   document.getElementById('event-start'),
      document.getElementById('event-end')
   ];
-
+  var initCount =0
   slider.noUiSlider.on('update', function( values, handle ) {
 	   dateValues[handle].innerHTML = formatDate(new Date(+values[handle]));
+
+     if(initCount >= 2){
+       if(!dateScroll){
+         $("#event-end").show();
+         $("#event-start").show();
+         dateScroll = true;
+       }
+     }
+     else{
+       initCount++;
+     }
+
      $("#event-start").css({
        top: function(){
          return $(".noUi-handle-lower").offset().top + 5;
@@ -339,13 +351,28 @@ function generateSlider(irange){
   $("#event-end").hide();
   $("#event-start").hide();
 
-  $(".noUi-handle")
+  // This enables updating of the graph on change in the handle
+  /*$(".noUi-handle")
   .mousedown(function(){
     $("#event-end").show();
     $("#event-start").show();
     dateScroll = true;
+  });*/
+
+
+
+  slider.noUiSlider.on('set',function(){
+    console.log("set");
+    $("#event-end").hide(300);
+    $("#event-start").hide(300);
+    dateScroll = false;
+    // Update the graph to display the different time range
+    var slideEnds = slider.noUiSlider.get();
+    redrawGraph(reFormatDate(new Date(+slideEnds[0])),reFormatDate(new Date(+slideEnds[1])));
   });
-  $("body").mouseup(function(){
+  // This enables updating of the graph on change in the bar
+
+  /*$("body").mouseup(function(){
     if(dateScroll){
       $("#event-end").hide(300);
       $("#event-start").hide(300);
@@ -354,7 +381,7 @@ function generateSlider(irange){
       var slideEnds = slider.noUiSlider.get();
       redrawGraph(reFormatDate(new Date(+slideEnds[0])),reFormatDate(new Date(+slideEnds[1])));
     }
-  });
+  });*/
 
 }
 // THIS IS FOR THE TIME SLIDER--------------------------------------------------

@@ -313,8 +313,8 @@ var totalDepth = 0;
 var totalBreadth = 0;
 var leafPlace = 0;
 function build2d(coreObject,startP,endP){
-	totalBreadth = calcLeaves(coreObject.data);
-	totalDepth = calcDepth(coreObject.options.roots[0],coreObject.data);
+	totalBreadth = calcLeaves(coreObject.data,startP,endP);
+	totalDepth = calcDepth(coreObject.options.roots[0],coreObject.data,startP,endP);
   freshLines = [];
   freshNodes = [];
   if(coreObject.options.time == true){

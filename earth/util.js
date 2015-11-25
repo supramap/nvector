@@ -339,28 +339,54 @@ function wrap(value, min, rangeSize) {
 
 
 // calculate details regarding the tree structure
-function calcLeaves(data){
+function calcLeaves(data,stDate,enDate){
 	var leafCount = 0;
 	var allKeys = Object.keys(data);
 	for(var i = 0; i < allKeys.length; i++){
 		var current = data[allKeys[i]];
-		if(current.children.length < 1){
-			leafCount++;
+		var currentDate = new Date(current.date);
+		var startDate = new Date(stDate);
+		var endDate = new Date(enDate);
+
+		if(stDate == undefined || enDate == undefined){
+			if(current.children.length < 1){
+				leafCount++;
+			}
 		}
+		else{
+			if(current.children.length < 1 && (currentDate > startDate && currentDate < endDate)){
+				leafCount++;
+			}
+		}
+
 	}
 	return leafCount;
 }
 
-function calcDepth(current,bigObj){
+function calcDepth(current,bigObj,stDate,enDate){
 	var node = bigObj[current];
 
+
 	if(node.children.length < 1){
-		return 1;
+		if(stDate == undefined || enDate == undefined){
+			return 1;
+		}
+		else{
+			var currentDate = new Date(node.date);
+			var startDate = new Date(stDate);
+			var endDate = new Date(enDate);
+			if((currentDate > startDate && currentDate < endDate)){
+				return 1;
+			}
+			else{
+				return 0;
+			}
+		}
 	}
 
 	var count;
 	for(var i = 0; i < node.children.length; i++){
-		var result = calcDepth(node.children[i],bigObj);
+		var result = calcDepth(node.children[i],bigObj,stDate,enDate);
 		if(count == undefined){
 			count = result;
 		}
@@ -369,6 +395,9 @@ function calcDepth(current,bigObj){
 					count = result;
 			}
 		}
+	}
+	if(count == 0){
+		return 0
 	}
 	return count + 1;
 

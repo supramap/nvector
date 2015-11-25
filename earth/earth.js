@@ -267,9 +267,6 @@ var rootObject, rotating;
 
 		//console.log( selectableCountries );
 
-		visualizationMesh = new THREE.Object3D();
-		rotating.add(visualizationMesh);
-
 
 		renderer = new THREE.WebGLRenderer({antialias:false});
 		renderer.setSize( window.innerWidth, window.innerHeight );
@@ -279,7 +276,7 @@ var rootObject, rotating;
 		renderer.generateMipmaps = false;
 
 
-		var skyBoxGeometry = new THREE.SphereGeometry( 800, 50, 50 );
+		var skyBoxGeometry = new THREE.SphereGeometry( 8000, 100, 100 );
 		// BackSide: render faces from inside of the cube, instead of from outside (default).
 		var skyBoxMaterial = new THREE.MeshBasicMaterial( { side: THREE.BackSide,map: THREE.ImageUtils.loadTexture('images/starfield.png') } );
 		var skyBox = new THREE.Mesh( skyBoxGeometry, skyBoxMaterial );

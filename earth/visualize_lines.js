@@ -323,8 +323,8 @@ function build2d(coreObject,startP,endP){
 	}
 	else{
 		console.log("Nope you can not use webworkers");
-		totalBreadth = calcLeaves(coreObject.data);
-		totalDepth = calcDepth(coreObject.options.roots[0],coreObject.data);
+		totalBreadth = calcLeaves(coreObject.data,startP,endP);
+		totalDepth = calcDepth(coreObject.options.roots[0],coreObject.data,startP,endP);
 		if(coreObject.options.time == true){
 				if(startP == undefined || endP == undefined){
 					var range = coreObject.options.timeRange
