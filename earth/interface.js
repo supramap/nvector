@@ -1,5 +1,8 @@
-//var queryroot = "http://10.16.56.69:8080/irods-rest/rest/"
-var queryroot = "http://192.168.1.14:8080/irods-rest/rest/"
+// Data relevant to connecting to our server
+var queryroot = "http://10.16.56.89:8080/irods-rest/rest/";
+var userName = "earth";
+var psw = "!darpa";
+//var queryroot = "http://192.168.1.14:8080/irods-rest/rest/"
 // Make the buttons trigger the file selector
 $("#infileBut").click(function(){
   $("#infile").trigger('click');
@@ -21,7 +24,7 @@ $("#infileButCloud").click(function(){
     type:"GET",
     url:(queryroot + list),
     beforeSend: function(xhr){
-      xhr.setRequestHeader("Authorization","Basic " + btoa("earth" + ":" + "!darpa"));
+      xhr.setRequestHeader("Authorization","Basic " + btoa(userName + ":" + psw));
       xhr.setRequestHeader("Accept","application/json");
       //xhr.setRequestHeader("Content-Type","application/json");
     },
@@ -79,7 +82,7 @@ $("#layerButCloud").click(function(){
       doneLoading();
     },
     error: function(x, textStatus, errorThrown){
-      console.log("Sorry. It appears that there was a problem with querying the server\n error: " + errorThrown);
+      alert("Sorry. It appears that there was a problem with querying the server\n error: " + errorThrown);
     }
   });
 
