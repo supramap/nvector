@@ -27,10 +27,28 @@ var rootObject, rotating;
 		mapOutlineImage = new Image();
 		mapOutlineImage.src = 'images/map_outline.png'
 		outlinedMapTexture = THREE.ImageUtils.loadTexture('images/map_outline.png', {}, function(){
-			buildearth();
+			initializeEnvironment();
 		});
 	});
 
+
+	// Function to be run after the expected images are loaded.
+	// analyzes the current runtime environment and constructs the app appropirately
+	var isNW = true;
+	var isMobile = false;
+	function initializeEnvironment(){
+
+		// If the existing runtime is nwjs
+		if(is_nwjs()){
+			isNw = true;
+		}
+		// If the existing runtime is the browser
+		else{
+			isNW = false;
+		}
+		// [[DISTANT FUTURE]] Maybe test the possibilities for the use of phonegap
+		buildearth();
+	}
 
 
 

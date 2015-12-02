@@ -25,6 +25,18 @@ function nth (d) {
     }
 }
 
+// Am i currently running in nwjs or a browser
+function is_nwjs(){
+    try{
+        return (typeof require('nw.gui') !== "undefined");
+    } catch (e){
+        return false;
+    }
+}
+
+
+
+
 // Create a string representation of the date.
 function formatDate ( date ) {
     return months[date.getMonth()] + " " +

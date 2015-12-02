@@ -45,7 +45,9 @@ $("#infileButCloud").click(function(){
       doneLoading();
     },
     error: function(x, textStatus, errorThrown){
-      console.log("Sorry. It appears that there was a problem with querying the server\n error: " + errorThrown);
+      alert("Sorry. It appears that there was a problem with querying the server\n Please check your server settings and try again ");
+      doneLoading();
+      $("#popup").hide();
     }
   });
 
@@ -90,12 +92,27 @@ $("#layerButCloud").click(function(){
 });
 
 $("#popCancel").click(function(){
+  if(isOptions){
+    isOptions = false;
+    $("#popLoad").html("Load");
+    $("#optionsList").hide();
+  }
   $("#popup").hide();
 });
 
 //http://192.168.1.14:8080/irods-rest/rest/fileContents/tempZone/home/zach/fda/FILENAME
 var layOrGraph;
 $("#popLoad").click(function(){
+  if(isOptions){
+    isOptions = false;
+    queryroot = $("#server").val();
+    userName =  $("#userName").val();
+    psw = $("#passwd").val();
+    $("#popLoad").html("Load");
+    $("#popup").hide();
+    $("#optionsList").hide();
+    return;
+  }
   //QUERY FOR A GRAPH
   if(layOrGraph == "graph"){
     var fileOfInterest = queryroot + "fileContents/tempZone/home/zach/fda/" + fileSelection[0].innerHTML;
@@ -257,25 +274,37 @@ layerSelection.change(function(evt){
 
 var open = true;
 
-$("#close").click(function(){
+var isOptions = false;
+$("#optionsButton").click(function(){
+  $("#popup").show();
+  $("#popLoad").html("Connect");
+  isOptions = true;
+  $("#optionsList").show();
+});
+
+$("#panelButton").click(function(){
   if(open == true){
     var amount = '-' + $("#menu").width().toString() + 'px';
     $("#menu").animate({
 
       left: amount
     });
-    $("#close").animate({
+    $("#panelButton").animate({
       right:'-30px'
-    }).html(">");
+    });
+    $("#leftArrow").hide();
+    $("#rightArrow").show();
     open = false;
   }
   else{
     $("#menu").animate({
       left: '0px'
     });
-    $("#close").animate({
+    $("#panelButton").animate({
       right:'1px'
-    }).html("<");
+    });
+    $("#rightArrow").hide();
+    $("#leftArrow").show();
     open = true;
   }
 
