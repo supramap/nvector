@@ -25,6 +25,7 @@ function makeGraphGeometry(connectionObj, startP, endP){
 				graphObject.add(allLines);
 				//scene.add(graphObject);
 				graph.add(graphObject);
+
 			}
 		}
 		else{
@@ -53,6 +54,7 @@ function makeGraphGeometry(connectionObj, startP, endP){
 			graphObject.add(allLines);
 			//scene.add(graphObject);
 			graph.add(graphObject);
+
 		}
 }
 
@@ -319,6 +321,7 @@ function build2d(coreObject,startP,endP){
 			graphObject.add(allLines);
 			graph.add(graphObject);
 			//graph.remove(rotating);
+			//return graphObject;
 		}
 	}
 	else{
@@ -338,7 +341,12 @@ function build2d(coreObject,startP,endP){
 				recurseBuild2d(coreObject.options.roots[0],coreObject.data);
 		}
 		recurseBuild2d(coreObject.options.roots[0],coreObject.data,0);
-		graph.children = freshLines.concat(freshNodes);
+		var allSpheres = initializeSpheres(freshNodes);
+		var allLines = initializeLines(freshLines);
+		var graphObject = new THREE.Object3D();
+		graphObject.add(allSpheres);
+		graphObject.add(allLines);
+		graph.add(graphObject)
 	}
 	//scene.remove(rotating);
 

@@ -105,7 +105,7 @@ var layOrGraph;
 $("#popLoad").click(function(){
   if(isOptions){
     isOptions = false;
-    queryroot = $("#server").val();
+    queryroot = "http://" + $("#server").val() + ":8080/irods-rest/rest/";
     userName =  $("#userName").val();
     psw = $("#passwd").val();
     $("#popLoad").html("Load");
@@ -116,6 +116,7 @@ $("#popLoad").click(function(){
   //QUERY FOR A GRAPH
   if(layOrGraph == "graph"){
     var fileOfInterest = queryroot + "fileContents/tempZone/home/zach/fda/" + fileSelection[0].innerHTML;
+    latestFileName = fileSelection[0].innerHTML;
     loading();
     $.ajax({
       type:"GET",
@@ -131,9 +132,9 @@ $("#popLoad").click(function(){
       success:function(data){
         // test if the selected file is json. Otherwise assume that it is gv
         try {
-          loadTransmissionsJson(JSON.parse(data));
+          loadTransmissionsJson(JSON.parse(data),latestFileName);
         } catch (e) {
-          loadTransmissions(data);
+          loadTransmissions(data,latestFileName);
         }
         $("#popup").hide();
         doneLoading();
@@ -216,12 +217,13 @@ $("#selectionList").on("click",".selections",function(event){
 
 // Define what is done when the files are loaded
 var chooser = $("#infile");
+var latestFileName = "";
 chooser.change(function(evt) {
     loading();
     console.log($(this).val() + " is loaded");
     // draw file from the input
     var f = this.files[0]
-
+    latestFileName = f.name;
     if(f.name.indexOf(".json") > -1){
       var reader = new FileReader();
       reader.onload = function(data){
@@ -229,7 +231,7 @@ chooser.change(function(evt) {
         // load in all of the data provided by a graphviz formatted file.
         // addNewGraph is housed in the earth.js file as it interfaces with the
         // THREE.js visualization.
-        loadTransmissionsJson(data.target.result);
+        loadTransmissionsJson(data.target.result,latestFileName);
         doneLoading();
       };
       reader.onerror= function(err){
@@ -244,7 +246,7 @@ chooser.change(function(evt) {
         // load in all of the data provided by a graphviz formatted file.
         // addNewGraph is housed in the earth.js file as it interfaces with the
         // THREE.js visualization.
-        loadTransmissions(data.target.result);
+        loadTransmissions(data.target.result,latestFileName);
         doneLoading();
       };
       reader.readAsText(f);
@@ -273,7 +275,6 @@ layerSelection.change(function(evt){
 });
 
 var open = true;
-
 var isOptions = false;
 $("#optionsButton").click(function(){
   $("#popup").show();

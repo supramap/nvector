@@ -4,7 +4,7 @@ function loadLayer(data){
 	addNewLayer(inObject);
 }
 
-function loadTransmissionsJson(data){
+function loadTransmissionsJson(data,dataName){
 	if(typeof data == "string"){
 		locations = JSON.parse( data );
 	}
@@ -45,13 +45,19 @@ function loadTransmissionsJson(data){
 
 
 	if(!jQuery.isEmptyObject(locations)){
-		addNewGraph(locations)
+		if(locations.metadata.fileName.length < 1){
+			addNewGraph(locations,dataName)
+		}
+		else{
+			addNewGraph(locations,locations.metadata.filename);
+		}
+
 	}
 	// Need to check for the presence of a root. If not present with a graph like
 	// structure then it needs to be added.
 }
 
-function loadTransmissions(data){
+function loadTransmissions(data,dataName){
 	// locations is used for the transmission of data between two points,
 	locations = {};
 	locations['metadata']={"author":"","description":"","filename":"","irods":""};
@@ -163,7 +169,7 @@ function loadTransmissions(data){
 
 	locations.options["roots"] = realroots;
 	if(!jQuery.isEmptyObject(locations)){
-		addNewGraph(locations)
+		addNewGraph(locations,dataName);
 	}
 
 	//callback(locations);

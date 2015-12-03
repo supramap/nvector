@@ -10,12 +10,13 @@ var cube;
 var countryLookup;
 var raycaster = new THREE.Raycaster();
 var graph = new THREE.Object3D();
+var rootDataStore = []
 var particleCloud;
 var layers = new THREE.Object3D();
 var countryData = new Object();
 var stateData = new Object();
 var particlesExist = false,treeState = false;
-var rootObject, rotating;
+var rotating;
 
 //window.onload = function(){
 	var outlinedMapTexture;
@@ -61,12 +62,13 @@ var rootObject, rotating;
 		layers.add(currentLayer);
 	}
 
-	function addNewGraph(connectionObj){
-		rootObject = JSON.parse(JSON.stringify(connectionObj))
+	function addNewGraph(connectionObj, graphName){
+		rootDataStore.push([JSON.parse(JSON.stringify(connectionObj)),graphName]);
 		if(connectionObj.options.time == true){
 			generateSlider(connectionObj.options.timeRange);
 		}
-		makeGraphGeometry(connectionObj);
+		// function called in visualize_lines to generate the graph geometry
+		var graphObject = makeGraphGeometry(connectionObj);
 
 		scene.add(graph);
 		// initialize particle affects
@@ -80,17 +82,26 @@ var rootObject, rotating;
 
 	function redrawGraph(sTime,eTime){
 		loading();
-		var rootClone = JSON.parse(JSON.stringify(rootObject))
+
+		// Need to redraw the graph for all of the elements in the root array
+		// maybe add a filter  in here based upon the name of the elements selected
+		// For now only one tree should be selected for a 2d visualization
+
 		scene.remove(graph);
-		//graph.dispose();
 		graph = new THREE.Object3D();
 		render();
-		if(treeState){
-			build2d(rootClone,sTime,eTime);
+		for(var i = 0; i < rootDataStore.length; i++){
+				var rootClone = JSON.parse(JSON.stringify(rootDataStore[i][0]));
+
+				if(treeState){
+					build2d(rootClone,sTime,eTime);
+				}
+				else{
+					makeGraphGeometry(rootClone,sTime,eTime);
+				}
+
 		}
-		else{
-			makeGraphGeometry(rootClone,sTime,eTime);
-		}
+		//graph.dispose();
 
 		// initialize particle affects
 		//particlesExist = true;
@@ -338,10 +349,12 @@ var rootObject, rotating;
 		mouse.x = ( event.clientX / renderer.domElement.width ) * 2 - 1;
 		mouse.y = - ( event.clientY / renderer.domElement.height ) * 2 + 1;
 		raycaster.setFromCamera(mouse, camera);
-		var instersecs = raycaster.intersectObjects(graph.children);
-		if(instersecs.length > 0 ){
-			var relname = instersecs[0].object.name;
-			$("#details").html(relname);
+		if(graph.children[0] != undefined){
+			var instersecs = raycaster.intersectObjects(graph.children[0].children);
+			if(instersecs.length > 0 ){
+				//var relname = instersecs[0].object.name;
+				$("#details").html("found Something!");
+			}
 		}
 	}
 
