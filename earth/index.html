@@ -11,15 +11,31 @@
 			<div id="optionsButton">
 				<input type="image" id="gear" src="images/gear1.svg">
 			</div>
+			<!--This is the Button that opens and closes the slider panel-->
 			<div id="panelButton">
 				<input type="image" id="leftArrow" src="images/leftArrow.svg">
 				<input type="image" id="rightArrow" src="images/rightArrow.svg">
 			</div>
-			<!--<button id= "close"><</button>-->
+
 			<div id="timeSlide"></div>
+
+			<!-- This div holds all of the currently loaded structures -->
+			<div id="loadedFiles">
+				<div id="loadedFiles-title">Views</div>
+				<!--The ul with the names of the loaded files will be generated
+						dynamically in here-->
+				<div id="loadedFiles-names"></div>
+			</div>
+
+
+
+			<!--These are the div's that hold the date values and run in paralell with
+					time sliders.-->
 			<div id='event-start' class= "dateIndicator"></div>
 			<div id='event-end' class="dateIndicator"></div>
 			<!--<a href="tree.html">Tree</a>-->
+
+			<!--This is the button group that is seen at the bottom of the slider panel-->
 			<div id="buttonPanel">
 				<div id="infileBut" class="buttonGroup">Graph Local</div>
 				<div id="infileButCloud" class="buttonGroup">Graph Cloud</div>

@@ -82,10 +82,14 @@ var rotating;
 	}
 
 	function displayContents(){
+		//$("#loadedFiles-names").empty();
+
 		var htmlString = "<ul>"
 		for(var i = 0; i < rootDataStore.length; i++){
-			htmlString = htmlString + "<li>"+rootDataStore[i][1]+" <input type='radio'></li>"
+			htmlString = htmlString + "<li>"+rootDataStore[i][1]+" <input type='radio'></li>";
 		}
+		htmlString += "</ul>";
+		$("#loadedFiles-names").html(htmlString);
 	}
 
 	function redrawGraph(sTime,eTime){
