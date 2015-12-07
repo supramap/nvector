@@ -68,9 +68,10 @@ var rotating;
 			generateSlider(connectionObj.options.timeRange);
 		}
 		// function called in visualize_lines to generate the graph geometry
-		var graphObject = makeGraphGeometry(connectionObj);
+		var graphObject = makeGraphGeometry(connectionObj,null,null,rootDataStore.length-1);
 
 		scene.add(graph);
+		displayContents();
 		// initialize particle affects
 		//particlesExist = true;
 		//particleCloud = initializeParticles();
@@ -78,6 +79,13 @@ var rotating;
 		//scene.add(graph);
 		//console.log("y up");
 		//connectionObj = {};*/
+	}
+
+	function displayContents(){
+		var htmlString = "<ul>"
+		for(var i = 0; i < rootDataStore.length; i++){
+			htmlString = htmlString + "<li>"+rootDataStore[i][1]+" <input type='radio'></li>"
+		}
 	}
 
 	function redrawGraph(sTime,eTime){
@@ -94,10 +102,10 @@ var rotating;
 				var rootClone = JSON.parse(JSON.stringify(rootDataStore[i][0]));
 
 				if(treeState){
-					build2d(rootClone,sTime,eTime);
+					build2d(rootClone,sTime,eTime,i);
 				}
 				else{
-					makeGraphGeometry(rootClone,sTime,eTime);
+					makeGraphGeometry(rootClone,sTime,eTime,i);
 				}
 
 		}

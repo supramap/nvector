@@ -5,7 +5,7 @@ var freshLines, freshNodes;
 var particlesGeo;
 var cantPlace = [];
 
-function makeGraphGeometry(connectionObj, startP, endP){
+function makeGraphGeometry(connectionObj, startP, endP, rootPosition){
 		freshNodes = [];
 		freshLines = [];
 
@@ -25,6 +25,10 @@ function makeGraphGeometry(connectionObj, startP, endP){
 				graphObject.add(allLines);
 				//scene.add(graphObject);
 				graph.add(graphObject);
+
+				// If this object position already exists then I may need to run the
+				// memory dealocation command.
+				rootDataStore[rootPosition][3] = allSpheres;
 
 			}
 		}
@@ -54,6 +58,7 @@ function makeGraphGeometry(connectionObj, startP, endP){
 			graphObject.add(allLines);
 			//scene.add(graphObject);
 			graph.add(graphObject);
+			rootDataStore[rootPosition][3] = allSpheres;
 
 		}
 }
@@ -299,7 +304,7 @@ function recurseRebuild(current, bigObj,dateStart,dateEnd){
 var totalDepth = 0;
 var totalBreadth = 0;
 var leafPlace = 0;
-function build2d(coreObject,startP,endP){
+function build2d(coreObject,startP,endP,rootPosition){
 	freshLines = [];
 	freshNodes = [];
 	graph.children = [];
@@ -322,6 +327,7 @@ function build2d(coreObject,startP,endP){
 			graph.add(graphObject);
 			//graph.remove(rotating);
 			//return graphObject;
+			rootDataStore[rootPosition][3] = allSpheres;
 		}
 	}
 	else{
@@ -347,6 +353,7 @@ function build2d(coreObject,startP,endP){
 		graphObject.add(allSpheres);
 		graphObject.add(allLines);
 		graph.add(graphObject)
+		rootDataStore[rootPosition][3] = allSpheres;
 	}
 	//scene.remove(rotating);
 
