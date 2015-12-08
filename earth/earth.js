@@ -36,7 +36,7 @@ var rotating;
 	// Function to be run after the expected images are loaded.
 	// analyzes the current runtime environment and constructs the app appropirately
 	var isNW = true;
-	var isMobile = false;
+	//var isMobile = false;
 	function initializeEnvironment(){
 
 		// If the existing runtime is nwjs
@@ -84,9 +84,9 @@ var rotating;
 	function displayContents(){
 		//$("#loadedFiles-names").empty();
 
-		var htmlString = "<ul>"
+		var htmlString = "<ul id='loadedFiles-names-list'>"
 		for(var i = 0; i < rootDataStore.length; i++){
-			htmlString = htmlString + "<li>"+rootDataStore[i][1]+" <input type='radio'></li>";
+			htmlString = htmlString + "<li class='listItems'><div class='textSpan'>"+rootDataStore[i][1]+"</div><input class='inputRadio' type='radio'></li>";
 		}
 		htmlString += "</ul>";
 		$("#loadedFiles-names").html(htmlString);
@@ -344,8 +344,7 @@ var rotating;
 
 
 
-
-
+		clickViews();
 		window.addEventListener( 'mousedown', onDocumentMouseDown, false );
 		window.addEventListener( 'resize', onWindowResize, false );
 		render();

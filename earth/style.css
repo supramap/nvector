@@ -23,7 +23,7 @@ canvas{
 	cursor:pointer;
 }
 
-#loadedFiles{
+#info{
 	width: 95%;
 	background-color: lightgray;
 	min-height: 25px;
@@ -31,16 +31,58 @@ canvas{
 	margin-left: auto;
 	margin-right: auto;
 	top: 35px;
-	border-top-right-radius: 2px;
-	border-top-left-radius: 2px;
+
 }
 
-#loadedFiles-title{
+#info-title{
 	color:black;
 	margin-left:auto;
 	margin-right: auto;
 	border-bottom: 1px solid black;
 	text-align: center;
+}
+
+#loadedFiles-names-list{
+	margin-top: 3px;
+	list-style-type: none;
+	padding-left: 0px;
+}
+
+#tabContainer{
+	list-style-type:none;
+	margin-left:0px;
+	padding-left: 0px;
+	margin-bottom: 0px;
+}
+
+.tab{
+	width:33%;
+	display:inline-block;
+	text-align: center;
+	border-right:1px solid black;
+	border-left:1px solid black;
+	margin-right: -5px;
+	height:20px;
+}
+
+.inactiveTab{
+	background-color:gray;
+	border-bottom:1px solid black;
+}
+
+#viewsTab{
+	border-left:none;
+}
+
+.textSpan{
+	display: inline-block;
+	margin-left: 3px;
+	width:140px;
+	overflow: hidden;
+}
+
+.inputRadio{
+	float:right;
 }
 
 #infileBut{

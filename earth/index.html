@@ -7,7 +7,7 @@
 	<body>
 		<div id="atlas" style="position: absolute; top: 0px; left: 0px; width:100%; height:100%;"></div>
 		<div id="menu">
-			<label id="details"></label>
+
 			<div id="optionsButton">
 				<input type="image" id="gear" src="images/gear1.svg">
 			</div>
@@ -19,12 +19,26 @@
 
 			<div id="timeSlide"></div>
 
-			<!-- This div holds all of the currently loaded structures -->
-			<div id="loadedFiles">
-				<div id="loadedFiles-title">Views</div>
+
+
+			<div id="info">
+				<ul id="tabContainer">
+					<li class="tab inactiveTab" id="viewsTab">Views</li>
+					<li class="tab inactiveTab" id="dataTab">Data</li>
+					<li class="tab inactiveTab" id="editTab">Edit</li>
+				</ul>
+				<!-- This div holds all of the currently loaded structures -->
 				<!--The ul with the names of the loaded files will be generated
 						dynamically in here-->
 				<div id="loadedFiles-names"></div>
+
+				<!-- This div will show all of the details of the currently selected node-->
+				<div id="nodeDetails">
+					<label id="details"></label>
+				</div>
+
+				<!-- This div will contain the editing tools to be used in the 2d view-->
+				<div id="editor"></div>
 			</div>
 
 

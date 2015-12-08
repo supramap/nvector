@@ -283,6 +283,49 @@ $("#optionsButton").click(function(){
   $("#optionsList").show();
 });
 
+
+$("#viewsTab").click(function(){
+  clickViews();
+});
+$("#dataTab").click(function(){
+  clickData();
+});
+$("#editTab").click(function(){
+  clickEdit();
+});
+
+
+
+function clickViews(){
+	 $("#viewsTab").removeClass('inactiveTab');
+   $("#dataTab").addClass('inactiveTab');
+   $("#editTab").addClass('inactiveTab');
+
+   $("#loadedFiles-names").show();
+   $("#nodeDetails").hide();
+   $("#editor").hide();
+
+
+}
+function clickData(){
+  $("#viewsTab").addClass('inactiveTab');
+  $("#dataTab").removeClass('inactiveTab');
+  $("#editTab").addClass('inactiveTab');
+
+  $("#loadedFiles-names").hide();
+  $("#nodeDetails").show();
+  $("#editor").hide();
+}
+function clickEdit(){
+  $("#viewsTab").addClass('inactiveTab');
+  $("#dataTab").addClass('inactiveTab');
+  $("#editTab").removeClass('inactiveTab');
+
+  $("#loadedFiles-names").hide();
+  $("#nodeDetails").hide();
+  $("#editor").show();
+}
+
 $("#panelButton").click(function(){
   if(open == true){
     var amount = '-' + $("#menu").width().toString() + 'px';
