@@ -86,10 +86,19 @@ var rotating;
 
 		var htmlString = "<ul id='loadedFiles-names-list'>"
 		for(var i = 0; i < rootDataStore.length; i++){
-			htmlString = htmlString + "<li class='listItems'><div class='textSpan'>"+rootDataStore[i][1]+"</div><input class='inputRadio' type='radio'></li>";
+			htmlString = htmlString + "<li class='listItems'><div class='textSpan'>"+rootDataStore[i][1]+"</div><div class='inputDelete' onclick='removeGraph("+i+")' >x</div><input class='inputCheck' type='checkbox'><input class='inputRadio' type='radio'> </li>";
 		}
 		htmlString += "</ul>";
 		$("#loadedFiles-names").html(htmlString);
+	}
+
+	/*
+		The function called when the user selects the x button next to the view's name.
+		This function should remove the loaded file from the rootDataStore as well
+		as the graph object..
+	*/
+	function removeGraph(place){
+
 	}
 
 	function redrawGraph(sTime,eTime){

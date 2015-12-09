@@ -49,7 +49,7 @@ function loadTransmissionsJson(data,dataName){
 			addNewGraph(locations,dataName)
 		}
 		else{
-			addNewGraph(locations,locations.metadata.filename);
+			addNewGraph(locations,locations.metadata.fileName);
 		}
 
 	}

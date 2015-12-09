@@ -53,6 +53,29 @@ canvas{
 	margin-left:0px;
 	padding-left: 0px;
 	margin-bottom: 0px;
+	cursor:pointer;
+}
+
+.inputDelete{
+	width:10px;
+	height:10px;
+	background-color:lightgray;
+	border:1px solid gray;
+	display:inline;
+	float:right;
+	border-radius: 5px;
+	top:3px;
+	position:relative;
+	line-height:45%;
+	text-align: center;
+	margin-right:5px;
+	margin-left:3px;
+	cursor:pointer;
+}
+
+.inputCheck{
+	float:right;
+	cursor:pointer;
 }
 
 .tab{
@@ -77,12 +100,14 @@ canvas{
 .textSpan{
 	display: inline-block;
 	margin-left: 3px;
-	width:140px;
-	overflow: hidden;
+	width:calc(100% - 65px);
+	text-overflow: ellipsis;
+	overflow:hidden;
 }
 
 .inputRadio{
 	float:right;
+	cursor:pointer;
 }
 
 #infileBut{
