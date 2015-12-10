@@ -254,6 +254,7 @@ chooser.change(function(evt) {
     else{
       alert("This application only accepts files of the following extension:\n .json, .gv, .dot");
     }
+    $(this).val("");
 });
 
 // define what is done when a file is selected

@@ -86,7 +86,10 @@ var rotating;
 
 		var htmlString = "<ul id='loadedFiles-names-list'>"
 		for(var i = 0; i < rootDataStore.length; i++){
-			htmlString = htmlString + "<li class='listItems'><div class='textSpan'>"+rootDataStore[i][1]+"</div><div class='inputDelete' onclick='removeGraph("+i+")' >x</div><input class='inputCheck' type='checkbox'><input class='inputRadio' type='radio'> </li>";
+			htmlString = htmlString + "<li class='listItems'><div class='textSpan'>"+rootDataStore[i][1]+"</div>"+
+			"<div class='inputDelete' onclick='removeGraph("+i+")' >x</div>"+
+			"<input class='inputCheck' type='checkbox' value="+i+" onclick='hideGraph()' checked>"+
+			"<input class='inputRadio' type='radio' name='selected' value="+ i + " "+((i==0) ? "checked":"")+" > </li>";
 		}
 		htmlString += "</ul>";
 		$("#loadedFiles-names").html(htmlString);
@@ -98,7 +101,29 @@ var rotating;
 		as the graph object..
 	*/
 	function removeGraph(place){
+		var removed = graph.children[place]
+		graph.remove(removed);
+		deleteObj(removed);
+		rootDataStore.splice(place,1);
+		displayContents();
+	}
 
+	function hideGraph(){
+		var checkedBoxes = $("input:checkbox:checked");
+		var checkList = [];
+		for(var i = 0; i < checkedBoxes.length; i++){
+			var current = parseInt(checkedBoxes[i].value);
+			checkList.push(current);
+		}
+
+		for (var i = 0; i < graph.children.length; i++){
+			if(checkList.indexOf(i) > -1){
+				graph.children[i].visible = true;
+			}
+			else{
+				graph.children[i].visible = false;
+			}
+		}
 	}
 
 	function redrawGraph(sTime,eTime){
@@ -108,8 +133,16 @@ var rotating;
 		// maybe add a filter  in here based upon the name of the elements selected
 		// For now only one tree should be selected for a 2d visualization
 
-		scene.remove(graph);
-		graph = new THREE.Object3D();
+
+		/* CHANGES  Instead of deleting all of the graph object simply delete all of
+			its children and recalculate*/
+		for(var i=0; i < graph.children.length; i++){
+			var tempObj = graph.children[i];
+			graph.remove(tempObj);
+			deleteObj(tempObj);
+		}
+
+
 		render();
 		for(var i = 0; i < rootDataStore.length; i++){
 				var rootClone = JSON.parse(JSON.stringify(rootDataStore[i][0]));
@@ -127,7 +160,6 @@ var rotating;
 		// initialize particle affects
 		//particlesExist = true;
 		//particleCloud = initializeParticles();
-		scene.add(graph);
 		doneLoading();
 
 	}

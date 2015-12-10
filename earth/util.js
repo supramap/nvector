@@ -35,6 +35,28 @@ function is_nwjs(){
 }
 
 
+// A recursive function that dealocates the memory from an Object3D and all
+// of its children.
+function deleteObj(obj){
+	// if the object has children recurse
+	if(obj.children != undefined && obj.children.length > 0){
+		for(var i=0; i < obj.children.length; i++){
+			deleteObj(obj.children[i]);
+		}
+	}
+
+	if(obj.geometry != undefined){
+		obj.geometry.dispose();
+	}
+	if(obj.material != undefined){
+		obj.material.dispose();
+	}
+	if(obj.texture != undefined){
+		obj.texture.dispose();
+	}
+
+}
+
 
 
 // Create a string representation of the date.
