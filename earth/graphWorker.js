@@ -4,7 +4,6 @@ importScripts('util.js');
 var rad = 100;
 
 onmessage = function(e){
-  console.log("Message has been recieved. Testing the calculations");
   var dataset = JSON.parse(e.data);
 
   if(dataset.type == "3d"){

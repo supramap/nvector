@@ -110,6 +110,31 @@ canvas{
 	cursor:pointer;
 }
 
+#possible{
+	list-style: none;
+	margin-top:0px;
+	padding-left:0px;
+}
+
+.nodeSel{
+	border-bottom: 1px solid black;
+	text-align: center;
+	cursor: pointer;
+}
+.nodeSel:hover{
+	text-align:center;
+	border-bottom:2px solid black;
+	border-top:1px solid black;
+	font-style: italic;
+	font-weight: bold;
+	cursor:pointer;
+}
+
+#nodeDetails{
+	max-height: calc(100% - 200px);
+	overflow:scroll;
+}
+
 #infileBut{
 
 }

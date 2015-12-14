@@ -125,6 +125,7 @@ function initializeSpheres(ingeometry){
 	for(var i = 0; i < ingeometry.length;i++){
 		var currentGeo = ingeometry[i];
 		var vertex = new THREE.Vector3(currentGeo['location'][0],currentGeo['location'][1],currentGeo['location'][2]);
+		vertex.nodeName=currentGeo['name'];
 		spheresGeometry.vertices.push(vertex);
 		sphereAttributes.size.value[i] = 5;
 		sphereAttributes.customColor.value[i] = new THREE.Color(currentGeo.color);

@@ -355,6 +355,23 @@ $("#panelButton").click(function(){
 
 })
 
+/*
+  The showPossible function is designed to iterate throught the 'possible' array
+  containing the names of all the nodes which were intersected.
+*/
+function showPossible(){
+  var outString = "<ul id='possible'>";
+  for(var i = 0 ; i < possible.length; i++){
+    outString+= "<li class='nodeSel' value='"+possible[i]+"' onclick='showSelected(\""+possible[i]+"\")'>"+possible[i]+"</li>"
+  }
+  outString += "</ul>";
+  $("#nodeDetails").html(outString);
+}
+
+function showSelected(name){
+  console.log("showing data for " + name);
+}
+
 
 function loading(){
   $("body").addClass("loading");
@@ -439,7 +456,6 @@ function generateSlider(irange){
 
 
   slider.noUiSlider.on('set',function(){
-    console.log("set");
     $("#event-end").hide(300);
     $("#event-start").hide(300);
     dateScroll = false;

@@ -140,7 +140,10 @@ var rotating;
 			graph2d.remove(child2d);
 			deleteObj(child2d);
 			render();
-			build2d(rootClone,sTime,eTime,i);
+			var checkedRadio = $("input:radio:checked");
+			var graphPos = parseInt(checkedRadio[0].value);
+
+			build2d(rootDataStore[graphPos][0],sTime,eTime,graphPos);
 		}
 		// otherwise in earth context
 		else{
@@ -157,7 +160,7 @@ var rotating;
 					graph.add(new THREE.Object3D());
 					makeGraphGeometry(rootClone,sTime,eTime,i);
 			}
-			hideGraph();
+			//hideGraph();
 		}
 
 
@@ -215,6 +218,14 @@ var rotating;
 			// need to find the currently selected graph to be converted into 2d
 			var checkedRadio = $("input:radio:checked");
 			var graphPos = parseInt(checkedRadio[0].value);
+
+			//delete what is currently in the graph
+			var child2d = graph2d.children[0];
+			if(child2d != undefined){
+				graph2d.remove(child2d);
+				deleteObj(child2d);
+			}
+
 
 			if(sliderExists){
 				var slideEnds = slider.noUiSlider.get();
@@ -396,7 +407,7 @@ var rotating;
 
 
 		clickViews();
-		window.addEventListener( 'mousedown', onDocumentMouseDown, false );
+		window.addEventListener( 'click', onDocumentMouseDown, false );
 		window.addEventListener( 'resize', onWindowResize, false );
 		render();
 		animate();
@@ -407,18 +418,37 @@ var rotating;
 		renderer.render( scene, camera );
 	}
 
+	var possible = [];
+
 	function onDocumentMouseDown(event){
 		mouse.x = ( event.clientX / renderer.domElement.width ) * 2 - 1;
 		mouse.y = - ( event.clientY / renderer.domElement.height ) * 2 + 1;
 		raycaster.setFromCamera(mouse, camera);
 		if(graph.children[0] != undefined){
-			var instersecs = raycaster.intersectObjects(graph.children[0].children);
-			if(instersecs.length > 0 ){
+			var allObjs = [];
+			for(var i = 0; i < graph.children.length; i++){
+				allObjs.push(graph.children[i].children[0]);
+			}
+
+			var intersecs = raycaster.intersectObjects(allObjs);
+			if(intersecs.length > 0 ){
 				//var relname = instersecs[0].object.name;
-				$("#details").html("found Something!");
+				var foundSphere = false;
+				for(var i = 0; i < intersecs.length; i++){
+					if(foundSphere == false && intersecs[i].object.type == "PointCloud"){
+						foundSphere = true;
+						possible = [];
+					}
+					if(intersecs[i].object.type == "PointCloud"){
+						var currentName = intersecs[i].object.geometry.vertices[intersecs[i].index].nodeName;
+						possible.push(currentName);
+					}
+				}
+				showPossible();
 			}
 		}
 	}
+
 
 	function onWindowResize() {
 

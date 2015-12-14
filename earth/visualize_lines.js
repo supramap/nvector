@@ -10,7 +10,6 @@ function makeGraphGeometry(connectionObj, startP, endP, rootPosition){
 		freshLines = [];
 
 		if(typeof(Worker) !== "undefined"){
-			console.log("web workers are a go")
 			var graphWorker = new Worker("graphWorker.js");
 			var sendObject = {"type":"3d","obj":connectionObj,"stt":startP,"stp":endP}
 			graphWorker.postMessage(JSON.stringify(sendObject));
@@ -26,6 +25,10 @@ function makeGraphGeometry(connectionObj, startP, endP, rootPosition){
 				//scene.add(graphObject);
 				graph.children[rootPosition] = graphObject;
 				//graph.add(graphObject);
+
+				// try and hide all of the non-checked children at this point.
+				hideGraph();
+
 
 				// If this object position already exists then I may need to run the
 				// memory dealocation command.
@@ -313,7 +316,6 @@ function build2d(coreObject,startP,endP,rootPosition){
 
 	// test the potential use of webworkers
 	if(typeof(Worker) !== "undefined"){
-		console.log("yup web workers are a go")
 
 		var graphWorker = new Worker("graphWorker.js");
 		graphWorker.postMessage(JSON.stringify({"type":"2dlin","obj":coreObject,"stt":startP,"stp":endP}));
@@ -332,7 +334,6 @@ function build2d(coreObject,startP,endP,rootPosition){
 		}
 	}
 	else{
-		console.log("Nope you can not use webworkers");
 		totalBreadth = calcLeaves(coreObject.data,startP,endP);
 		totalDepth = calcDepth(coreObject.options.roots[0],coreObject.data,startP,endP);
 		if(coreObject.options.time == true){
