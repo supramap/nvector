@@ -24,7 +24,8 @@ function makeGraphGeometry(connectionObj, startP, endP, rootPosition){
 				graphObject.add(allSpheres);
 				graphObject.add(allLines);
 				//scene.add(graphObject);
-				graph.add(graphObject);
+				graph.children[rootPosition] = graphObject;
+				//graph.add(graphObject);
 
 				// If this object position already exists then I may need to run the
 				// memory dealocation command.
@@ -324,7 +325,7 @@ function build2d(coreObject,startP,endP,rootPosition){
 			var graphObject = new THREE.Object3D();
 			graphObject.add(allSpheres);
 			graphObject.add(allLines);
-			graph.add(graphObject);
+			graph2d.add(graphObject);
 			//graph.remove(rotating);
 			//return graphObject;
 			rootDataStore[rootPosition][3] = allSpheres;

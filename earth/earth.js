@@ -10,6 +10,7 @@ var cube;
 var countryLookup;
 var raycaster = new THREE.Raycaster();
 var graph = new THREE.Object3D();
+var graph2d = new THREE.Object3D();
 var rootDataStore = []
 var particleCloud;
 var layers = new THREE.Object3D();
@@ -133,29 +134,32 @@ var rotating;
 		// maybe add a filter  in here based upon the name of the elements selected
 		// For now only one tree should be selected for a 2d visualization
 
-
-		/* CHANGES  Instead of deleting all of the graph object simply delete all of
-			its children and recalculate*/
-		for(var i=0; i < graph.children.length; i++){
-			var tempObj = graph.children[i];
-			graph.remove(tempObj);
-			deleteObj(tempObj);
+		// If currently in 2d tree
+		if(treeState){
+			var child2d = graph2d.children[0];
+			graph2d.remove(child2d);
+			deleteObj(child2d);
+			render();
+			build2d(rootClone,sTime,eTime,i);
 		}
+		// otherwise in earth context
+		else{
+			for(var i=0; i < graph.children.length; i++){
+				var tempObj = graph.children[i];
+				graph.remove(tempObj);
+				deleteObj(tempObj);
+			}
 
 
-		render();
-		for(var i = 0; i < rootDataStore.length; i++){
-				var rootClone = JSON.parse(JSON.stringify(rootDataStore[i][0]));
-
-				if(treeState){
-					build2d(rootClone,sTime,eTime,i);
-				}
-				else{
+			render();
+			for(var i = 0; i < rootDataStore.length; i++){
+					var rootClone = JSON.parse(JSON.stringify(rootDataStore[i][0]));
+					graph.add(new THREE.Object3D());
 					makeGraphGeometry(rootClone,sTime,eTime,i);
-				}
-
+			}
+			hideGraph();
 		}
-		//graph.dispose();
+
 
 		// initialize particle affects
 		//particlesExist = true;
@@ -166,27 +170,29 @@ var rotating;
 
 
 	function jumpToTree(){
-		// going to need to fetch the current state of the time if it is enabled
 
-		scene.remove(graph);
-		//graph.dispose();
-		graph = new THREE.Object3D();
-		render()
+
+		render();
 		// if currently in the tree state then switch back to display the earth
 		if(treeState){
+			treeState = false;
 			if(sliderExists){
 
 				render();
 				var slideEnds = slider.noUiSlider.get();
-
-				makeGraphGeometry(rootObject,reFormatDate(new Date(+slideEnds[0])),reFormatDate(new Date(+slideEnds[1])));
+				redrawGraph(reFormatDate(new Date(+slideEnds[0])),reFormatDate(new Date(+slideEnds[1])));
+				//makeGraphGeometry(rootObject,reFormatDate(new Date(+slideEnds[0])),reFormatDate(new Date(+slideEnds[1])));
 			}
 			else{
-				makeGraphGeometry(rootObject);
+				redrawGraph(undefined,undefined);
+				//makeGraphGeometry(rootObject);
 			}
-			treeState = false;
-			scene.add(rotating);
+			// Show all of the objects required for this view.
+			graph.visible = true;
+			rotating.visible = true;
+			graph2d.visible = false;
 
+			// setup the animation to be run
 			var midPoint = camera._position.clone().lerp(camera.position,.5);
 			midPoint.setLength(200);
 
@@ -203,14 +209,19 @@ var rotating;
 
 		}
 		else{
+			graph.visible = false;
+			rotating.visible = false;
+			graph2d.visible = true;
+			// need to find the currently selected graph to be converted into 2d
+			var checkedRadio = $("input:radio:checked");
+			var graphPos = parseInt(checkedRadio[0].value);
 
-			scene.remove(rotating);
 			if(sliderExists){
 				var slideEnds = slider.noUiSlider.get();
-	      build2d(rootObject,reFormatDate(new Date(+slideEnds[0])),reFormatDate(new Date(+slideEnds[1])));
+	      build2d(rootDataStore[graphPos][0],reFormatDate(new Date(+slideEnds[0])),reFormatDate(new Date(+slideEnds[1])),graphPos);
 			}
 			else{
-				build2d(rootObject);
+				build2d(rootDataStore[graphPos][0],undefined,undefined,graphPos);
 			}
 			treeState = true;
 			var target = new THREE.Vector3(0,0,180);
@@ -229,9 +240,7 @@ var rotating;
 			cameraRelocate = true;
 
 		}
-		scene.add(graph);
 
-		//build2d(rootObject);
 
 
 	}
@@ -265,7 +274,8 @@ var rotating;
 		scene.matrixAutoUpdate = false;
 		//scene.fog = new THREE.FogExp2( 0xBBBBBB, 0.00003 );
 		scene.add(layers);
-		scene.add(graph)
+		scene.add(graph);
+		scene.add(graph2d)
 		scene.add( new THREE.AmbientLight( 0x888888 ) );
 
 		var point = new THREE.SpotLight( 0x333333,3.0);
