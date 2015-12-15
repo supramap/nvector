@@ -373,9 +373,9 @@ function showSelected(name, rootPosition){
   var infoKeys = Object.keys(info);
   var htmlString = "<table class='descTable'><tr><td class='descriptor'>name</td><td class='value'>"+name+"</td></tr>"
   for(var i = 0; i < infoKeys.length; i++){
-    htmlString += "<tr><td class='descriptor'>"+infoKeys[i]+"</td><td class='value'>"+info[infoKeys[i]]+"</td></tr>"
+    htmlString += "<tr class='descriptorContainer'><td class='descriptor'><span class='tableText'>"+infoKeys[i]+":</span></td><td class='value'><span class='tableText'>"+info[infoKeys[i]]+"</span></td></tr>"
   }
-  htmlString += "</table><div class='returnButton'>r</div>"
+  htmlString += "</table><div class='returnButton' onclick='showPossible()'><input type='image' id='returnArrow' src='images/return.svg'></div>"
   $("#nodeDetails").html(htmlString);
 }
 

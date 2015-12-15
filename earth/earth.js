@@ -424,7 +424,11 @@ var rotating;
 		mouse.x = ( event.clientX / renderer.domElement.width ) * 2 - 1;
 		mouse.y = - ( event.clientY / renderer.domElement.height ) * 2 + 1;
 		raycaster.setFromCamera(mouse, camera);
-		if(graph.children[0] != undefined){
+
+		// determine how far out the menu is.
+		var menuWidth = $("#menu").width();
+
+		if(graph.children[0] != undefined && event.clientX > menuWidth){
 			var allObjs = [];
 			for(var i = 0; i < graph.children.length; i++){
 				allObjs.push(graph.children[i].children[0]);
@@ -445,6 +449,7 @@ var rotating;
 						possible.push([currentName,currentRootPos]);
 					}
 				}
+				$("#dataTab").trigger("click");
 				showPossible();
 			}
 		}

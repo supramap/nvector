@@ -25,12 +25,14 @@ canvas{
 
 #info{
 	width: 95%;
-	background-color: lightgray;
+	/*background-color: lightgray;*/
+	background-color:rgba(235,235,235,.5);
 	min-height: 25px;
 	position:relative;
 	margin-left: auto;
 	margin-right: auto;
 	top: 35px;
+	overflow-x: hidden;
 
 }
 
@@ -53,13 +55,14 @@ canvas{
 	margin-left:0px;
 	padding-left: 0px;
 	margin-bottom: 0px;
+	margin-top:0px;
 	cursor:pointer;
 }
 
 .inputDelete{
 	width:10px;
 	height:10px;
-	background-color:lightgray;
+	background-color:rgba(235,235,235,.5);
 	border:1px solid gray;
 	display:inline;
 	float:right;
@@ -76,6 +79,7 @@ canvas{
 .inputCheck{
 	float:right;
 	cursor:pointer;
+	opacity:.8;
 }
 
 .tab{
@@ -89,7 +93,8 @@ canvas{
 }
 
 .inactiveTab{
-	background-color:gray;
+	/*background-color:gray;*/
+	background-color: rgba(85,85,85,.5);
 	border-bottom:1px solid black;
 }
 
@@ -108,6 +113,38 @@ canvas{
 .inputRadio{
 	float:right;
 	cursor:pointer;
+	opacity:.8;
+}
+
+.descTable{
+	border-collapse: collapse;
+	min-width: 100%;
+}
+.descriptorContainer:nth-child(even){
+	background-color:rgba(185, 185, 185,.5);
+}
+
+.descriptor{
+
+}
+
+.value{
+
+}
+
+#returnArrow{
+	width:24px;
+	height:23px;
+}
+
+.returnButton{
+	border:2px solid darkgray;
+	background-color: rgba(235,235,235,.5);
+	width:24px;
+	height:24px;
+	border-radius: 12px;
+	text-align:center;
+	margin:auto;
 }
 
 #possible{
@@ -133,6 +170,7 @@ canvas{
 #nodeDetails{
 	max-height: calc(100% - 200px);
 	overflow:scroll;
+	width:calc(100% + 16px);
 }
 
 #infileBut{
@@ -227,6 +265,7 @@ li.selections:nth-child(even){
 .buttonGroup{
 	border: 1px solid black;
 	cursor:pointer;
+	background-color: rgba(235,235,235,.5);
 }
 
 #menu{
@@ -234,8 +273,8 @@ li.selections:nth-child(even){
 	position:absolute;
 	top:0px;
 	left: 0px;
-	background-color: black;
-	opacity: .5;
+	background-color: rgba(0,0,0,.5);
+	/*opacity: .5;*/
 	width: 20%;
 	height: 100%;
 	border-right: solid paleturquoise;
@@ -272,7 +311,7 @@ li.selections:nth-child(even){
 	border-radius: 12px;
 	width: 24px;
 	height: 24px;
-	background-color: lightgray;
+	background-color: rgba(235,235,235,.5);;
 	border:1px solid gray;
 }
 
@@ -283,7 +322,7 @@ li.selections:nth-child(even){
 	border-radius:12px;
 	right:1px;
 	top:3px;
-	background-color:lightgray;
+	background-color:rgba(235,235,235,.5);;
 	border:1px solid gray;
 }
 
