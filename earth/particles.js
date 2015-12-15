@@ -101,7 +101,7 @@ function generateParticles(points,lineLength){
 }
 
 
-function initializeSpheres(ingeometry){
+function initializeSpheres(ingeometry,rootPosition){
 	var spheresGeometry = new THREE.Geometry();
 
 	var sphereAttributes = {
@@ -135,7 +135,7 @@ function initializeSpheres(ingeometry){
 
 
 	var spherePSystem = new THREE.PointCloud(spheresGeometry,sphmat);
-
+	spherePSystem.rootPosition = rootPosition;
 
 
 

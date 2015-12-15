@@ -20,7 +20,7 @@ function makeGraphGeometry(connectionObj, startP, endP, rootPosition){
 				var allSpheres = initializeSpheres(dataset.nodes);
 				var allLines = initializeLines(dataset.lines);
 				var graphObject = new THREE.Object3D();
-				graphObject.add(allSpheres);
+				graphObject.add(allSpheres,rootPosition);
 				graphObject.add(allLines);
 				//scene.add(graphObject);
 				graph.children[rootPosition] = graphObject;
