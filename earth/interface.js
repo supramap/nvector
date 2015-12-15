@@ -362,14 +362,21 @@ $("#panelButton").click(function(){
 function showPossible(){
   var outString = "<ul id='possible'>";
   for(var i = 0 ; i < possible.length; i++){
-    outString+= "<li class='nodeSel' value='"+possible[i]+"' onclick='showSelected(\""+possible[i]+"\")'>"+possible[i]+"</li>"
+    outString+= "<li class='nodeSel' value='"+possible[i][0]+"' onclick='showSelected(\""+possible[i][0]+"\","+possible[i][1]+")'>"+possible[i][0]+"</li>"
   }
   outString += "</ul>";
   $("#nodeDetails").html(outString);
 }
 
-function showSelected(name){
-  console.log("showing data for " + name);
+function showSelected(name, rootPosition){
+  var info = rootDataStore[rootPosition][0].data[name];
+  var infoKeys = Object.keys(info);
+  var htmlString = "<table class='descTable'><tr><td class='descriptor'>name</td><td class='value'>"+name+"</td></tr>"
+  for(var i = 0; i < infoKeys.length; i++){
+    htmlString += "<tr><td class='descriptor'>"+infoKeys[i]+"</td><td class='value'>"+info[infoKeys[i]]+"</td></tr>"
+  }
+  htmlString += "</table><div class='returnButton'>r</div>"
+  $("#nodeDetails").html(htmlString);
 }
 
 

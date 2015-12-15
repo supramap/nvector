@@ -441,7 +441,8 @@ var rotating;
 					}
 					if(intersecs[i].object.type == "PointCloud"){
 						var currentName = intersecs[i].object.geometry.vertices[intersecs[i].index].nodeName;
-						possible.push(currentName);
+						var currentRootPos = intersecs[i].object.rootPosition;
+						possible.push([currentName,currentRootPos]);
 					}
 				}
 				showPossible();

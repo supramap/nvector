@@ -17,10 +17,10 @@ function makeGraphGeometry(connectionObj, startP, endP, rootPosition){
 				// Take the data returned from the thread and convert it into the
 				// appropriate systems for gpu rendering
 				var dataset = JSON.parse(e.data);
-				var allSpheres = initializeSpheres(dataset.nodes);
+				var allSpheres = initializeSpheres(dataset.nodes,rootPosition);
 				var allLines = initializeLines(dataset.lines);
 				var graphObject = new THREE.Object3D();
-				graphObject.add(allSpheres,rootPosition);
+				graphObject.add(allSpheres);
 				graphObject.add(allLines);
 				//scene.add(graphObject);
 				graph.children[rootPosition] = graphObject;
@@ -32,7 +32,7 @@ function makeGraphGeometry(connectionObj, startP, endP, rootPosition){
 
 				// If this object position already exists then I may need to run the
 				// memory dealocation command.
-				rootDataStore[rootPosition][3] = allSpheres;
+				//rootDataStore[rootPosition][3] = allSpheres;
 
 			}
 		}
