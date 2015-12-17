@@ -1,6 +1,6 @@
 var pSystem;
 
-function initializeParticles(){
+function initializeParticles(generatedParticles){
 	// load the shaders
 	particleAttributes = {
 
@@ -32,11 +32,11 @@ function initializeParticles(){
 	// after the shaders are loaded build the particle system
 
 
-	pSystem = new THREE.PointCloud(particlesGeo,particleMaterial);
+	pSystem = new THREE.PointCloud(generatedParticles,particleMaterial);
 
 	var values_size = particleAttributes.size.value;
 	var values_color = particleAttributes.customColor.value
-	for(var i = 0 ; i < particlesGeo.vertices.length; i++){
+	for(var i = 0 ; i < generatedParticles.vertices.length; i++){
 		values_size[i] = 3;
 		values_color[ i ] = new THREE.Color( 0xffaa00 );
 		values_color[i].setHSL(.2,.7,.4);
@@ -75,10 +75,28 @@ function initializeParticles(){
 
 
 
-function generateParticles(points,lineLength){
+function generateParticles(lineData){
+
 	var	particleSize = 2;
+	var particlesGeo = new THREE.Geometry();
+
+	for(var linePos = 0; linePos < lineData.length; linePos++){
+		var currentLine = lineData[linePos];
+
+		// calculate a replacement for the lineLength
+
+
+		particleCount = Math.floor(Math.sqrt(lineLength)) - 1;
+		
+
+
+
+	}
+
+
+
 	// this may change to be relative to the size of the line.
-	particleCount = Math.floor(Math.sqrt(lineLength)) - 1;
+
 	for(var i = 0; i < particleCount; i++){
 		var lineIndex = i/particleCount * points.length;
 		var rIndex = Math.floor(lineIndex);
@@ -99,6 +117,8 @@ function generateParticles(points,lineLength){
 	}
 
 }
+
+
 
 
 function initializeSpheres(ingeometry,rootPosition){

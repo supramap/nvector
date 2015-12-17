@@ -26,7 +26,6 @@ var freshNodes=[], freshLines=[];
 
 function makeGraphGeometry(connectionObj, startP, endP){
 		var roots = connectionObj.options.roots;
-		particlesGeo = new THREE.Geometry();
 		for (var i = 0; i < roots.length; i++){
 			var current = roots[i];
 			if(connectionObj.options.time == true){

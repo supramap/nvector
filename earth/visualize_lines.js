@@ -2,7 +2,6 @@ var globeRadius = 1000;
 var vec3_origin = new THREE.Vector3(0,0,0);
 var rad = 100;
 var freshLines, freshNodes;
-var particlesGeo;
 var cantPlace = [];
 
 function makeGraphGeometry(connectionObj, startP, endP, rootPosition){
@@ -38,7 +37,6 @@ function makeGraphGeometry(connectionObj, startP, endP, rootPosition){
 		}
 		else{
 			var roots = connectionObj.options.roots;
-			particlesGeo = new THREE.Geometry();
 			for (var i = 0; i < roots.length; i++){
 				var current = roots[i];
 				if(connectionObj.options.time == true){
