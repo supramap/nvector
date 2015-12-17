@@ -57,6 +57,33 @@ function deleteObj(obj){
 
 }
 
+function panOrbToggle(){
+	// if switching to earth
+	if(!treeState){
+		// make sure that the left click now controls panning and orbit is disabled
+		controls.mouseButtons.PAN = 2;
+		controls.mouseButtons.ORBIT = 0;
+		controls.noPan = true;
+		controls.panPriority = false;
+		controls.target = new THREE.Vector3(0,0,0);
+		controls.minDistance = 140;
+		controls.maxDistance = 280;
+		controls.zoomSpeed = .15;
+	}
+	// if switching to tree
+	else{
+		// reset to default settings
+		controls.mouseButtons.PAN = 0;
+		controls.mouseButtons.ORBIT = NaN;
+		controls.noPan = false;
+		controls.panPriority = true;
+		controls.zoomSpeed = 1.0;
+		controls.minDistance = 20;
+		controls.maxDistance = Infinity;
+	}
+
+}
+
 
 
 // Create a string representation of the date.

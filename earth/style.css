@@ -129,7 +129,7 @@ canvas{
 }
 
 .value{
-
+	
 }
 
 #returnArrow{
@@ -145,6 +145,8 @@ canvas{
 	border-radius: 12px;
 	text-align:center;
 	margin:auto;
+	margin-top:5px;
+	margin-bottom:3px;
 }
 
 #possible{

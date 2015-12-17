@@ -55,7 +55,7 @@ function makeGraphGeometry(connectionObj, startP, endP, rootPosition){
 				}
 
 			}
-			var allSpheres = initializeSpheres(freshNodes);
+			var allSpheres = initializeSpheres(freshNodes,rootPosition);
 			var allLines = initializeLines(freshLines);
 			var graphObject = new THREE.Object3D();
 			graphObject.add(allSpheres);
@@ -322,7 +322,7 @@ function build2d(coreObject,startP,endP,rootPosition){
 		graphWorker.onmessage = function(e){
 			//var loader = new THREE.ObjectLoader();
 			var dataset = JSON.parse(e.data);
-			var allSpheres = initializeSpheres(dataset.nodes);
+			var allSpheres = initializeSpheres(dataset.nodes,rootPosition);
 			var allLines = initializeLines(dataset.lines);
 			var graphObject = new THREE.Object3D();
 			graphObject.add(allSpheres);

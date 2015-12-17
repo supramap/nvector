@@ -17,7 +17,7 @@ var layers = new THREE.Object3D();
 var countryData = new Object();
 var stateData = new Object();
 var particlesExist = false,treeState = false;
-var rotating;
+var rotating,controls;
 
 //window.onload = function(){
 	var outlinedMapTexture;
@@ -252,7 +252,7 @@ var rotating;
 
 		}
 
-
+		panOrbToggle();
 
 	}
 
@@ -391,10 +391,10 @@ var rotating;
 		camera.position.set(-131,119,-22);
 		camera.add(point)
   	scene.add(camera)
-		var controls = new THREE.OrbitControls( camera, renderer.domElement );
+		controls = new THREE.OrbitControls( camera, renderer.domElement );
 		controls.noPan = true;
 		controls.minDistance = 140;
-		//controls.maxDistance = 280;
+		controls.maxDistance = 280;
 		controls.zoomSpeed = .15;
 
 		var atlas = document.getElementById('atlas')
@@ -428,31 +428,63 @@ var rotating;
 		// determine how far out the menu is.
 		var menuWidth = $("#menu").width();
 
-		if(graph.children[0] != undefined && event.clientX > menuWidth){
-			var allObjs = [];
-			for(var i = 0; i < graph.children.length; i++){
-				allObjs.push(graph.children[i].children[0]);
-			}
-
-			var intersecs = raycaster.intersectObjects(allObjs);
-			if(intersecs.length > 0 ){
-				//var relname = instersecs[0].object.name;
-				var foundSphere = false;
-				for(var i = 0; i < intersecs.length; i++){
-					if(foundSphere == false && intersecs[i].object.type == "PointCloud"){
-						foundSphere = true;
-						possible = [];
-					}
-					if(intersecs[i].object.type == "PointCloud"){
-						var currentName = intersecs[i].object.geometry.vertices[intersecs[i].index].nodeName;
-						var currentRootPos = intersecs[i].object.rootPosition;
-						possible.push([currentName,currentRootPos]);
-					}
+		// if in the standard view
+		if(!treeState){
+			if(graph.children[0] != undefined && event.clientX > menuWidth){
+				var allObjs = [];
+				for(var i = 0; i < graph.children.length; i++){
+					allObjs.push(graph.children[i].children[0]);
 				}
-				$("#dataTab").trigger("click");
-				showPossible();
+
+				var intersecs = raycaster.intersectObjects(allObjs);
+				if(intersecs.length > 0 ){
+					//var relname = instersecs[0].object.name;
+					var foundSphere = false;
+					for(var i = 0; i < intersecs.length; i++){
+						if(foundSphere == false && intersecs[i].object.type == "PointCloud"){
+							foundSphere = true;
+							possible = [];
+						}
+						if(intersecs[i].object.type == "PointCloud"){
+							var currentName = intersecs[i].object.geometry.vertices[intersecs[i].index].nodeName;
+							var currentRootPos = intersecs[i].object.rootPosition;
+							possible.push([currentName,currentRootPos]);
+						}
+					}
+					$("#dataTab").trigger("click");
+					showPossible();
+				}
 			}
 		}
+		//otherwise assume that we are in the 2d view
+		else{
+			if(graph2d.children[0] != undefined && event.clientX > menuWidth){
+				var allObjs = [];
+				for(var i = 0; i < graph2d.children.length; i++){
+					allObjs.push(graph2d.children[i].children[0]);
+				}
+
+				var intersecs = raycaster.intersectObjects(allObjs);
+				if(intersecs.length > 0 ){
+					//var relname = instersecs[0].object.name;
+					var foundSphere = false;
+					for(var i = 0; i < intersecs.length; i++){
+						if(foundSphere == false && intersecs[i].object.type == "PointCloud"){
+							foundSphere = true;
+							possible = [];
+						}
+						if(intersecs[i].object.type == "PointCloud"){
+							var currentName = intersecs[i].object.geometry.vertices[intersecs[i].index].nodeName;
+							var currentRootPos = intersecs[i].object.rootPosition;
+							possible.push([currentName,currentRootPos]);
+						}
+					}
+					$("#dataTab").trigger("click");
+					showPossible();
+				}
+			}
+		}
+
 	}
 
 
