@@ -22,6 +22,7 @@ function makeGraphGeometry(connectionObj, startP, endP, rootPosition){
 				graphObject.add(allSpheres);
 				graphObject.add(allLines);
 				//scene.add(graphObject);
+				generateParticles(dataset.lines);
 				graph.children[rootPosition] = graphObject;
 				//graph.add(graphObject);
 

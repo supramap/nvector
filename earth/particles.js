@@ -77,44 +77,39 @@ function initializeParticles(generatedParticles){
 
 function generateParticles(lineData){
 
-	var	particleSize = 2;
+	var	particleSize = 2,particleCount = 0;
 	var particlesGeo = new THREE.Geometry();
 
 	for(var linePos = 0; linePos < lineData.length; linePos++){
 		var currentLine = lineData[linePos];
 
 		// calculate a replacement for the lineLength
+		var arrLength = currentLine.length;
+		var firstPoint = new THREE.Vector3(currentLine[0],currentLine[1],currentLine[2]);
+		var lastPoint = new THREE.Vector3(currentLine[arrLength-3],currentLine[arrLength-2],currentLine[arrLength-1]);
+		var directDistance = firstPoint.distanceTo(lastPoint);
 
+		particleCount = Math.floor(Math.sqrt(	(Math.pow(directDistance,2))/2	)) - 1;
+		for(var i = 0; i < particleCount; i++){
+			var lineIndex = i/particleCount * (currentLine.length/3);
+			var rIndex = Math.floor(lineIndex);
+			var baseIndex = rIndex * 3;
+			var particle = new THREE.Vector3(baseIndex,baseIndex+1,baseIndex+2);
+			particle.moveIndex = baseIndex;
+			particle.nextIndex = baseIndex+3;
+			if(particle.nextIndex >= points.length )
+					particle.nextIndex = 0;
 
-		particleCount = Math.floor(Math.sqrt(lineLength)) - 1;
-		
+			particle.lerpN = 0;
+			particle.path = currentLine;
+			particlesGeo.vertices.push(particle);
+		}
 
 
 
 	}
 
 
-
-	// this may change to be relative to the size of the line.
-
-	for(var i = 0; i < particleCount; i++){
-		var lineIndex = i/particleCount * points.length;
-		var rIndex = Math.floor(lineIndex);
-
-		// the point within the line's geometry where the particle starts
-		var point = points[rIndex];
-		// clone the points vertices into a particle
-		var particle = point.clone();
-		// determine where it goes next
-		particle.moveIndex = rIndex;
-		particle.nextIndex = rIndex+1;
-		if(particle.nextIndex >= points.length )
-				particle.nextIndex = 0;
-		particle.lerpN = 0;
-		particle.path = points;
-		particlesGeo.vertices.push( particle );
-		particle.size = particleSize;
-	}
 
 }
 
