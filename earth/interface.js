@@ -181,16 +181,14 @@ $("#popLoad").click(function(){
 // particle cloud toggle button
 
 $("#particleToggle").click(function(){
-  if(particleCloud != undefined && graph != undefined){
-    if(!particlesExist){
-      graph.add(particleCloud);
+    if(!particlesExist && !treeState){
       particlesExist = true;
+      testLiveParticle();
     }
     else{
-      graph.remove(particleCloud)
+      hideAllParticles();
       particlesExist = false;
     }
-  }
 });
 
 
@@ -387,6 +385,23 @@ function loading(){
 function doneLoading(){
   $("body").removeClass("loading");
 }
+
+
+var subToggled = false;
+// setup the subtree toggle within the editor
+$("#subButton").click(function(){
+  if(subToggled){
+    subToggled = false;
+    $("#subButton").addClass("subButton");
+    $("#subButton").removeClass("subButtonTog");
+  }
+  else{
+    subToggled = true;
+    $("#subButton").addClass("subButtonTog");
+    $("#subButton").removeClass("subButton");
+
+  }
+});
 
 
 // THIS IS FOR THE TIME SLIDER--------------------------------------------------

@@ -1,4 +1,4 @@
-var pSystem;
+//var pSystem;
 
 function initializeParticles(generatedParticles){
 	// load the shaders
@@ -45,29 +45,32 @@ function initializeParticles(generatedParticles){
 	pSystem.update = function(){
 			// var time = Date.now()
 			for( var i in this.geometry.vertices ){
+				if(i == "extend"){
+					return;
+				}
+
 				var particle = this.geometry.vertices[i];
 				var path = particle.path;
-				var moveLength = path.length;
+				//var moveLength = path.length;
 
 				particle.lerpN += 0.05;
 				if(particle.lerpN > 1){
 					particle.lerpN = 0;
 					particle.moveIndex = particle.nextIndex;
-					particle.nextIndex++;
+					particle.nextIndex = particle.nextIndex + 3;
 					if( particle.nextIndex >= path.length ){
 						particle.moveIndex = 0;
-						particle.nextIndex = 1;
+						particle.nextIndex = 3;
 					}
 				}
-
-				var currentPoint = path[particle.moveIndex];
-				var nextPoint = path[particle.nextIndex];
+				var currentPoint = new THREE.Vector3(path[particle.moveIndex],path[particle.moveIndex + 1],path[particle.moveIndex + 2]);
+				var nextPoint = new THREE.Vector3(path[particle.nextIndex],path[particle.nextIndex + 1],path[particle.nextIndex + 2]);
 
 
 				particle.copy( currentPoint );
 				particle.lerp( nextPoint, particle.lerpN );
 			}
-			this.geometry.verticesNeedUpdate = true;
+			//this.geometry.verticesNeedUpdate = true;
 		};
 
 		return pSystem
@@ -89,16 +92,17 @@ function generateParticles(lineData){
 		var lastPoint = new THREE.Vector3(currentLine[arrLength-3],currentLine[arrLength-2],currentLine[arrLength-1]);
 		var directDistance = firstPoint.distanceTo(lastPoint);
 
-		particleCount = Math.floor(Math.sqrt(	(Math.pow(directDistance,2))/2	)) - 1;
+		//particleCount = Math.floor(Math.sqrt(	(Math.pow(directDistance,2))/4	));
+		particleCount = Math.floor(Math.sqrt(directDistance));
 		for(var i = 0; i < particleCount; i++){
 			var lineIndex = i/particleCount * (currentLine.length/3);
 			var rIndex = Math.floor(lineIndex);
 			var baseIndex = rIndex * 3;
-			var particle = new THREE.Vector3(baseIndex,baseIndex+1,baseIndex+2);
+			var particle = new THREE.Vector3(currentLine[baseIndex],currentLine[baseIndex+1],currentLine[baseIndex+2]);
 			particle.moveIndex = baseIndex;
 			particle.nextIndex = baseIndex+3;
-			if(particle.nextIndex >= points.length )
-					particle.nextIndex = 0;
+			//if(particle.nextIndex >= (currentLine.length/3) )
+					//particle.nextIndex = 0;
 
 			particle.lerpN = 0;
 			particle.path = currentLine;
@@ -109,7 +113,7 @@ function generateParticles(lineData){
 
 	}
 
-
+	return particlesGeo;
 
 }
 
@@ -189,4 +193,32 @@ function initializeLines(lineData){
 	var mesh = new THREE.Line(lineGeo, lineMat, THREE.LinePieces);
 
 	return mesh;
+}
+
+
+
+
+function updateAllParticles(){
+	for(var i = 0 ; i < particleUniverse.children.length; i++){
+		// I will probably need an if conditional in here at some point to help
+		// manage which particles are shown.
+		particleUniverse.children[i].update();
+		particleUniverse.children[i].geometry.verticesNeedUpdate = true;
+	}
+}
+
+function hideAllParticles(){
+	for(var i = 0 ; i < particleUniverse.children.length; i++){
+		particleUniverse.children[i].visible = false;
+	}
+}
+
+function testLiveParticle(){
+	hideAllParticles();
+	if(particlesExist){
+		// get the currently selected view and display it's particles.
+		var checkedRadio = $("input:radio:checked");
+		var graphPos = parseInt(checkedRadio[0].value);
+		particleUniverse.children[graphPos].visible=true;
+	}
 }

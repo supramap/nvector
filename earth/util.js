@@ -57,6 +57,9 @@ function deleteObj(obj){
 
 }
 
+
+
+
 function panOrbToggle(){
 	// if switching to earth
 	if(!treeState){

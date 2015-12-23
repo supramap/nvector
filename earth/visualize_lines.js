@@ -22,12 +22,14 @@ function makeGraphGeometry(connectionObj, startP, endP, rootPosition){
 				graphObject.add(allSpheres);
 				graphObject.add(allLines);
 				//scene.add(graphObject);
-				generateParticles(dataset.lines);
+				var currentParticleSystem = initializeParticles(generateParticles(dataset.lines));
+				particleUniverse.children[rootPosition] = currentParticleSystem;
 				graph.children[rootPosition] = graphObject;
 				//graph.add(graphObject);
-
 				// try and hide all of the non-checked children at this point.
 				hideGraph();
+				// check if particles are enabled and show only the particles of the selected graph
+				testLiveParticle();
 
 
 				// If this object position already exists then I may need to run the

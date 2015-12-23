@@ -11,9 +11,10 @@ var countryLookup;
 var raycaster = new THREE.Raycaster();
 var graph = new THREE.Object3D();
 var graph2d = new THREE.Object3D();
+var layers = new THREE.Object3D();
+var particleUniverse = new THREE.Object3D();
 var rootDataStore = []
 var particleCloud;
-var layers = new THREE.Object3D();
 var countryData = new Object();
 var stateData = new Object();
 var particlesExist = false,treeState = false;
@@ -90,7 +91,7 @@ var rotating,controls;
 			htmlString = htmlString + "<li class='listItems'><div class='textSpan'>"+rootDataStore[i][1]+"</div>"+
 			"<div class='inputDelete' onclick='removeGraph("+i+")' >x</div>"+
 			"<input class='inputCheck' type='checkbox' value="+i+" onclick='hideGraph()' checked>"+
-			"<input class='inputRadio' type='radio' name='selected' value="+ i + " "+((i==0) ? "checked":"")+" > </li>";
+			"<input class='inputRadio' type='radio' onclick='testLiveParticle()' name='selected' value="+ i + " "+((i==0) ? "checked":"")+" > </li>";
 		}
 		htmlString += "</ul>";
 		$("#loadedFiles-names").html(htmlString);
@@ -212,6 +213,7 @@ var rotating,controls;
 
 		}
 		else{
+			hideAllParticles();
 			graph.visible = false;
 			rotating.visible = false;
 			graph2d.visible = true;
@@ -286,7 +288,8 @@ var rotating,controls;
 		//scene.fog = new THREE.FogExp2( 0xBBBBBB, 0.00003 );
 		scene.add(layers);
 		scene.add(graph);
-		scene.add(graph2d)
+		scene.add(graph2d);
+		scene.add(particleUniverse);
 		scene.add( new THREE.AmbientLight( 0x888888 ) );
 
 		var point = new THREE.SpotLight( 0x333333,3.0);
@@ -502,7 +505,8 @@ var rotating,controls;
 
 	function animate(){
 		if(particlesExist){
-			pSystem.update();
+			//pSystem.update();
+			updateAllParticles();
 		}
 		if(cameraRelocate){
 			slideCamera();

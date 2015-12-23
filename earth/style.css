@@ -129,7 +129,7 @@ canvas{
 }
 
 .value{
-	
+
 }
 
 #returnArrow{
@@ -147,6 +147,52 @@ canvas{
 	margin:auto;
 	margin-top:5px;
 	margin-bottom:3px;
+}
+
+.returnButton2{
+	border:2px solid darkgray;
+	background-color: rgba(235,235,235,.5);
+	width:24px;
+	height:24px;
+	border-radius: 12px;
+	text-align:center;
+	margin-top:5px;
+	margin-bottom:3px;
+	display:inline-block;
+	float:right;
+	right:5px;
+	position:relative;
+
+}
+
+.subButton{
+	width:75px;
+	height:25px;
+	background-color: rgba(235,235,235,.5);
+	display:inline-block;
+	position:relative;
+	top:6px;
+	left:4px;
+	text-align: center;
+	line-height: 23px;
+}
+
+.subButtonTog{
+	width:75px;
+	height:25px;
+	background-color: rgba(154, 0, 0, 0.5);
+	color:white;
+	display:inline-block;
+	position:relative;
+	top:6px;
+	left:4px;
+	text-align: center;
+	line-height: 23px;
+}
+
+#subLabel{
+	text-align: center;
+	border-bottom:1px solid black;
 }
 
 #possible{
