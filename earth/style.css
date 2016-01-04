@@ -175,6 +175,7 @@ canvas{
 	left:4px;
 	text-align: center;
 	line-height: 23px;
+	cursor:pointer;
 }
 
 .subButtonTog{

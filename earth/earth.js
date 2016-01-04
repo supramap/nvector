@@ -423,6 +423,13 @@ var rotating,controls;
 
 	var possible = [];
 
+
+
+	/*
+		This is where we govern everything that happens when a user selects a
+		node. The primary factor taken into consideration is the 'treeState' which
+		shows if the current view is 3d or 2d.
+	*/
 	function onDocumentMouseDown(event){
 		mouse.x = ( event.clientX / renderer.domElement.width ) * 2 - 1;
 		mouse.y = - ( event.clientY / renderer.domElement.height ) * 2 + 1;
@@ -431,7 +438,8 @@ var rotating,controls;
 		// determine how far out the menu is.
 		var menuWidth = $("#menu").width();
 
-		// if in the standard view
+		// if in the standard view utilize the graph object to search for appropriately
+		// children.
 		if(!treeState){
 			if(graph.children[0] != undefined && event.clientX > menuWidth){
 				var allObjs = [];
@@ -443,6 +451,11 @@ var rotating,controls;
 				if(intersecs.length > 0 ){
 					//var relname = instersecs[0].object.name;
 					var foundSphere = false;
+
+					/*
+						Iterate through all of the possible intersections for determining
+						which pointClouds it intersects.
+					*/
 					for(var i = 0; i < intersecs.length; i++){
 						if(foundSphere == false && intersecs[i].object.type == "PointCloud"){
 							foundSphere = true;
@@ -459,7 +472,7 @@ var rotating,controls;
 				}
 			}
 		}
-		//otherwise assume that we are in the 2d view
+		//otherwise assume that we are in the 2d view and use the appropriate 2dObject
 		else{
 			if(graph2d.children[0] != undefined && event.clientX > menuWidth){
 				var allObjs = [];
@@ -468,10 +481,13 @@ var rotating,controls;
 				}
 
 				var intersecs = raycaster.intersectObjects(allObjs);
+
+				// If there is something that was selected dig deeper.
 				if(intersecs.length > 0 ){
 					//var relname = instersecs[0].object.name;
 					var foundSphere = false;
 					for(var i = 0; i < intersecs.length; i++){
+
 						if(foundSphere == false && intersecs[i].object.type == "PointCloud"){
 							foundSphere = true;
 							possible = [];
@@ -481,9 +497,20 @@ var rotating,controls;
 							var currentRootPos = intersecs[i].object.rootPosition;
 							possible.push([currentName,currentRootPos]);
 						}
+					}//end for loop
+
+					if(subToggled){
+						//**************** If choosing subsection
+						subsect();
+						//****************
 					}
-					$("#dataTab").trigger("click");
-					showPossible();
+					else{
+						//***************	If not in any form of editing mode
+						$("#dataTab").trigger("click");
+						showPossible();
+						//*****************
+					}
+
 				}
 			}
 		}

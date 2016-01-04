@@ -4,6 +4,15 @@ var rad = 100;
 var freshLines, freshNodes;
 var cantPlace = [];
 
+/*
+	The makeGraphGeometry function is where the magic begins. This function is
+	effectively the helper function for the recursiveRebuild function that actually
+	generates the 3d graph. Here it is determined as to weather or not a webworker
+	is available, and all of the organization of the data is completed.
+
+	Nothing is returned however a THREE.Object3D object is placed in a global
+	array relative to its rootPosition.
+*/
 function makeGraphGeometry(connectionObj, startP, endP, rootPosition){
 		freshNodes = [];
 		freshLines = [];
