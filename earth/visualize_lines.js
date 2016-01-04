@@ -19,7 +19,10 @@ function makeGraphGeometry(connectionObj, startP, endP, rootPosition){
 
 		if(typeof(Worker) !== "undefined"){
 			var graphWorker = new Worker("graphWorker.js");
-			var sendObject = {"type":"3d","obj":connectionObj,"stt":startP,"stp":endP}
+
+			// check for optional roots so that they can be stuffed into the sendObject
+
+			var sendObject = {"type":"3d","obj":connectionObj,"stt":startP,"stp":endP,"custRoots":rootDataStore[rootPosition][2]}
 			graphWorker.postMessage(JSON.stringify(sendObject));
 			graphWorker.onmessage = function(e){
 				// Take the data returned from the thread and convert it into the
@@ -30,25 +33,26 @@ function makeGraphGeometry(connectionObj, startP, endP, rootPosition){
 				var graphObject = new THREE.Object3D();
 				graphObject.add(allSpheres);
 				graphObject.add(allLines);
-				//scene.add(graphObject);
+
 				var currentParticleSystem = initializeParticles(generateParticles(dataset.lines));
 				particleUniverse.children[rootPosition] = currentParticleSystem;
 				graph.children[rootPosition] = graphObject;
-				//graph.add(graphObject);
 				// try and hide all of the non-checked children at this point.
 				hideGraph();
 				// check if particles are enabled and show only the particles of the selected graph
 				testLiveParticle();
 
-
-				// If this object position already exists then I may need to run the
-				// memory dealocation command.
-				//rootDataStore[rootPosition][3] = allSpheres;
-
 			}
 		}
 		else{
-			var roots = connectionObj.options.roots;
+			var roots;
+			if(rootDataStore[rootPosition][2] != undefined){
+				roots = rooDataStore = rootDataStore[rootPosition][2];
+			}
+			else{
+				roots = connectionObj.options.roots;
+			}
+
 			for (var i = 0; i < roots.length; i++){
 				var current = roots[i];
 				if(connectionObj.options.time == true){
@@ -315,6 +319,9 @@ function recurseRebuild(current, bigObj,dateStart,dateEnd){
 	}
 }
 
+
+
+
 var totalDepth = 0;
 var totalBreadth = 0;
 var leafPlace = 0;
@@ -328,7 +335,10 @@ function build2d(coreObject,startP,endP,rootPosition){
 	if(typeof(Worker) !== "undefined"){
 
 		var graphWorker = new Worker("graphWorker.js");
-		graphWorker.postMessage(JSON.stringify({"type":"2dlin","obj":coreObject,"stt":startP,"stp":endP}));
+
+		// check for optional roots so that they can be sent to the webworker appropriately
+
+		graphWorker.postMessage(JSON.stringify({"type":"2dlin","obj":coreObject,"stt":startP,"stp":endP,"custRoots":rootDataStore[rootPosition][2]}));
 		graphWorker.onmessage = function(e){
 			//var loader = new THREE.ObjectLoader();
 			var dataset = JSON.parse(e.data);
@@ -344,19 +354,26 @@ function build2d(coreObject,startP,endP,rootPosition){
 		}
 	}
 	else{
+		var roots;
+		if(rootDataStore[rootPosition][2] != undefined){
+			roots = rootDataStore[rootPosition][2];
+		}
+		else{
+			roots = coreObject.options.roots;
+		}
 		totalBreadth = calcLeaves(coreObject.data,startP,endP);
 		totalDepth = calcDepth(coreObject.options.roots[0],coreObject.data,startP,endP);
 		if(coreObject.options.time == true){
 				if(startP == undefined || endP == undefined){
 					var range = coreObject.options.timeRange
-					recurseBuild2d(coreObject.options.roots[0],coreObject.data,range[0],range[1]);
+					recurseBuild2d(roots[0],coreObject.data,range[0],range[1]);
 				}
 				else{
-					recurseBuild2d(coreObject.options.roots[0],coreObject.data,startP,endP);
+					recurseBuild2d(roots[0],coreObject.data,startP,endP);
 				}
 		}
 		else{
-				recurseBuild2d(coreObject.options.roots[0],coreObject.data);
+				recurseBuild2d(roots[0],coreObject.data);
 		}
 		recurseBuild2d(coreObject.options.roots[0],coreObject.data,0);
 		var allSpheres = initializeSpheres(freshNodes);

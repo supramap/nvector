@@ -2,10 +2,11 @@
 importScripts('three.min.js');
 importScripts('util.js');
 var rad = 100;
+var customRoots;
 
 onmessage = function(e){
   var dataset = JSON.parse(e.data);
-
+  customRoots = dataset.custRoots;
   if(dataset.type == "3d"){
     makeGraphGeometry(dataset.obj,dataset.stt,dataset.stp);
   }
@@ -25,7 +26,13 @@ var freshNodes=[], freshLines=[];
 
 
 function makeGraphGeometry(connectionObj, startP, endP){
-		var roots = connectionObj.options.roots;
+    var roots;
+    if(customRoots != undefined){
+      roots = customRoots;
+    }
+    else{
+      roots = connectionObj.options.roots;
+    }
 		for (var i = 0; i < roots.length; i++){
 			var current = roots[i];
 			if(connectionObj.options.time == true){
@@ -315,17 +322,25 @@ function build2d(coreObject,startP,endP){
 	totalDepth = calcDepth(coreObject.options.roots[0],coreObject.data,startP,endP);
   freshLines = [];
   freshNodes = [];
+
+  var roots;
+  if(customRoots != undefined){
+    roots = customRoots;
+  }
+  else{
+    roots = coreObject.options.roots;
+  }
   if(coreObject.options.time == true){
       if(startP == undefined || endP == undefined){
         var range = coreObject.options.timeRange
-        recurseBuild2d(coreObject.options.roots[0],coreObject.data,0,range[0],range[1]);
+        recurseBuild2d(roots[0],coreObject.data,0,range[0],range[1]);
       }
       else{
-        recurseBuild2d(coreObject.options.roots[0],coreObject.data,0,startP,endP);
+        recurseBuild2d(roots[0],coreObject.data,0,startP,endP);
       }
   }
   else{
-      recurseBuild2d(coreObject.options.roots[0],coreObject.data,0);
+      recurseBuild2d(roots[0],coreObject.data,0);
   }
   //recurseBuild2d(coreObject.options.roots[0],coreObject.data,0);
 }

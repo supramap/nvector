@@ -4,9 +4,20 @@
 */
 function subsect(){
   // utilize the first place available assuming that it exists
-  if(places.length > 0){
-    var newRoot = places[0][0];
-    var treePosition = places[0][1];
-    
+  if(possible.length > 0){
+    var newRoot = possible[0][0];
+    var treePosition = possible[0][1];
+    rootDataStore[treePosition][2] = [newRoot];
+    // rebuild the graph.
+    if(sliderExists){
+
+      var slideEnds = slider.noUiSlider.get();
+      redrawGraph(reFormatDate(new Date(+slideEnds[0])),reFormatDate(new Date(+slideEnds[1])));
+      //makeGraphGeometry(rootObject,reFormatDate(new Date(+slideEnds[0])),reFormatDate(new Date(+slideEnds[1])));
+    }
+    else{
+      redrawGraph(undefined,undefined);
+      //makeGraphGeometry(rootObject);
+    }
   }
 }
