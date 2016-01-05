@@ -502,6 +502,7 @@ var rotating,controls;
 					if(subToggled){
 						//**************** If choosing subsection
 						subsect();
+						$("#subButton").trigger("click");
 						//****************
 					}
 					else{

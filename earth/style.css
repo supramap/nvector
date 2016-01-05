@@ -419,8 +419,8 @@ li.selections:nth-child(even){
 /*Time Slider Start------------------------------------------------------*/
 div#timeSlide{
 	position:absolute;
-	height: calc(100% - 60px);
-	top: 44px;
+	height: calc(100% - 70px);
+	top: 50px;
 	left: calc(100% + 10px);
 }
 

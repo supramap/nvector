@@ -319,7 +319,6 @@ var totalBreadth = 0;
 var leafPlace = 0;
 function build2d(coreObject,startP,endP){
 	totalBreadth = calcLeaves(coreObject.data,startP,endP);
-	totalDepth = calcDepth(coreObject.options.roots[0],coreObject.data,startP,endP);
   freshLines = [];
   freshNodes = [];
 
@@ -330,6 +329,8 @@ function build2d(coreObject,startP,endP){
   else{
     roots = coreObject.options.roots;
   }
+  totalDepth = calcDepth(roots[0],coreObject.data,startP,endP);
+
   if(coreObject.options.time == true){
       if(startP == undefined || endP == undefined){
         var range = coreObject.options.timeRange

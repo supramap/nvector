@@ -362,7 +362,7 @@ function build2d(coreObject,startP,endP,rootPosition){
 			roots = coreObject.options.roots;
 		}
 		totalBreadth = calcLeaves(coreObject.data,startP,endP);
-		totalDepth = calcDepth(coreObject.options.roots[0],coreObject.data,startP,endP);
+		totalDepth = calcDepth(roots[0],coreObject.data,startP,endP);
 		if(coreObject.options.time == true){
 				if(startP == undefined || endP == undefined){
 					var range = coreObject.options.timeRange
