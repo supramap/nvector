@@ -357,11 +357,13 @@ function build2d(coreObject,startP,endP,rootPosition){
 		var roots;
 		if(rootDataStore[rootPosition][2] != undefined){
 			roots = rootDataStore[rootPosition][2];
+			totalBreadth = recCalcLeaves(roots[0],coreObject,startP,endP);
 		}
 		else{
 			roots = coreObject.options.roots;
+			totalBreadth = calcLeaves(coreObject.data,startP,endP);
 		}
-		totalBreadth = calcLeaves(coreObject.data,startP,endP);
+
 		totalDepth = calcDepth(roots[0],coreObject.data,startP,endP);
 		if(coreObject.options.time == true){
 				if(startP == undefined || endP == undefined){

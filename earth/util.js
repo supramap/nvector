@@ -427,6 +427,34 @@ function calcLeaves(data,stDate,enDate){
 	return leafCount;
 }
 
+
+function recCalcLeaves(current, bigObj, stDate, enDate){
+	// if leaf node then return
+	var node = bigObj.data[current];
+	if(node.children.length < 1){
+
+		if(stDate == undefined || enDate == undefined){
+				return 1;
+		}
+
+		var currentDate = new Date(node.date);
+		var startDate = new Date(stDate);
+		var endDate = new Date(enDate);
+		if(currentDate > startDate && currentDate < endDate){
+			return 1;
+		}
+		else{
+			return 0;
+		}
+
+	}
+	var currentTotal =0;
+	for(var i = 0; i < node.children.length; i++){
+		currentTotal += recCalcLeaves(node.children[i],bigObj,stDate,enDate);
+	}
+	return currentTotal;
+}
+
 function calcDepth(current,bigObj,stDate,enDate){
 	var node = bigObj[current];
 

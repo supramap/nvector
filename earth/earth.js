@@ -258,6 +258,10 @@ var rotating,controls;
 
 	}
 
+
+
+
+
 	var cameraRelocate = false;
 	function slideCamera(){
 
@@ -275,6 +279,7 @@ var rotating,controls;
 		camera.position.set(newPosition.x,newPosition.y,newPosition.z);
 
 		camera.lookAt(new THREE.Vector3(0,0,0));
+		controls.target = new THREE.Vector3(0,0,0);
 
 		//camera.nlerp += .5;
 	}
