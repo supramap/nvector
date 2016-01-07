@@ -45,3 +45,45 @@ function generateLayer(inObject){
 
   return lines;
 }
+
+
+/*
+  This function breaks geojson files down into line segments in the same
+  manner that it is done for generating graph lines.
+*/
+function geoJsonLayer(inObject){
+  var lineArr = [];
+  for(var i = 0; i < inObject.geometries.length; i++){
+    var currentPolly = inObject.geometries[i];
+    if(currentPolly.type == "Polygon" || currentPolly.type == "MultiPolygon"){
+      // This for loop is to iterate through the inner and outer polygons for
+      // multipolygon instances. More often than not there will be single polygons
+      // and its unlikely that there will be very many polygons in a multipolygon
+      // so this loop can likely be ignored for most cases of efficiency.
+      for(var subPoly = 0; subPoly < currentPolly.coordinates.length; subPoly++){
+        var currentline = [];
+        var cordArr
+        if(currentPolly.type == "Polygon"){
+          cordArr = currentPolly.coordinates[subPoly];
+        }
+        else{
+          cordArr = currentPolly.coordinates[subPoly][0];
+        }
+
+        for(var coordP = 0; coordP < cordArr.length; coordP++){
+          var vect = locationToVector(cordArr[coordP][0],cordArr[coordP][1]);
+          $.merge(currentline,[vect.x,vect.y,vect.z]);
+        }
+        lineArr.push(currentline);
+      }
+    }
+  }
+
+  var layerLine = initializeLines(lineArr);
+  //var layerLine = initializeLines([lineArr[6]]);
+  return layerLine;
+
+
+
+
+}

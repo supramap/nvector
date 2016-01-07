@@ -56,12 +56,8 @@ var rotating,controls;
 
 
 	function addNewLayer(layerObj){
-		var newLayer = generateLayer(layerObj);
-		var currentLayer = new THREE.Object3D();
-		for (var i in newLayer){
-			currentLayer.add(newLayer[i]);
-		}
-		layers.add(currentLayer);
+		var newLayer = geoJsonLayer(layerObj);
+		layers.add(newLayer);
 	}
 
 	function addNewGraph(connectionObj, graphName){
