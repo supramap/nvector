@@ -112,6 +112,7 @@ function timestamp(str){
 // the earth
 function locationToVector(inLat, inLon){
 	var lon = inLon - 90;
+	//var lon = inLon;
 	var lat = inLat;
 
 	var phi = Math.PI/2 - lat * Math.PI / 180 - Math.PI * 0.00//0.01;

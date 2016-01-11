@@ -49,32 +49,67 @@ function generateLayer(inObject){
 
 /*
   This function breaks geojson files down into line segments in the same
-  manner that it is done for generating graph lines.
+  manner that it is done for generating graph lines. Essentially all of the
+  2D coordinates are converted into 3d coordinate space and then stuffed into
+  a single array so that they can be sent off to have a buffer created.
 */
 function geoJsonLayer(inObject){
   var lineArr = [];
-  for(var i = 0; i < inObject.geometries.length; i++){
-    var currentPolly = inObject.geometries[i];
-    if(currentPolly.type == "Polygon" || currentPolly.type == "MultiPolygon"){
-      // This for loop is to iterate through the inner and outer polygons for
-      // multipolygon instances. More often than not there will be single polygons
-      // and its unlikely that there will be very many polygons in a multipolygon
-      // so this loop can likely be ignored for most cases of efficiency.
-      for(var subPoly = 0; subPoly < currentPolly.coordinates.length; subPoly++){
-        var currentline = [];
-        var cordArr
-        if(currentPolly.type == "Polygon"){
-          cordArr = currentPolly.coordinates[subPoly];
-        }
-        else{
-          cordArr = currentPolly.coordinates[subPoly][0];
-        }
 
-        for(var coordP = 0; coordP < cordArr.length; coordP++){
-          var vect = locationToVector(cordArr[coordP][0],cordArr[coordP][1]);
-          $.merge(currentline,[vect.x,vect.y,vect.z]);
+  if(inObject.type == "FeatureCollection" ){
+    for(var i = 0; i < inObject.features.length; i++){
+      var currentline = [];
+      var cordArr = [];
+      var currentFeature = inObject.features[i];
+      if(currentFeature.type == "Feature"){
+        var featGeometry = currentFeature.geometry;
+        if(featGeometry.type == "MultiPolygon"){
+          for(var coords = 0; coords < featGeometry.coordinates.length; coords++){
+              $.merge(cordArr,featGeometry.coordinates[coords]);
+          }
+        }
+        else if(featGeometry.type == "Polygon"){
+          cordArr = featGeometry.coordinates
+        }
+        else if(featGeometry.type == "LineString"){
+          cordArr = [featGeometry.coordinates];
+        }
+        for(var arrPlace = 0; arrPlace < cordArr.length; arrPlace++){
+          for(var coordP = 0; coordP < cordArr[arrPlace].length; coordP++){
+            var vect = locationToVector(cordArr[arrPlace][coordP][1],cordArr[arrPlace][coordP][0]);
+            //$.merge(currentline,[vect.y,vect.x,vect.z]);
+            $.merge(currentline,[vect.x,vect.y,vect.z]);
+          }
         }
         lineArr.push(currentline);
+      }
+    }
+  }
+  else if(inObject.type == "GeometryCollection"){
+    for(var i = 0; i < inObject.geometries.length; i++){
+      var currentPolly = inObject.geometries[i];
+      if(currentPolly.type == "Polygon" || currentPolly.type == "MultiPolygon"){
+        // This for loop is to iterate through the inner and outer polygons for
+        // multipolygon instances. More often than not there will be single polygons
+        // and its unlikely that there will be very many polygons in a multipolygon
+        // so this loop can likely be ignored for most cases of efficiency.
+        for(var subPoly = 0; subPoly < currentPolly.coordinates.length; subPoly++){
+          var currentline = [];
+          var cordArr
+          if(currentPolly.type == "Polygon"){
+            cordArr = currentPolly.coordinates[subPoly];
+          }
+          else{
+            cordArr = currentPolly.coordinates[subPoly][0];
+          }
+
+          for(var coordP = 0; coordP < cordArr.length; coordP++){
+            var vect = locationToVector(cordArr[coordP][1],cordArr[coordP][0]);
+            //$.merge(currentline,[vect.y,vect.x,vect.z]);
+            $.merge(currentline,[vect.x,vect.y,vect.z]);
+          }
+          lineArr.push(currentline);
+        }
       }
     }
   }

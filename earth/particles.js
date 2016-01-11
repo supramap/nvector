@@ -176,7 +176,7 @@ function initializeLines(lineData){
 	for(var i = 0; i < lineData.length;i++){
 		//linepos = linepos.concat(lineData[i]);
 		$.merge(linepos,lineData[i])
-		var calcLength = (lineData[0].length/3) -1;
+		var calcLength = (lineData[i].length/3) -1;
 		for(var seg = 0; seg < calcLength; ++seg ){
 			indicesArr.push(posIndex + seg,posIndex + seg +1);
 		}
