@@ -2,10 +2,10 @@ var renderer
 var scene
 var camera
 
-var isoFile = 'country_iso3166.json';
-var latlonFile = 'country_lat_lon.json';
-var latlonData;
-var stateCoords, mouse ={x: 0,y: 0};
+//var isoFile = 'country_iso3166.json';
+//var latlonFile = 'country_lat_lon.json';
+//var latlonData;
+var mouse ={x: 0,y: 0};
 var cube;
 var countryLookup;
 var raycaster = new THREE.Raycaster();
@@ -13,10 +13,9 @@ var graph = new THREE.Object3D();
 var graph2d = new THREE.Object3D();
 var layers = new THREE.Object3D();
 var particleUniverse = new THREE.Object3D();
-var rootDataStore = []
+var rootDataStore = [];
+var layerStore = [];
 var particleCloud;
-var countryData = new Object();
-var stateData = new Object();
 var particlesExist = false,treeState = false;
 var rotating,controls;
 
@@ -24,7 +23,6 @@ var rotating,controls;
 	var outlinedMapTexture;
 	var mapIndexedImage = new Image();
 	mapIndexedImage.src = 'images/map_indexed.png'
-	//document.body.appendChild(mapIndexedImage)
 	var mapOutlineImage
 	var indexedMapTexture = THREE.ImageUtils.loadTexture('images/map_indexed.png', {}, function(){
 		mapOutlineImage = new Image();
@@ -55,9 +53,11 @@ var rotating,controls;
 
 
 
-	function addNewLayer(layerObj){
+	function addNewLayer(layerObj,fileName){
 		var newLayer = geoJsonLayer(layerObj);
 		layers.add(newLayer);
+		layerStore.push(fileName);
+		displayContents();
 	}
 
 	function addNewGraph(connectionObj, graphName){
@@ -82,7 +82,8 @@ var rotating,controls;
 	function displayContents(){
 		//$("#loadedFiles-names").empty();
 
-		var htmlString = "<ul id='loadedFiles-names-list'>"
+		// Setup to properly show the loaded graph's names
+		var htmlString = ((rootDataStore.length>0) ? "<div class='subLabel'>Graphs</div>":"")+"<ul id='loadedFiles-names-list'>"
 		for(var i = 0; i < rootDataStore.length; i++){
 			htmlString = htmlString + "<li class='listItems'><div class='textSpan'>"+rootDataStore[i][1]+"</div>"+
 			"<div class='inputDelete' onclick='removeGraph("+i+")' >x</div>"+
@@ -90,6 +91,17 @@ var rotating,controls;
 			"<input class='inputRadio' type='radio' onclick='testLiveParticle()' name='selected' value="+ i + " "+((i==0) ? "checked":"")+" > </li>";
 		}
 		htmlString += "</ul>";
+
+		// Setup to properly show the loaded layer's names
+
+		htmlString += ((layerStore.length > 0) ? "<div class='subLabel'>Layers</div>":"") + "<ul id='loadedFiles-layers-list'>"
+		for(var i= 0; i < layerStore.length; i++){
+			htmlString = htmlString + "<li class='listItems'><div class='textSpan'>"+layerStore[i]+"</div>"+
+			"<div class='inputDelete' onclick='removeLayer("+i+")' >x</div>"+
+			"<input class='inputCheckLayer' type='checkbox' value="+i+" onclick='hideLayer()' checked>"+
+			"</li>";
+		}
+
 		$("#loadedFiles-names").html(htmlString);
 	}
 
@@ -107,7 +119,7 @@ var rotating,controls;
 	}
 
 	function hideGraph(){
-		var checkedBoxes = $("input:checkbox:checked");
+		var checkedBoxes = $(".inputCheck:checked");
 		var checkList = [];
 		for(var i = 0; i < checkedBoxes.length; i++){
 			var current = parseInt(checkedBoxes[i].value);
@@ -123,6 +135,34 @@ var rotating,controls;
 			}
 		}
 	}
+
+
+	function hideLayer(){
+		var checkedBoxes = $(".inputCheckLayer:checked");
+		var checkList = [];
+		for(var i = 0; i < checkedBoxes.length; i++){
+			var current = parseInt(checkedBoxes[i].value);
+			checkList.push(current);
+		}
+
+		for (var i = 0; i < layers.children.length; i++){
+			if(checkList.indexOf(i) > -1){
+				layers.children[i].visible = true;
+			}
+			else{
+				layers.children[i].visible = false;
+			}
+		}
+	}
+
+	function removeLayer(place){
+		var removed = layers.children[place];
+		layers.remove(removed);
+		deleteObj(removed);
+		layerStore.splice(place,1);
+		displayContents();
+	}
+
 
 	function redrawGraph(sTime,eTime){
 		loading();
@@ -190,6 +230,7 @@ var rotating,controls;
 			// Show all of the objects required for this view.
 			graph.visible = true;
 			rotating.visible = true;
+			layers.visible = true;
 			graph2d.visible = false;
 
 			// setup the animation to be run
@@ -212,6 +253,7 @@ var rotating,controls;
 			hideAllParticles();
 			graph.visible = false;
 			rotating.visible = false;
+			layers.visible = false;
 			graph2d.visible = true;
 			// need to find the currently selected graph to be converted into 2d
 			var checkedRadio = $("input:radio:checked");
@@ -297,15 +339,6 @@ var rotating,controls;
   	point.position.set( 400, 280, 180 );
   	point.target.position.set(150,10,-10);
   	//scene.add(point)
-
-		/*
-		light1 = new THREE.SpotLight( 0xeeeeee, 100 );
-		light1.position.x = 0;
-		light1.position.y = 0;
-		light1.position.z = 400;
-		light1.castShadow = true;
-		light1.lookAt(scene.position)
-		scene.add( light1 );*/
 
 		//scene.add(new axis(160));
 		rotating = new THREE.Object3D();

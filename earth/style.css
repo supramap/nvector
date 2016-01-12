@@ -49,6 +49,11 @@ canvas{
 	list-style-type: none;
 	padding-left: 0px;
 }
+#loadedFiles-layers-list{
+	margin-top: 3px;
+	list-style-type: none;
+	padding-left: 0px;
+}
 
 #tabContainer{
 	list-style-type:none;
@@ -77,6 +82,11 @@ canvas{
 }
 
 .inputCheck{
+	float:right;
+	cursor:pointer;
+	opacity:.8;
+}
+.inputCheckLayer{
 	float:right;
 	cursor:pointer;
 	opacity:.8;
@@ -191,7 +201,7 @@ canvas{
 	line-height: 23px;
 }
 
-#subLabel{
+.subLabel{
 	text-align: center;
 	border-bottom:1px solid black;
 }

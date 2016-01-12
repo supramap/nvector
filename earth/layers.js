@@ -65,23 +65,20 @@ function geoJsonLayer(inObject){
         var featGeometry = currentFeature.geometry;
         if(featGeometry.type == "MultiPolygon"){
           for(var coords = 0; coords < featGeometry.coordinates.length; coords++){
-              $.merge(cordArr,featGeometry.coordinates[coords]);
+              cordArr = featGeometry.coordinates[coords];
+              lineArr.push(featureLineBuild(cordArr));
           }
         }
         else if(featGeometry.type == "Polygon"){
-          cordArr = featGeometry.coordinates
+          cordArr = featGeometry.coordinates;
+          lineArr.push(featureLineBuild(cordArr));
         }
         else if(featGeometry.type == "LineString"){
           cordArr = [featGeometry.coordinates];
+          lineArr.push(featureLineBuild(cordArr));
         }
-        for(var arrPlace = 0; arrPlace < cordArr.length; arrPlace++){
-          for(var coordP = 0; coordP < cordArr[arrPlace].length; coordP++){
-            var vect = locationToVector(cordArr[arrPlace][coordP][1],cordArr[arrPlace][coordP][0]);
-            //$.merge(currentline,[vect.y,vect.x,vect.z]);
-            $.merge(currentline,[vect.x,vect.y,vect.z]);
-          }
-        }
-        lineArr.push(currentline);
+
+
       }
     }
   }
@@ -99,7 +96,7 @@ function geoJsonLayer(inObject){
           if(currentPolly.type == "Polygon"){
             cordArr = currentPolly.coordinates[subPoly];
           }
-          else{
+          else if(currentPolly.type == "MultiPolygon"){
             cordArr = currentPolly.coordinates[subPoly][0];
           }
 
@@ -113,6 +110,20 @@ function geoJsonLayer(inObject){
       }
     }
   }
+
+
+function featureLineBuild(cordArr){
+  var currentLine = [];
+  for(var arrPlace = 0; arrPlace < cordArr.length; arrPlace++){
+    for(var coordP = 0; coordP < cordArr[arrPlace].length; coordP++){
+      var vect = locationToVector(cordArr[arrPlace][coordP][1],cordArr[arrPlace][coordP][0]);
+      //$.merge(currentline,[vect.y,vect.x,vect.z]);
+      $.merge(currentLine,[vect.x,vect.y,vect.z]);
+    }
+  }
+  return currentLine;
+}
+
 
   var layerLine = initializeLines(lineArr);
   //var layerLine = initializeLines([lineArr[6]]);

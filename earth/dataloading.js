@@ -1,7 +1,7 @@
 
-function loadLayer(data){
+function loadLayer(data,fileName){
 	var	inObject = JSON.parse( data );
-	addNewLayer(inObject);
+	addNewLayer(inObject,fileName);
 }
 
 function loadTransmissionsJson(data,dataName){

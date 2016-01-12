@@ -264,10 +264,11 @@ layerSelection.change(function(evt){
 
   if(f){
     var reader = new FileReader();
+    latestFileName = f.name;
     reader.onload = function(data){
       // Again addNewLayer is in earth.js to interface appropriately with
       // three.js
-      loadLayer(data.target.result);
+      loadLayer(data.target.result,latestFileName);
     };
     reader.readAsText(f);
   }
