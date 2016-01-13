@@ -317,13 +317,31 @@ function clickData(){
   $("#editor").hide();
 }
 function clickEdit(){
-  $("#viewsTab").addClass('inactiveTab');
-  $("#dataTab").addClass('inactiveTab');
-  $("#editTab").removeClass('inactiveTab');
 
-  $("#loadedFiles-names").hide();
-  $("#nodeDetails").hide();
-  $("#editor").show();
+  if(treeState){
+    $("#viewsTab").addClass('inactiveTab');
+    $("#dataTab").addClass('inactiveTab');
+    $("#editTab").removeClass('inactiveTab');
+
+    $("#loadedFiles-names").hide();
+    $("#nodeDetails").hide();
+    $("#editor").show();
+  }
+  else{
+    if(rootDataStore.length > 0){
+      jumpToTree();
+      $("#viewsTab").addClass('inactiveTab');
+      $("#dataTab").addClass('inactiveTab');
+      $("#editTab").removeClass('inactiveTab');
+
+      $("#loadedFiles-names").hide();
+      $("#nodeDetails").hide();
+      $("#editor").show();
+    }
+    else{
+      alert("A graph needs to be loaded before the editor can be used.");
+    }
+  }
 }
 
 $("#panelButton").click(function(){

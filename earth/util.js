@@ -115,6 +115,10 @@ function locationToVector(inLat, inLon){
 	//var lon = inLon;
 	var lat = inLat;
 
+	if(lon == NaN || lat == NaN){
+		return null;
+	}
+
 	var phi = Math.PI/2 - lat * Math.PI / 180 - Math.PI * 0.00//0.01;
 	var theta = 2 * Math.PI - lon * Math.PI / 180 + Math.PI * 0.00//0.06;
 

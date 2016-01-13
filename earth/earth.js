@@ -246,7 +246,7 @@ var rotating,controls;
 			camera.nlerp = 1;
 
 			cameraRelocate = true;
-
+			clickViews();
 
 		}
 		else{

@@ -87,7 +87,7 @@ function recurseRebuild(current, bigObj,dateStart,dateEnd){
 	// if leaf node, convert the current coordinates into three dimentional points
 
 	if(node.children.length == 0){
-		if(node.coord != "NONE"){
+		if(node.coord != "NONE" || node.coord!= null || node.coord!= undefined){
 				if(node.coord instanceof THREE.Vector3 || ( (dateStart != undefined && dateEnd != undefined) && !(new Date(node.date) >= new Date(dateStart) && new Date(node.date) <= new Date(dateEnd)))){
 					return 1;
 				}
@@ -95,8 +95,10 @@ function recurseRebuild(current, bigObj,dateStart,dateEnd){
 
 
 				var center = locationToVector(node.coord[0], node.coord[1]);
-				if(node.coord[0] == undefined || node.coord[1] == undefined){
+				if(node.coord[0] == undefined || node.coord[1] == undefined || center == null){
 					cantPlace.push(current);
+					node.coord = null;
+          return 0;
 				}
 				node.coord = center;
 
@@ -137,7 +139,7 @@ function recurseRebuild(current, bigObj,dateStart,dateEnd){
 				var childDate = bigObj[child].date
 				// In some cases the child Coordinate may be NONE or the child
 				// may not fall within the currently specified date range.
-				if(childCoord != "NONE" && ((dateStart == undefined || dateEnd == undefined)||(new Date(childDate) >= new Date(dateStart) && new Date(childDate) <= new Date(dateEnd)))){
+				if((childCoord != "NONE" && childCoord != null && childCoord != undefined) && ((dateStart == undefined || dateEnd == undefined)||(new Date(childDate) >= new Date(dateStart) && new Date(childDate) <= new Date(dateEnd)))){
 						childPositions.push(childCoord);
 						childDates.push(childDate);
 				}
