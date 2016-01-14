@@ -426,8 +426,10 @@ $("#subButton").click(function(){
 // THIS IS FOR THE TIME SLIDER--------------------------------------------------
 var dateScroll = false;
 var sliderExists = false;
+var lastRange;
 var slider;
 function generateSlider(irange){
+  lastRange = irange;
   sliderExists = true;
   slider = document.getElementById('timeSlide');
   noUiSlider.create(slider,{

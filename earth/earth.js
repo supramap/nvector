@@ -63,7 +63,31 @@ var rotating,controls;
 	function addNewGraph(connectionObj, graphName){
 		rootDataStore.push([JSON.parse(JSON.stringify(connectionObj)),graphName]);
 		if(connectionObj.options.time == true){
-			generateSlider(connectionObj.options.timeRange);
+			if(sliderExists){
+				
+				var newRange = [];
+				if(new Date(connectionObj.options.timeRange[0]) < new Date(lastRange[0])){
+					newRange[0] =connectionObj.options.timeRange[0];
+				}
+				else{
+					newRange[0] = lastRange[0];
+				}
+				if(new Date(connectionObj.options.timeRange[1]) > new Date(lastRange[1])){
+					newRange[1] =connectionObj.options.timeRange[1];
+				}
+				else{
+					newRange[1] = lastRange[1]
+				}
+				slider.noUiSlider.updateOptions({
+					range:{
+						'min': timestamp(newRange[0]),
+						'max': timestamp(newRange[1])
+					}
+				})
+			}
+			else{
+				generateSlider(connectionObj.options.timeRange);
+			}
 		}
 		// function called in visualize_lines to generate the graph geometry
 		var graphObject = makeGraphGeometry(connectionObj,null,null,rootDataStore.length-1);
@@ -184,8 +208,9 @@ var rotating,controls;
 		}
 		// otherwise in earth context
 		else{
-			for(var i=0; i < graph.children.length; i++){
-				var tempObj = graph.children[i];
+			var originalLength = graph.children.length
+			for(var i=0; i < originalLength; i++){
+				var tempObj = graph.children[0];
 				graph.remove(tempObj);
 				deleteObj(tempObj);
 			}

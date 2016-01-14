@@ -58,16 +58,6 @@ var cantPlace = [];
 function recurseRebuild(current, bigObj,dateStart,dateEnd){
 	var node = bigObj[current];
 	// if leaf node, convert the current coordinates into three dimentional points
-  if(current == "a37"){
-    console.log("a37");
-  }
-  if(current == "PDT000050600.1"){
-    console.log("error prone daphnie");
-  }
-  if(current == "PDT000046968.1"){
-    console.log("string trouble maker")
-  }
-
 	if(node.children.length == 0){
 		if(node.coord != "NONE" || node.coord!= null || node.coord!= undefined){
 				if(node.coord instanceof THREE.Vector3 || ( (dateStart != undefined && dateEnd != undefined) && !(new Date(node.date) >= new Date(dateStart) && new Date(node.date) <= new Date(dateEnd)))){
