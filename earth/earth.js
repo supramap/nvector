@@ -41,7 +41,7 @@ var rotating,controls;
 
 		// If the existing runtime is nwjs
 		if(is_nwjs()){
-			isNw = true;
+			isNW = true;
 		}
 		// If the existing runtime is the browser
 		else{
@@ -64,26 +64,7 @@ var rotating,controls;
 		rootDataStore.push([JSON.parse(JSON.stringify(connectionObj)),graphName]);
 		if(connectionObj.options.time == true){
 			if(sliderExists){
-				
-				var newRange = [];
-				if(new Date(connectionObj.options.timeRange[0]) < new Date(lastRange[0])){
-					newRange[0] =connectionObj.options.timeRange[0];
-				}
-				else{
-					newRange[0] = lastRange[0];
-				}
-				if(new Date(connectionObj.options.timeRange[1]) > new Date(lastRange[1])){
-					newRange[1] =connectionObj.options.timeRange[1];
-				}
-				else{
-					newRange[1] = lastRange[1]
-				}
-				slider.noUiSlider.updateOptions({
-					range:{
-						'min': timestamp(newRange[0]),
-						'max': timestamp(newRange[1])
-					}
-				})
+				checkSlider();
 			}
 			else{
 				generateSlider(connectionObj.options.timeRange);
@@ -140,6 +121,7 @@ var rotating,controls;
 		deleteObj(removed);
 		rootDataStore.splice(place,1);
 		displayContents();
+		checkSlider();
 	}
 
 	function hideGraph(){

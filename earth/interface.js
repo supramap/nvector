@@ -1,8 +1,8 @@
 // Data relevant to connecting to our server
-var queryroot = "http://10.16.56.89:8080/irods-rest/rest/";
+//var queryroot = "http://10.16.56.89:8080/irods-rest/rest/";
 var userName = "earth";
 var psw = "!darpa";
-//var queryroot = "http://192.168.1.14:8080/irods-rest/rest/"
+var queryroot = "http://192.168.1.14:8080/irods-rest/rest/"
 // Make the buttons trigger the file selector
 $("#infileBut").click(function(){
   $("#infile").trigger('click');
@@ -426,10 +426,8 @@ $("#subButton").click(function(){
 // THIS IS FOR THE TIME SLIDER--------------------------------------------------
 var dateScroll = false;
 var sliderExists = false;
-var lastRange;
 var slider;
 function generateSlider(irange){
-  lastRange = irange;
   sliderExists = true;
   slider = document.getElementById('timeSlide');
   noUiSlider.create(slider,{
@@ -520,6 +518,58 @@ function generateSlider(irange){
   });*/
 
 }
+
+
+
+function checkSlider(){
+  var usableRange = [];
+  for(var i = 0; i < rootDataStore.length; i++){
+    var timeFlag = rootDataStore[i][0].options.time;
+
+
+    var minDate = rootDataStore[i][0].options.timeRange[0];
+    var maxDate = rootDataStore[i][0].options.timeRange[1]
+
+    if(usableRange.length > 0 && timeFlag == true){
+      // check the new mindate relative to the old mindate
+      if(new Date(minDate) < new Date(usableRange[0]) ){
+        usableRange[0] = minDate;
+      }
+      // check the new maxdate relative tot he old maxdate
+      if( new Date(usableRange[1]) < new Date(maxDate)){
+        usableRange[1] = maxDate;
+      }
+
+    }
+    // If this is the first or only time based file currently loaded then
+    // stuff it in there.
+    else if(timeFlag == true){
+      usableRange[0] = minDate;
+      usableRange[1] = maxDate;
+    }
+
+
+  }
+
+  if(usableRange.length > 0){
+    slider.noUiSlider.updateOptions({
+      range:{
+        'min': timestamp(usableRange[0]),
+        'max': timestamp(usableRange[1])
+      }
+    });
+  }
+  else{
+    if(sliderExists){
+      slider.noUiSlider.destroy();
+    }
+  }
+}
+
+
+
+
+
 // THIS IS FOR THE TIME SLIDER--------------------------------------------------
 
 
