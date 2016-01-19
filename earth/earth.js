@@ -455,6 +455,14 @@ var rotating,controls;
 		window.addEventListener( 'resize', onWindowResize, false );
 		render();
 		animate();
+
+		// THIS IS ONLY HERE FOR DEMO PURPOSES!!!!!!!!!!................!!!!!!!!!!!!
+
+		$("#layerButCloud").hide();
+		$("#infileButCloud").hide();
+
+		// THIS IS ONLY HERE FOR DEMO PURPOSES!!!!!!!!!!..............!!!!!!!!!!!!!
+
 	}
 
 	function render() {
