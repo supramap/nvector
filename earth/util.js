@@ -115,7 +115,7 @@ function locationToVector(inLat, inLon){
 	//var lon = inLon;
 	var lat = inLat;
 
-	if(lon == NaN || lat == NaN){
+	if(isNaN(lon) || isNaN(lat)){
 		return null;
 	}
 
