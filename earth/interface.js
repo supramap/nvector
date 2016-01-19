@@ -552,12 +552,21 @@ function checkSlider(){
   }
 
   if(usableRange.length > 0){
-    slider.noUiSlider.updateOptions({
+    /*slider.noUiSlider.updateOptions({
+      start:[timestamp(usableRange[0]),timestamp(usableRange[1])],
+      step: 7*24*60*60*1000,
+      margin:20,
+      connect: true,
+      direction: 'rtl',
+      orientation: 'vertical',
+      behaviour: 'tap-drag',
       range:{
-        'min': timestamp(usableRange[0]),
-        'max': timestamp(usableRange[1])
+        'min': timestamp(usableRange[1]),
+        'max': timestamp(usableRange[0])
       }
-    });
+    });*/
+    slider.noUiSlider.destroy();
+    generateSlider(usableRange);
   }
   else{
     if(sliderExists){
