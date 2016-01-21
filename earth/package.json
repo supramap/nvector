@@ -2,9 +2,10 @@
   "name": "NVector",
   "main": "index.html",
   "description":"An application for plotting and editing graphs in a 3d context",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "window":{
-  	"toolbar":true
+  	"toolbar":false,
+  	"icon":"images/basicSphere6.svg"
   },
   "author": "Zachary Witter - zacharywsoftware@gmail.com"
 }
