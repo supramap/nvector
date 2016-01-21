@@ -383,6 +383,10 @@ function recurseBuild2d(current, bigObj,depth,dateStart,dateEnd){
 
 			node.coord = new THREE.Vector3(x,y,z);
 
+      if(node.color == undefined || node.color == "NONE" || node.color == null ){
+        node.color = 0xd9ca04;
+      }
+
       var nodeObj = {"name":current,"desc":node.desc,"color":node.color,"links":node.links,"location":[x,y,z]}
 			// make a sphere to represent this node, I'll give it a color to indicate
 			// that it is a leaf
@@ -496,6 +500,11 @@ function recurseBuild2d(current, bigObj,depth,dateStart,dateEnd){
 
 		// create the node's circle
 		//var sphere = createSphere(0xfff4234, current,midPoint);
+
+    if(node.color == undefined || node.color == "NONE" || node.color == null ){
+      node.color = 0xff0000
+    }
+    
     var nodeObj = {"name":current,"desc":node.desc,"links":node.links,"color":node.color,"location":[midPoint.x,midPoint.y,midPoint.z]}
 		freshNodes.push(nodeObj);
 

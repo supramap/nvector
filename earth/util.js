@@ -483,6 +483,10 @@ function calcDepth(current,bigObj,stDate,enDate){
 
 	var count;
 	for(var i = 0; i < node.children.length; i++){
+		// This is here to handle recursive edges.
+		if(node.children[i]  == current){
+			return 0;
+		}
 		var result = calcDepth(node.children[i],bigObj,stDate,enDate);
 		if(count == undefined){
 			count = result;
