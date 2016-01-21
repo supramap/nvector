@@ -4,7 +4,7 @@
   "description":"An application for plotting and editing graphs in a 3d context",
   "version": "0.2.0",
   "window":{
-  	"toolbar":false,
+  	"toolbar":true,
   	"icon":"images/basicSphere6.svg"
   },
   "author": "Zachary Witter - zacharywsoftware@gmail.com"

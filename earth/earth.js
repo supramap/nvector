@@ -218,6 +218,12 @@ var rotating,controls;
 
 	function jumpToTree(){
 
+		// if nothing is loaded then simply pop an alert first.
+		if(rootDataStore.length < 1){
+			alert("A Tree needs to be loaded before attempting to enter 2D mode");
+			return;
+		}
+
 
 		render();
 		// if currently in the tree state then switch back to display the earth
