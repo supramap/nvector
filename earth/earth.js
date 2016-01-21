@@ -458,8 +458,8 @@ var rotating,controls;
 
 		// THIS IS ONLY HERE FOR DEMO PURPOSES!!!!!!!!!!................!!!!!!!!!!!!
 
-		//$("#layerButCloud").hide();
-		//$("#infileButCloud").hide();
+		$("#layerButCloud").hide();
+		$("#infileButCloud").hide();
 
 		// THIS IS ONLY HERE FOR DEMO PURPOSES!!!!!!!!!!..............!!!!!!!!!!!!!
 

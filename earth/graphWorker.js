@@ -78,7 +78,7 @@ function recurseRebuild(current, bigObj,dateStart,dateEnd){
 				// that it is a leaf
 				//var sphere = createSphere(0xfffc32, current,center);
         if(node.color == undefined || node.color == "NONE" || node.color == null ){
-          node.color == "0xffaa00"
+          node.color = 0xd9ca04;
         }
 
         var nodeObj = {"name":current,"desc":node.desc,"color":node.color,"links":node.links,"location":[center.x,center.y,center.z]}
@@ -212,7 +212,7 @@ function recurseRebuild(current, bigObj,dateStart,dateEnd){
 		// create the node's circle
 		//var sphere = createSphere(0xfff4234, current,midPoint);
     if(node.color == undefined || node.color == "NONE" || node.color == null ){
-      node.color == "0xff0000"
+      node.color = 0xff0000
     }
 
     var nodeObj = {"name":current,"desc":node.desc,"color":node.color,"links":node.links,"location":[midPoint.x,midPoint.y,midPoint.z]}

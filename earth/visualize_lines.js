@@ -105,6 +105,10 @@ function recurseRebuild(current, bigObj,dateStart,dateEnd){
 				// make a sphere to represent this node, I'll give it a color to indicate
 				// that it is a leaf
 				//var sphere = createSphere(0xfffc32, current,center);
+				if(node.color == undefined || node.color == "NONE" || node.color == null ){
+		      node.color = 0xd9ca04;
+		    }
+
         var nodeObj = {"name":current,"desc":node.desc,"color":node.color,"links":node.links,"location":[center.x,center.y,center.z]}
 				freshNodes.push(nodeObj);
 
@@ -233,6 +237,9 @@ function recurseRebuild(current, bigObj,dateStart,dateEnd){
 		bigObj[current].coord = midPoint;
 		bigObj[current].level = currentLevel;
 
+		if(node.color == undefined || node.color == "NONE" || node.color == null ){
+      node.color = 0xff0000;
+    }
 		// create the node's circle
 		//var sphere = createSphere(0xfff4234, current,midPoint);
     var nodeObj = {"name":current,"desc":node.desc,"color":node.color,"links":node.links,"location":[midPoint.x,midPoint.y,midPoint.z]}
