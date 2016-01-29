@@ -423,6 +423,21 @@ $("#subButton").click(function(){
 });
 
 
+// Control the commands for searching within the editor
+$("#searchButton").click(function(){
+  //extract the text from the search box and pass it into the searching function
+  var textString = $("#searchText").val();
+  // determine which tree is currently selected
+  var checkedRadio = $("input:radio:checked");
+  var graphPos = parseInt(checkedRadio[0].value);
+
+  
+
+});
+
+
+
+
 // THIS IS FOR THE TIME SLIDER--------------------------------------------------
 var dateScroll = false;
 var sliderExists = false;
@@ -589,7 +604,3 @@ function checkSlider(){
   });
 
 // THIS IS FOR THE TREE VIEW----------------------------------------------------
-
-
-
-// Make the control panel slide.

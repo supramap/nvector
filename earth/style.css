@@ -175,6 +175,30 @@ canvas{
 
 }
 
+#searchButton{
+	margin-left:auto;
+	margin-right: auto;
+	margin-top:3px;
+	width:75px;
+	height:25px;
+	background-color:rgba(235,235,235,.5);
+	text-align: center;
+	line-height: 25px;
+	margin-bottom:5px;
+
+
+}
+
+#searchText{
+	margin-left:auto;
+	margin-right: auto;
+	margin-top: 6px;
+	display:block;
+}
+
+
+
+
 .subButton{
 	width:75px;
 	height:25px;
@@ -204,6 +228,9 @@ canvas{
 .subLabel{
 	text-align: center;
 	border-bottom:1px solid black;
+}
+.subLabel:not(:first-child){
+	margin-top:11px;
 }
 
 #possible{

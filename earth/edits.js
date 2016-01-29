@@ -62,3 +62,42 @@ function removeSubsect(){
 
   cameraRelocate = true;
 }
+
+
+
+
+/*
+  This is the function called when a user runs a search on the currently
+  selected tree
+*/
+
+function searchTree(searchTerm,graphPos){
+  var target = rootDataStore[graphPos].data
+  searchTerm.toLowerCase();
+  var matches = [];
+  //Begin iterating
+  for (var key in target) {
+    if (target.hasOwnProperty(key)) {
+      // Now begin to search through everyone of the elements in the database.
+      // including the current key
+      console.log("original string: " + key);
+      var tempKey = key;
+      if(tempKey.toLowerCase().indexOf(searchTerm) > 0){
+        matches.push(key);
+      }
+
+      var actObject = target[key];
+      for(var datum in actObject){
+        if(actObject.hasOwnProperty(datum)){
+          var val = actObject.datum;
+          if(val.toLowerCase().indexOf(searchTerm) > 0){
+            matches.push(key);
+          }
+        }
+      }
+
+      console.log("original is now: " + key + ", tempKey is now: " + tempKey);
+    }
+  }
+
+}
