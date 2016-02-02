@@ -72,7 +72,7 @@ function removeSubsect(){
 */
 
 function searchTree(searchTerm,graphPos){
-  var target = rootDataStore[graphPos].data
+  var target = rootDataStore[graphPos][0].data
   searchTerm.toLowerCase();
   var matches = [];
   //Begin iterating
@@ -80,7 +80,6 @@ function searchTree(searchTerm,graphPos){
     if (target.hasOwnProperty(key)) {
       // Now begin to search through everyone of the elements in the database.
       // including the current key
-      console.log("original string: " + key);
       var tempKey = key;
       if(tempKey.toLowerCase().indexOf(searchTerm) > 0){
         matches.push(key);
@@ -89,15 +88,37 @@ function searchTree(searchTerm,graphPos){
       var actObject = target[key];
       for(var datum in actObject){
         if(actObject.hasOwnProperty(datum)){
-          var val = actObject.datum;
-          if(val.toLowerCase().indexOf(searchTerm) > 0){
+          var val = actObject[datum];
+          // if the current val is an array then we need to iterate through it
+          // O(n^3) ugh...
+          if(Array.isArray(val)){
+            for(var i = 0 ; i < val.length; i++){
+              if(typeof val[i] == "string"){
+                if(val[i].toLowerCase().indexOf(searchTerm) > 0){
+                  matches.push(key);
+                }
+              }
+            }
+          }
+
+          else if(typeof val == "string" && val.toLowerCase().indexOf(searchTerm) > 0){
             matches.push(key);
           }
         }
       }
 
-      console.log("original is now: " + key + ", tempKey is now: " + tempKey);
+
     }
   }
+
+  if(matches.length < 1){
+    console.log("No matches were found");
+  }
+  console.log(matches);
+  // need to search for the matching position in the point cloud
+  //graph2d.children[{selectedGraph}].children[0].geometry.vertices;
+  //graph2d.children[{selectedGraph}].children[0].material.attributes
+
+  // toggle the dropdown arrows
 
 }

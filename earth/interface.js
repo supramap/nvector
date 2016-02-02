@@ -344,6 +344,9 @@ function clickEdit(){
   }
 }
 
+/*
+Control all animation effects for the sliding menu window.
+*/
 $("#panelButton").click(function(){
   if(open == true){
     var amount = '-' + $("#menu").width().toString() + 'px';
@@ -385,6 +388,10 @@ function showPossible(){
   $("#nodeDetails").html(outString);
 }
 
+/*
+  Gathers all of the information pertaining to the node selected in the menu
+  of nodes that may have been clicked.
+*/
 function showSelected(name, rootPosition){
   var info = rootDataStore[rootPosition][0].data[name];
   var infoKeys = Object.keys(info);
@@ -397,17 +404,25 @@ function showSelected(name, rootPosition){
 }
 
 
+/*
+simple function to alter the mouse and indicate that something is loading.
+*/
 function loading(){
   $("body").addClass("loading");
 }
 
+/*
+simple function to change the mouse back to its original state.
+*/
 function doneLoading(){
   $("body").removeClass("loading");
 }
 
 
 var subToggled = false;
-// setup the subtree toggle within the editor
+/*
+Control the toggling of the subsection function in edit mode.
+*/
 $("#subButton").click(function(){
   if(subToggled){
     subToggled = false;
@@ -431,9 +446,13 @@ $("#searchButton").click(function(){
   var checkedRadio = $("input:radio:checked");
   var graphPos = parseInt(checkedRadio[0].value);
 
-  
+  // run the searchtree function which returns a list of keys for the big object
+  // that have some piece of data that matches the given input term.=
+  searchTree(textString, graphPos)
 
 });
+
+
 
 
 
@@ -442,9 +461,15 @@ $("#searchButton").click(function(){
 var dateScroll = false;
 var sliderExists = false;
 var slider;
+/*
+The time slider is generated using a time range. irange is an array[2] where
+the first position is the starting time range (oldest date) to the ending time
+range (most recent date).
+*/
 function generateSlider(irange){
   sliderExists = true;
   slider = document.getElementById('timeSlide');
+  // utilize the noUiSlider prototype
   noUiSlider.create(slider,{
     start:[timestamp(irange[0]),timestamp(irange[1])],
     step: 7*24*60*60*1000,
@@ -457,13 +482,6 @@ function generateSlider(irange){
       'min': timestamp(irange[0]),
       'max': timestamp(irange[1])
     }
-    /*format: wNumb({
-      decimals:0
-    })*/
-    /*pips:{
-      mode:'steps',
-      density: 2
-    }*/
   });
 
   var dateValues = [
