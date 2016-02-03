@@ -120,5 +120,16 @@ function searchTree(searchTerm,graphPos){
   //graph2d.children[{selectedGraph}].children[0].material.attributes
 
   // toggle the dropdown arrows
+  if(matches.length == 0){
+    // This will change into an error log for the user.
+    console.log("Nothing was found matching your query")
+  }
+  else if(matches.length == 1){
+
+  }
+  else{
+
+  }
+  selSlide();
 
 }

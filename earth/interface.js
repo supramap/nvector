@@ -453,7 +453,33 @@ $("#searchButton").click(function(){
 });
 
 
+var slideOut = false;
+function selSlide(){
+  // if the next buttons are hidden then slide it out
+  if(!slideOut){
+    $("#nextSlider").animate({
+      top: "10px"
+    });
+    slideOut = true;
+  }
+  // Otherwise if the slides are shown then slide them away
+  else{
+    $("#nextSlider").animate({
+      top: "-140px"
+    });
+    slideOut = false;
+  }
+}
 
+
+var resultList = [];
+$("#privResult").click(function(){
+  console.log("yea");
+});
+
+$("#nextResult").click(function(){
+
+});
 
 
 

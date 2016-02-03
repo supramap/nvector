@@ -64,6 +64,32 @@ canvas{
 	cursor:pointer;
 }
 
+#nextSlider{
+	width: 130px;
+	height: 80px;
+	position: absolute;
+	top: 10px;
+	right: 10px;
+}
+
+#privResult{
+	height:40px;
+	width:40px;
+	background-color: gray;
+	border-radius: 20px;
+	float:left;
+	margin-top:10px;
+}
+
+#nextResult{
+	height: 40px;
+	width: 40px;
+	background-color: gray;
+	border-radius: 20px;
+	float:right;
+	margin-top:10px;
+}
+
 .inputDelete{
 	width:10px;
 	height:10px;
