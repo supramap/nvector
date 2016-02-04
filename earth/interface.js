@@ -473,12 +473,19 @@ function selSlide(){
 
 
 var resultList = [];
+var displayedResult = 0;
 $("#privResult").click(function(){
   console.log("yea");
+  if(displayedResult > 0){
+
+      displayedResult--;
+  }
 });
 
 $("#nextResult").click(function(){
-
+  if(displayedResult < resultList.length + 1){
+      displayedResult++;
+  }
 });
 
 

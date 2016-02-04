@@ -115,6 +115,8 @@ function searchTree(searchTerm,graphPos){
     console.log("No matches were found");
   }
   console.log(matches);
+
+  displayedResult = 0;
   // need to search for the matching position in the point cloud
   //graph2d.children[{selectedGraph}].children[0].geometry.vertices;
   //graph2d.children[{selectedGraph}].children[0].material.attributes
@@ -125,11 +127,48 @@ function searchTree(searchTerm,graphPos){
     console.log("Nothing was found matching your query")
   }
   else if(matches.length == 1){
-
+    // then simply zoom to that single result.
+    console.log("one match");
+    nodeHighlight(matches[0],graphPos);
+    showSelected(matches[0],graphPos)
   }
   else{
+    // setup the next/previous buttons.
+    selSlide();
+    nodeHighlight(matches[0],graphPos);
 
   }
-  selSlide();
+
+}
+
+
+/*
+  This function will scroll the camera along two axis, allowing for smoother
+  animations while in 2D mode. The input is the key storing the object data.
+*/
+function nodeHighlight(key, graphPos){
+
+  // first step is to find the location of the node to highlight.
+  var searchList = graph2d.children[graphPos].children[0].geometry.vertices;
+  var position;
+  var vectorPosition;
+  for(var i = 0; i < searchList.length; i++){
+    if(searchList[i].nodeName == key){
+      position = i;
+      vectorPosition = searchList[i];
+      break;
+    }
+  }
+  // This may need to be updated to a custom input color
+  graph2d.children[{selectedGraph}].children[0].material.attributes.customColor.value[position] = new THREE.Color(0x0e9e9e);
+  graph2d.children[{selectedGraph}].children[0].material.needsUpdate = true;
+
+  var hover = vectorPosition.clone();
+  hover.z = camera.position.z;
+
+  var path = new THREE.LineCurve3(camera.position,hover).getPoints(camera.position.distanceTo(hover));
+  cameraRelocate = true;
+  camera.pip = 0;
+  camera.nlerp = 1;
 
 }
