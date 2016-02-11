@@ -323,8 +323,14 @@ var rotating,controls;
 		var newPosition = currentPoint.lerp(nextPoint,camera.nlerp);
 		camera.position.set(newPosition.x,newPosition.y,newPosition.z);
 
-		camera.lookAt(new THREE.Vector3(0,0,0));
-		controls.target = new THREE.Vector3(0,0,0);
+		if(slideOut){
+			camera.lookAt(new THREE.Vector3(camera.position.x,camera.position.y,0));
+			controls.target = new THREE.Vector3(camera.position.x,camera.position.y,0);
+		}
+		else{
+			camera.lookAt(new THREE.Vector3(0,0,0));
+			controls.target = new THREE.Vector3(0,0,0);
+		}
 
 		//camera.nlerp += .5;
 	}

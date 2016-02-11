@@ -160,13 +160,14 @@ function nodeHighlight(key, graphPos){
     }
   }
   // This may need to be updated to a custom input color
-  graph2d.children[{selectedGraph}].children[0].material.attributes.customColor.value[position] = new THREE.Color(0x0e9e9e);
-  graph2d.children[{selectedGraph}].children[0].material.needsUpdate = true;
+  graph2d.children[0].children[0].material.attributes.customColor.value[position] = new THREE.Color(0x0e9e9e);
+  graph2d.children[0].children[0].material.needsUpdate = true;
 
   var hover = vectorPosition.clone();
   hover.z = camera.position.z;
 
   var path = new THREE.LineCurve3(camera.position,hover).getPoints(camera.position.distanceTo(hover));
+  camera.path = path;
   cameraRelocate = true;
   camera.pip = 0;
   camera.nlerp = 1;
