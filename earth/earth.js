@@ -223,6 +223,9 @@ var rotating,controls;
 		// if currently in the tree state then switch back to display the earth
 		if(treeState){
 			treeState = false;
+			// need to hide the search buttons if currently visible and camera focus
+			selSlide();
+
 			if(sliderExists){
 
 				render();
@@ -295,6 +298,7 @@ var rotating,controls;
 			camera.pip = 0;
 			camera.nlerp = 1;
 
+
 			cameraRelocate = true;
 
 		}
@@ -322,8 +326,8 @@ var rotating,controls;
 
 		var newPosition = currentPoint.lerp(nextPoint,camera.nlerp);
 		camera.position.set(newPosition.x,newPosition.y,newPosition.z);
-
-		if(slideOut){
+		//
+		if(offKilter){
 			camera.lookAt(new THREE.Vector3(camera.position.x,camera.position.y,0));
 			controls.target = new THREE.Vector3(camera.position.x,camera.position.y,0);
 		}

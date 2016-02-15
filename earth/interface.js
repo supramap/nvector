@@ -454,6 +454,7 @@ $("#searchButton").click(function(){
 
 
 var slideOut = false;
+var offKilter = false;
 function selSlide(){
   // if the next buttons are hidden then slide it out
   if(!slideOut){
