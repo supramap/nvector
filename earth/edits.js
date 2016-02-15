@@ -70,11 +70,11 @@ function removeSubsect(){
   This is the function called when a user runs a search on the currently
   selected tree
 */
-
+var matches = [];
 function searchTree(searchTerm,graphPos){
   var target = rootDataStore[graphPos][0].data
   searchTerm.toLowerCase();
-  var matches = [];
+  matches = [];
   //Begin iterating
   for (var key in target) {
     if (target.hasOwnProperty(key)) {
@@ -129,13 +129,13 @@ function searchTree(searchTerm,graphPos){
   else if(matches.length == 1){
     // then simply zoom to that single result.
     console.log("one match");
-    nodeHighlight(matches[0],graphPos);
+    nodeHighlight(matches[0]);
     showSelected(matches[0],graphPos)
   }
   else{
     // setup the next/previous buttons.
     selSlide();
-    nodeHighlight(matches[0],graphPos);
+    nodeHighlight(matches[0]);
 
   }
 
@@ -146,10 +146,10 @@ function searchTree(searchTerm,graphPos){
   This function will scroll the camera along two axis, allowing for smoother
   animations while in 2D mode. The input is the key storing the object data.
 */
-function nodeHighlight(key, graphPos){
+function nodeHighlight(key){
 
   // first step is to find the location of the node to highlight.
-  var searchList = graph2d.children[graphPos].children[0].geometry.vertices;
+  var searchList = graph2d.children[0].children[0].geometry.vertices;
   var position;
   var vectorPosition;
   for(var i = 0; i < searchList.length; i++){
@@ -171,5 +171,6 @@ function nodeHighlight(key, graphPos){
   cameraRelocate = true;
   camera.pip = 0;
   camera.nlerp = 1;
+  offKilter = true;
 
 }

@@ -473,20 +473,32 @@ function selSlide(){
 }
 
 
-var resultList = [];
 var displayedResult = 0;
 $("#privResult").click(function(){
-  console.log("yea");
   if(displayedResult > 0){
 
       displayedResult--;
   }
+  else{
+    displayedResult = matches.length - 1;
+  }
+  // get the current matched position and run it through the camera movement
+
+  nodeHighlight(matches[displayedResult]);
+
+
 });
 
 $("#nextResult").click(function(){
-  if(displayedResult < resultList.length + 1){
-      displayedResult++;
+  if(displayedResult < matches.length -1){
+    displayedResult++;
+
   }
+  else{
+    displayedResult = 0;
+  }
+  // get the current matched position and run it through the camera movement
+  nodeHighlight(matches[displayedResult]);
 });
 
 
