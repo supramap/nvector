@@ -475,6 +475,9 @@ function selSlide(){
 
 var displayedResult = 0;
 $("#privResult").click(function(){
+  var checkedRadio = $("input:radio:checked");
+  var graphPos = parseInt(checkedRadio[0].value);
+  removeHighlight(matches[displayedResult],graphPos);
   if(displayedResult > 0){
 
       displayedResult--;
@@ -483,13 +486,15 @@ $("#privResult").click(function(){
     displayedResult = matches.length - 1;
   }
   // get the current matched position and run it through the camera movement
-
   nodeHighlight(matches[displayedResult]);
 
 
 });
 
 $("#nextResult").click(function(){
+  var checkedRadio = $("input:radio:checked");
+  var graphPos = parseInt(checkedRadio[0].value);
+  removeHighlight(matches[displayedResult],graphPos);
   if(displayedResult < matches.length -1){
     displayedResult++;
 

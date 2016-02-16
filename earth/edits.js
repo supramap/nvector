@@ -82,7 +82,9 @@ function searchTree(searchTerm,graphPos){
       // including the current key
       var tempKey = key;
       if(tempKey.toLowerCase().indexOf(searchTerm) > 0){
-        matches.push(key);
+        if(shouldMatch(key)){
+            matches.push(key);
+        }
       }
 
       var actObject = target[key];
@@ -95,14 +97,18 @@ function searchTree(searchTerm,graphPos){
             for(var i = 0 ; i < val.length; i++){
               if(typeof val[i] == "string"){
                 if(val[i].toLowerCase().indexOf(searchTerm) > 0){
-                  matches.push(key);
+                  if(shouldMatch(key)){
+                      matches.push(key);
+                  }
                 }
               }
             }
           }
 
           else if(typeof val == "string" && val.toLowerCase().indexOf(searchTerm) > 0){
-            matches.push(key);
+            if(shouldMatch(key)){
+                matches.push(key);
+            }
           }
         }
       }
@@ -114,7 +120,6 @@ function searchTree(searchTerm,graphPos){
   if(matches.length < 1){
     console.log("No matches were found");
   }
-  console.log(matches);
 
   displayedResult = 0;
   // need to search for the matching position in the point cloud
@@ -141,6 +146,24 @@ function searchTree(searchTerm,graphPos){
 
 }
 
+/*
+  ensure matched nodes are actually displayed. For instance
+  If the time function is used then matches that don't fall within the time frame
+  should not be displayed.
+  returns true if the match should be added ie( the match is within the showed tree)
+  or false if the match is excluded from the current tree (likely because of time)
+*/
+function shouldMatch(key){
+  var searchList = graph2d.children[0].children[0].geometry.vertices;
+  for(var i = 0; i < searchList.length; i++){
+    if(searchList[i].nodeName == key){
+      return true;
+    }
+  }
+  return false;
+}
+
+
 
 /*
   This function will scroll the camera along two axis, allowing for smoother
@@ -161,16 +184,45 @@ function nodeHighlight(key){
   }
   // This may need to be updated to a custom input color
   graph2d.children[0].children[0].material.attributes.customColor.value[position] = new THREE.Color(0x0e9e9e);
-  graph2d.children[0].children[0].material.needsUpdate = true;
+  //graph2d.children[0].children[0].material.needsUpdate = true;
+  graph2d.children[0].children[0].material.attributes.customColor.needsUpdate = true;
 
   var hover = vectorPosition.clone();
-  hover.z = camera.position.z;
+  hover.z = 25;
 
-  var path = new THREE.LineCurve3(camera.position,hover).getPoints(camera.position.distanceTo(hover));
+  // calculate a good midpoint
+  var tempMid = camera.position.clone().lerp(hover.clone(),.5)
+  tempMid.z = 25 + (camera.position.distanceTo(hover))
+
+  var path = new THREE.QuadraticBezierCurve3(camera.position,tempMid,hover).getPoints(camera.position.distanceTo(hover));
   camera.path = path;
   cameraRelocate = true;
   camera.pip = 0;
   camera.nlerp = 1;
   offKilter = true;
 
+}
+
+/*
+  So the function to highlight a node works great... but what about returning it
+  to its original color? Thats what this baby is for
+*/
+
+function removeHighlight(key, rootPos){
+  var searchList = graph2d.children[0].children[0].geometry.vertices;
+  var position;
+
+  for(var i = 0; i < searchList.length; i++){
+    if(searchList[i].nodeName == key){
+      position = i;
+      vectorPosition = searchList[i];
+      break;
+    }
+  }
+
+  var correctColor = rootDataStore[rootPos][0].data[key].color;
+
+  graph2d.children[0].children[0].material.attributes.customColor.value[position] = new THREE.Color(correctColor);
+  //graph2d.children[0].children[0].material.needsUpdate = true;
+  graph2d.children[0].children[0].material.attributes.customColor.needsUpdate = true;
 }
