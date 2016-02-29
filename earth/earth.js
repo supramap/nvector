@@ -224,7 +224,9 @@ var rotating,controls;
 		if(treeState){
 			treeState = false;
 			// need to hide the search buttons if currently visible and camera focus
-			selSlide();
+			if(slideOut){
+				selSlide();
+			}
 			offKilter = false;
 
 			if(sliderExists){

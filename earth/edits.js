@@ -81,7 +81,7 @@ function searchTree(searchTerm,graphPos){
       // Now begin to search through everyone of the elements in the database.
       // including the current key
       var tempKey = key;
-      if(tempKey.toLowerCase().indexOf(searchTerm) > 0){
+      if(tempKey.toLowerCase().indexOf(searchTerm.toLowerCase()) >= 0){
         if(shouldMatch(key)){
             matches.push(key);
         }

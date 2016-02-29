@@ -1,8 +1,8 @@
 // Data relevant to connecting to our server
-//var queryroot = "http://10.16.56.89:8080/irods-rest/rest/";
+var queryroot = "http://10.16.56.79:8080/irods-rest/rest/";
 var userName = "earth";
 var psw = "!darpa";
-var queryroot = "http://192.168.1.14:8080/irods-rest/rest/"
+//var queryroot = "http://192.168.1.14:8080/irods-rest/rest/"
 // Make the buttons trigger the file selector
 $("#infileBut").click(function(){
   $("#infile").trigger('click');

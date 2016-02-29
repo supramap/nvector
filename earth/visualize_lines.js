@@ -356,7 +356,17 @@ function build2d(coreObject,startP,endP,rootPosition){
 			var graphObject = new THREE.Object3D();
 			graphObject.add(allSpheres);
 			graphObject.add(allLines);
+			//graph2d.add(graphObject);
+			// here we add the fun stuff for names
+			var group = new textGroup("Arial",0xffffff,.5);
+			var toAdd = allSpheres.geometry.vertices;
+			for(var i = 0; i < toAdd.length; i++){
+				var currentGeo = toAdd[i];
+				group.addString(currentGeo.nodeName,new THREE.Vector3(currentGeo.x + 1, currentGeo.y-.15,0));
+			}
+			graphObject.add(group.build());
 			graph2d.add(graphObject);
+
 			//graph.remove(rotating);
 			//return graphObject;
 			rootDataStore[rootPosition][3] = allSpheres;
@@ -392,7 +402,18 @@ function build2d(coreObject,startP,endP,rootPosition){
 		var graphObject = new THREE.Object3D();
 		graphObject.add(allSpheres);
 		graphObject.add(allLines);
-		graph.add(graphObject)
+		//graph2d.add(graphObject);
+		// here we add the fun stuff for names
+		var group = new textGroup("Arial",0xffffff,.5);
+		var toAdd = allSpheres.geometry.vertices;
+		for(var i = 0; i < toAdd.length; i++){
+			var currentGeo = toAdd[i];
+			group.addString(currentGeo.nodeName,new THREE.Vector3(currentGeo.x + 1, currentGeo.y-.15,0));
+		}
+		graphObject.add(group.build());
+		graph2d.add(graphObject);
+
+
 		rootDataStore[rootPosition][3] = allSpheres;
 	}
 	//scene.remove(rotating);
