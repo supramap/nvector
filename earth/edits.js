@@ -139,7 +139,9 @@ function searchTree(searchTerm,graphPos){
   }
   else{
     // setup the next/previous buttons.
-    selSlide();
+    if(!slideOut){
+        selSlide();
+    }
     nodeHighlight(matches[0]);
 
   }
@@ -193,8 +195,13 @@ function nodeHighlight(key){
   // calculate a good midpoint
   var tempMid = camera.position.clone().lerp(hover.clone(),.5)
   tempMid.z = 25 + (camera.position.distanceTo(hover))
-
-  var path = new THREE.QuadraticBezierCurve3(camera.position,tempMid,hover).getPoints(camera.position.distanceTo(hover));
+  var trueDist = camera.position.distanceTo(hover);
+  // and here we apply some weird math based on the distance betweent the nodes
+  // to try and keep the rate at which the animation moves comfortable while
+  // navigating the search function.
+  var weirdMath = (Math.sqrt(trueDist) * 5) + ((Math.sqrt(trueDist)/trueDist) * 50)
+  var path = new THREE.QuadraticBezierCurve3(camera.position,tempMid,hover).getPoints(weirdMath);
+  path.push(hover);
   camera.path = path;
   cameraRelocate = true;
   camera.pip = 0;

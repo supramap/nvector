@@ -9,6 +9,11 @@ canvas{
 	height:100%:
 }
 
+#countText{
+	width:20px;
+	height:10px;
+	background-color:blue;
+}
 
 .buttonGroup{
 	background-color: rgb(230, 230, 230);

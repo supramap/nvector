@@ -339,7 +339,6 @@ var rotating,controls;
 			controls.target = new THREE.Vector3(0,0,0);
 		}
 
-		//camera.nlerp += .5;
 	}
 
 
