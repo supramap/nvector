@@ -1,0 +1,36 @@
+<html>
+	<head>
+		<title>NVector</title>
+		<link rel="stylesheet" type="text/css" href="style.css">
+		<script src="../jquery-2.1.1.min.js"></script>
+	</head>
+	<body>
+
+		<!--This is the panel that houses the file selectors -->
+		<div id="selection" class="rootPanel">
+			<select id="typeOption" onchange="changeType()" >
+				<option value="Tree"></option>
+			</select>
+			<select id="fileOption" onchange="changeButtons()">
+				<option value="CSV and Newick"></option>
+			</select>
+
+			<div id="buttonHouse">
+				<!--<button id="csvbut">CSV</button>
+				<button id="newick">Newick</button>-->
+			</div>
+
+		</div>
+
+		<div id="colChoice" class="rootPanel">
+		</div>
+
+		<div id="completed" class="rootPanel">
+
+		</div>
+
+
+		<script src="vectize.js"></script>
+
+	</body>
+</html>

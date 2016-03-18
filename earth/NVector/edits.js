@@ -136,12 +136,14 @@ function searchTree(searchTerm,graphPos){
     console.log("one match");
     nodeHighlight(matches[0]);
     showSelected(matches[0],graphPos)
+    $("#countText").html("1/1");
   }
   else{
     // setup the next/previous buttons.
     if(!slideOut){
         selSlide();
     }
+    $("#countText").html("1/" + matches.length);
     nodeHighlight(matches[0]);
 
   }

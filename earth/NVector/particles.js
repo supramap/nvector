@@ -13,7 +13,7 @@ function initializeParticles(generatedParticles){
 
 		amplitude: { type: "f", value: 1.0 },
 		color:     { type: "c", value: new THREE.Color( 0xffaa00 ) },
-		texture:   { type: "t", value: THREE.ImageUtils.loadTexture( "images/particleA.png" ) },
+		texture:   { type: "t", value: THREE.ImageUtils.loadTexture( "../images/particleA.png" ) },
 
 	};
 
@@ -131,7 +131,7 @@ function initializeSpheres(ingeometry,rootPosition){
 	var sphereUniforms ={
 		amplitude: { type: "f", value: 1.0 },
 		color:     { type: "c", value: new THREE.Color( 0xffaa00 ) },
-		texture:   { type: "t", value: THREE.ImageUtils.loadTexture( "ball.png" ) }
+		texture:   { type: "t", value: THREE.ImageUtils.loadTexture( "../images/ball.png" ) }
 	}
 
 	var sphmat = new THREE.ShaderMaterial({
@@ -167,6 +167,8 @@ function initializeLines(lineData){
 
 	var lineGeo = new THREE.BufferGeometry();
 	var lineMat = new THREE.LineBasicMaterial();
+	// For increased line width:
+	//lineMat.linewidth = 2;
 
 	var linepos = []
 	var posIndex = 0;

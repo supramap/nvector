@@ -10,9 +10,12 @@ canvas{
 }
 
 #countText{
-	width:20px;
-	height:10px;
-	background-color:blue;
+	height:18px;
+	position:absolute;
+	color:white;
+	text-align: center;
+	top:54px;
+	width:100%;
 }
 
 .buttonGroup{
