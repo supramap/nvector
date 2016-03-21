@@ -55,13 +55,13 @@ function changeButtons(){
   picker.setAttribute("type","file");
   picker.setAttribute("class","hiddenFileSelect");
   picker.setAttribute("id","filePicker");
-  picker.onchange = function(evt,val){
+  picker.onchange = function(evt){
     var f = this.files[0];
     latestFileName = f.name;
     var r = new FileReader();
     r.onload = function(event){
         // do what you will to the data
-        dataSet[val] = r.result;
+        dataSet[picker.place] = r.result;
     }
     r.readAsText(f);
   }
@@ -97,7 +97,8 @@ function changeButtons(){
     // enable the functionality for a user to click on the box and open a
     // dropdown window.
     newDiv.onclick = function(e){
-      $(picker).trigger('click',i);
+      $(picker).trigger('click');
+      picker.place = this.getAttribute("value");
     }
 
     // start by creating the logical html string

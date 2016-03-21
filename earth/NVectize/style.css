@@ -4,9 +4,15 @@
 }
 
 .dragNDrop{
-  width: 100px;
-  height: 100px;
+  width: 47%;
+  height: 69%;
   border: dashed 2px black;
+  display: inline;
+  float:left;
+  margin-left:1px;
+  margin-right:1px;
+  border-radius: 10px;
+  margin-top:5px;
 }
 
 .onHover{
@@ -18,4 +24,14 @@
   height:0px;
   overflow:hidden;
   position:absolute;
+}
+
+#buttonHouse{
+  background-color: lightgrey;
+  width: 90%;
+  height:65%;
+  left:5%;
+  position:relative;
+  border-radius: 10px;
+
 }
