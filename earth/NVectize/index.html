@@ -8,13 +8,15 @@
 
 		<!--This is the panel that houses the file selectors -->
 		<div id="selection" class="rootPanel">
-			<select id="typeOption" onchange="changeType()" >
-				<option value="Tree"></option>
-			</select>
-			<select id="fileOption" onchange="changeButtons()">
-				<option value="CSV and Newick"></option>
-			</select>
 
+			<div id="pathSel">
+				<select id="typeOption" onchange="changeType()" >
+					<option selected disabled>Graph Type</option>
+				</select>
+				<select id="fileOption" onchange="changeButtons()" disabled>
+					<option selected disabled>Preferred File Types</option>
+				</select>
+			</div>
 			<div id="buttonHouse">
 				<!--<button id="csvbut">CSV</button>
 				<button id="newick">Newick</button>-->

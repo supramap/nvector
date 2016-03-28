@@ -163,10 +163,13 @@ function initializeSpheres(ingeometry,rootPosition){
 	return spherePSystem;
 }
 
-function initializeLines(lineData){
+function initializeLines(lineData,defaultColor){
+	if(defaultColor == undefined){
+		defaultColor = [1,1,1];
+	}
 
 	var lineGeo = new THREE.BufferGeometry();
-	var lineMat = new THREE.LineBasicMaterial();
+	var lineMat = new THREE.LineBasicMaterial({vertexColors: THREE.VertexColors});
 	// For increased line width:
 	//lineMat.linewidth = 2;
 
@@ -181,11 +184,20 @@ function initializeLines(lineData){
 		var calcLength = (lineData[i].length/3) -1;
 		for(var seg = 0; seg < calcLength; ++seg ){
 			indicesArr.push(posIndex + seg,posIndex + seg +1);
-		}
-		posIndex = posIndex + calcLength + 1;
 
-		colors.push(Math.random()*0.5+0.5, Math.random()*0.5+0.5, 1);
+		}
+
+		// calculate the color positions for each line
+		for(ccount = 0; ccount < lineData[i].length; ccount++){
+
+			$.merge(colors,defaultColor);
+		}
+
+		posIndex = posIndex + calcLength + 1;
+		//colors.push(.9, .2, .4);
+		//colors.push(Math.random()*0.5+0.5, Math.random()*0.5+0.5, 1);
 	}
+	// test for colors
 
 	lineGeo.addAttribute( 'index', new THREE.BufferAttribute( new Uint32Array( indicesArr ), 1 ) );
 	lineGeo.addAttribute( 'position', new THREE.BufferAttribute( new Float32Array( linepos ), 3 ) );

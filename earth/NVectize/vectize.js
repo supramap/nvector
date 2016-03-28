@@ -43,6 +43,7 @@ function changeType(){
      var current = Object.keys(buttons)[i]
     $("#fileOption").append("<option class='optionBox' value='"+ current +"'>" + current + "</option>")
   }
+  $("#fileOption").prop("disabled",false);
 
 }
 
@@ -73,7 +74,9 @@ function changeButtons(){
     newDiv.setAttribute("value",i);
     newDiv.setAttribute("class","dragNDrop");
     newDiv.innerHTML = "<label>Drop Files Here<br>Or Click to Select</label>";
+    var totGap = (buttonList.length + 2) * 1.5;
 
+    newDiv.style.width = ((100-totGap)/buttonList.length).toString() + "%";
     // set the on dragover event to alter the css of the text
     newDiv.ondragover = function(){
       $(this).addClass("onHover");

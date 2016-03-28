@@ -1,6 +1,6 @@
 {
   "name": "NVector",
-  "main": "NVector/index.html",
+  "main": "NVectize/index.html",
   "description":"An application for plotting and editing graphs in a 3d context",
   "version": "0.1.0",
   "window":{
