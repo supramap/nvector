@@ -18,6 +18,14 @@ buttons={"CSV + Newick": ["CSV","Newick"],
 */
 
 function initialize(){
+
+  // hide the other windows
+  $("#colChoice").hide();
+  $("#completed").hide();
+  $("#buttonHouse").hide();
+  $("#moveOn").hide();
+
+
   for(var i = 0; i < Object.keys(types).length; i++){
      var current = Object.keys(types)[i]
     $("#typeOption").append("<option class='optionBox' value='"+ current +"'>" + current + "</option>")
@@ -37,13 +45,14 @@ function fillFileType(vizType){
 
 function changeType(){
   var value = $("#typeOption option:selected").text();
-  console.log(value);
+
   // unshade the second selection box and fill it
   for(var i = 0; i < Object.keys(buttons).length; i++){
      var current = Object.keys(buttons)[i]
     $("#fileOption").append("<option class='optionBox' value='"+ current +"'>" + current + "</option>")
   }
   $("#fileOption").prop("disabled",false);
+  $("#fileOption").css('opacity',"1.0");
 
 }
 
@@ -63,6 +72,9 @@ function changeButtons(){
     r.onload = function(event){
         // do what you will to the data
         dataSet[picker.place] = r.result;
+        if(dataSet.length == buttonList.length){
+          $("#moveOn").show();
+        }
     }
     r.readAsText(f);
   }
@@ -73,7 +85,7 @@ function changeButtons(){
     var newDiv = document.createElement("div");
     newDiv.setAttribute("value",i);
     newDiv.setAttribute("class","dragNDrop");
-    newDiv.innerHTML = "<label>Drop Files Here<br>Or Click to Select</label>";
+    newDiv.innerHTML = "<label class='dropLabel'>Drop <span class='keyWord'>"+buttonList[i]+"</span> File Here<br>Or Click to Select</label> <input type='image' class='uploadIm' src='../images/upload.svg'>";
     var totGap = (buttonList.length + 2) * 1.5;
 
     newDiv.style.width = ((100-totGap)/buttonList.length).toString() + "%";
@@ -87,9 +99,13 @@ function changeButtons(){
       var files = e.target.files || e.dataTransfer.files;
       // instanciate the reader
       var reader = new FileReader();
+      picker.place = this.getAttribute("value");
       //define what happens when a file is loaded
       reader.onload = function(event){
-        console.log(reader.result);
+        dataSet[picker.place] = reader.result;
+        if(buttonList.length == dataSet.length){
+          $("#moveOn").show();
+        }
         // Now that the file is loaded I need to call the parsing functions and
         // alter the box to indicate that a file has been successfully loaded.
       }
@@ -107,13 +123,37 @@ function changeButtons(){
     // start by creating the logical html string
     var newHtml= "<div class='dragNDrop' ondragover='dragHandle(this)' ondrop='dropHandle(e)' onclick='clickHandle(this)' value='"+i+"'><label>Drop Files Here<br>Or Click to Select</label></div>"
 
-    $("#buttonHouse").append(newDiv);
-
+    $("#buttonHouse").append(newDiv).show();
     // now we have to append functionality to it
 
   }
 
 }
+
+
+$("#moveOn").click(function(){
+  // trigger to split data file (csv to start) and display it's data in a table
+  console.log("hi");
+  var typeChosen = $("#typeOption").val();
+  var fileFormat = $("#fileOption").val();
+
+  // slide to the new window
+  $("#selection").hide();
+  $("#colChoice").show();
+
+  // begin segminting by different function
+  if(typeChosen == "Tree"){
+
+    if(fileFormat == "CSV + Newick"){
+      CSVNewickTree(dataSet);
+    }
+
+
+  }
+
+});
+
+
 
 
 function dragHandle(dropper){
