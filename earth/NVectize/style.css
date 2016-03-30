@@ -100,3 +100,33 @@
   margin-top:10px;
 
 }
+
+#dataFilter{
+  border:3px solid black;
+  border-radius:10px;
+  text-align:center;
+  margin-left:auto;
+  margin-right:auto;
+  width: 95vw;
+}
+
+#dataFilter tr:nth-child(even){
+  background-color:lightgray;
+}
+
+#dataFilter tr:first-child{
+  border-bottom: 1px solid black;
+}
+
+#dataFilter td:not(:last-child){
+  border-right: solid 1px black;
+}
+
+#headerDetail{
+  position:relative;
+  left: calc(50% - 187px);
+}
+
+#removeHeader{
+
+}
