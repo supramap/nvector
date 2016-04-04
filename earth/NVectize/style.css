@@ -125,6 +125,28 @@
 #headerDetail{
   position:relative;
   left: calc(50% - 187px);
+  width:375px;
+}
+
+#cursearch{
+  text-decoration: underline;
+}
+
+#instruction{
+  position:relative;
+  left:calc(50% - 155px);
+  font-size:20px;
+  font-weight:bold;
+  top:-5px
+}
+
+#custom{
+  position:relative;
+  margin-top:0px;
+  font-size: 18px;
+  margin-left:calc(50% - 100px);
+  display:block;
+  width:200px;
 }
 
 #removeHeader{
