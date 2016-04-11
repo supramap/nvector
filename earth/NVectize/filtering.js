@@ -1,6 +1,13 @@
 
 var dataPlaces = {"mandatory":{"name":"","lat":"","lon":""},"optional":{}};
 function CSVNewickTree(data){
+  $("#finishFilter").hide();
+
+  $("#finishFilter").click(function(){
+    var topRow = $("#removeHeader").prop("checked");
+    createTreeCSVNewick(data,dataPlaces,topRow);
+  });
+
   //dump the csv onto the screen in a table fileFormat
   csvDump(data[0]);
   $("#custom").hide();
@@ -25,7 +32,7 @@ function chooseLat(){
 
 function chooseLon(){
   $("#cursearch").html("Longitudes");
-  manipGraph("lat","mandatory",chooseCustom);
+  manipGraph("lon","mandatory",chooseCustom);
 }
 
 function chooseCustom(){
@@ -35,7 +42,7 @@ function chooseCustom(){
 }
 
 function manipGraph(namePlace,importance,nextProcess){
-  $("input[type=radio][name=columnChoice]").change(function(){
+  $("input[type=radio][name=columnChoice]").unbind().change(function(){
     if(namePlace == "NONE"){
       // assume then that we are entering custom values and need to draw form
       // the textbox.
@@ -50,6 +57,10 @@ function manipGraph(namePlace,importance,nextProcess){
     $("#dataFilter td:nth-child("+this.value+")").css("opacity",".6");
     $("#dataFilter td:nth-child("+this.value+")").css("background-color","darkgray");
     $("input[type=radio]:nth("+(parseInt(this.value) - 1)+")").attr("disabled",true);
+
+    if(namePlace == "lon"){
+      $("#finishFilter").show();
+    }
     nextProcess();
   });
 }
