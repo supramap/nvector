@@ -1,5 +1,6 @@
 
 var dataPlaces = {"mandatory":{"name":"","lat":"","lon":""},"optional":{}};
+var headerHide = false;
 function CSVNewickTree(data){
   $("#finishFilter").hide();
 
@@ -13,7 +14,15 @@ function CSVNewickTree(data){
   $("#custom").hide();
   // make sure that the remove top row function is defined at this point.
   $("#removeHeader").change(function(){
-    csvDump(data[0]);
+    //csvDump(data[0]);
+    if(headerHide == false){
+      $("tr:nth-of-type(2)").prop("hidden",true);
+      headerHide = true;
+    }
+    else{
+      $("tr:nth-of-type(2)").prop("hidden",false);
+      headerHide = false;
+    }
   });
 
   // create a function for selecting datasets. three are mandated and others

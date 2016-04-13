@@ -17,32 +17,43 @@ function createTreeCSVNewick(dataIn,dataPlaces, topRow){
   var acdata = dataIn[0].split("\n");
   for(var i = 0; i < acdata.length; i++){
     var line= acdata[i];
+    if($("#removeHeader").is(":checked") && i == 0){
+      continue;
+    }
     if(line.length > 0){
       var dataset = line.split(",");
       var id = dataset[dataPlaces.mandatory.name - 1];
       metaData[id] = dataset;
     }
   }
-  loadNewick(dataIn);
+  loadNewick(dataIn, dataPlaces);
 
 
 
 }
 
 
-function loadNewick(dataIn){
+function loadNewick(dataIn, dataPlaces){
     var tree = parser.parse_newick(dataIn[1]);
     //console.log(metaData);
-    var rootNode = recBuild(tree);
+    var rootNode = recBuild(tree,dataPlaces);
+    if(dataPlaces.optional.date){
+      earthStructure.options.time = true;
+    }
     //console.log(correctData);
     earthStructure.data = data;
     earthStructure.options.roots = [rootNode];
+    $("#savePath").trigger('click');
 
-    fs.writeFile(outFile,JSON.stringify(earthStructure),function(){
-      console.log("conversion successful")
-    });
 
 }
+
+$("#savePath").change(function(evt){
+  fs.writeFile(evt.delegateTarget.value,JSON.stringify(earthStructure),function(){
+    $("#colChoice").hide();
+    $("#completed").show();
+  });
+})
 
 var earthStructure = {"metadata":{
                         "fileName":outFile,
@@ -61,7 +72,7 @@ var earthStructure = {"metadata":{
 // Pass in the data object so that it can be continously filled as the
 // data gets parsed.
 var data ={}, places = {};
-function recBuild( source){
+function recBuild( source, dataPlaces){
   var nodeRep = {};
   if(source.children == undefined || source.children.length == 0){
     nodeRep.children = [];
@@ -70,37 +81,61 @@ function recBuild( source){
     if(name in data){
       return name;
     }
-    nodeRep.root = false;
 
+    nodeRep.root = false;
     nodeRep.desc = ""
     nodeRep.links = [];
     nodeRep.color = "#b4a643";
-    nodeRep.date = metaData[name][3];
-    nodeRep.coord = [metaData[name][1],metaData[name][2]];
+
+    var placeKeys = Object.keys(dataPlaces.optional);
+    for(var i = 0; i < placeKeys.length; i++){
+          nodeRep[placeKeys[i]] = metaData[name][dataPlaces.optional[placeKeys[i]]-1];
+    }
+
+    //nodeRep.date = metaData[name][3];
+    var latPos = dataPlaces.mandatory.lat -1;
+    var lonPos = dataPlaces.mandatory.lon -1;
+    nodeRep.coord = [metaData[name][latPos],metaData[name][lonPos]];
     data[name] = nodeRep;
     return name;
   }
 
   var childNames = []
   for(var i = 0; i < source.children.length; i++){
-    var name = recBuild(source.children[i]);
+    var name = recBuild(source.children[i], dataPlaces);
     childNames.push(name);
   }
 
   nodeRep.children = childNames
 
   var name = source.name;
+
+
+
   if(name == '\'\'' || name == "" || !isNaN(name)){
     name = genVariable();
+    nodeRep.root = false;
+    nodeRep.desc = "";
+    nodeRep.links = [];
+    nodeRep.color = "#e3483e";
+    nodeRep.date= "";
+
   }
   else{
-  	nodeRep.coord = [metaData[name][1],metaData[name][2]];
+
+    var placeKeys = Object.keys(dataPlaces.optional);
+    for(var i = 0; i < placeKeys.length; i++){
+          nodeRep[placeKeys[i]] = metaData[name][dataPlaces.optional[placeKeys[i]] - 1];
+    }
+    if(metaData[name] == undefined){
+      alert("There was an error trying to match the ID: " + name + "in your tree file with the metaData. Please check to make sure that this ID is consistant in both files.")
+      return;
+    }
+    else{
+  	   nodeRep.coord = [metaData[name][dataPlaces.mandatory["lat"]] -1,metaData[name][dataPlaces.mandatory["lon"]] -1];
+    }
   }
-  nodeRep.root = false;
-  nodeRep.desc = "";
-  nodeRep.links = [];
-  nodeRep.color = "#e3483e";
-  nodeRep.date= "";
+
   data[name] = nodeRep;
   return name;
 }

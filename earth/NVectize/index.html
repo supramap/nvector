@@ -32,10 +32,13 @@
 			<div id="headerDetail"><label>Note: Labels should not be included. Remove top row?  </label><input type='checkbox' id="removeHeader"></div>
 			<table id="dataFilter"></table>
 			<button id="finishFilter" hidden="true">Generate!</button>
+			<input id="savePath" type="file" hidden="true" nwsaveas="newTree.json">
 		</div>
 
 		<div id="completed" class="rootPanel">
-
+			<p id="resultInfo"></p>
+			<a id="toNvector" href="../NVector/index.html">Back to Nvector</a>
+			<a id="startover" href="">Start Over</a>
 		</div>
 
 		<script src="loadCSV.js"></script>
