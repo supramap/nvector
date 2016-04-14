@@ -1,7 +1,7 @@
 var static = require('node-static');
 var os = require('os');
 
-var fileServer = new static.Server('../earth');
+var fileServer = new static.Server('../earth/NVector');
 var ifaces = os.networkInterfaces();
 
 console.log("Server running");
@@ -28,6 +28,7 @@ Object.keys(ifaces).forEach(function (ifname) {
 });
 
 require('http').createServer(function (request, response) {
+	console.log("HIT")
     request.addListener('end', function () {
         fileServer.serve(request, response);
     }).resume();
