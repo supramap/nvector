@@ -12,6 +12,9 @@ $("#layerBut").click(function(){
   $("#layerFile").trigger('click');
 });
 
+$("#generateFile").click(function(){
+  window.location.href = "../NVectize/index.html";
+})
 
 $("#infileButCloud").click(function(){
   // fire off the query to retrieve collection information.

@@ -42,23 +42,7 @@ var rotating,controls;
 
 		// If the existing runtime is nwjs
 		if(is_nwjs()){
-			gui = require('nw.gui');
 			isNW = true;
-			var vectorMenu = new nw.Menu({ type: 'menubar'});
-			var fudrick = new nw.Menu();
-			fudrick.append(new nw.MenuItem({label: "First Option", type:"normal"}));
-			fudrick.append(new nw.MenuItem({label: "Second Option", type:"separator"}));
-			vectorMenu.append(new nw.MenuItem({
-				label: 'First Menu',
-				submenu:fudrick
-			}));
-			vectorMenu.append(new nw.MenuItem({
-				label: 'SecondMenu',
-				submenu:fudrick
-			}));
-
-			nw.Window.get().menu = vectorMenu;
-
 		}
 		// If the existing runtime is the browser
 		else{
