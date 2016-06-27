@@ -13,7 +13,7 @@ function initializeParticles(generatedParticles){
 
 		amplitude: { type: "f", value: 1.0 },
 		color:     { type: "c", value: new THREE.Color( 0xffaa00 ) },
-		texture:   { type: "t", value: THREE.ImageUtils.loadTexture( "../images/particleA.png" ) },
+		texture:   { type: "t", value: sphereTexture/*THREE.ImageUtils.loadTexture( "../images/particleA.png" )*/ },
 
 	};
 

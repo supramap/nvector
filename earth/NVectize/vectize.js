@@ -85,7 +85,7 @@ function changeButtons(){
     var newDiv = document.createElement("div");
     newDiv.setAttribute("value",i);
     newDiv.setAttribute("class","dragNDrop");
-    newDiv.innerHTML = "<label class='dropLabel'>Drop <span class='keyWord'>"+buttonList[i]+"</span> File Here<br>Or Click to Select</label> <input type='image' class='uploadIm' src='../images/upload.svg'>";
+    newDiv.innerHTML = "<label class='dropLabel'>Drop <span class='keyWord'>"+buttonList[i]+"</span> File Here<br>Or Click to Select</label> ";//<input type='image' class='uploadIm' src='../images/upload.svg'>
     var totGap = (buttonList.length + 2) * 1.5;
 
     newDiv.style.width = ((100-totGap)/buttonList.length).toString() + "%";

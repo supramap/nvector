@@ -89,7 +89,12 @@ function recBuild( source, dataPlaces){
 
     var placeKeys = Object.keys(dataPlaces.optional);
     for(var i = 0; i < placeKeys.length; i++){
-          nodeRep[placeKeys[i]] = metaData[name][dataPlaces.optional[placeKeys[i]]-1];
+          try{
+            nodeRep[placeKeys[i]] = metaData[name][dataPlaces.optional[placeKeys[i]]-1];
+          }
+          catch(err){
+            alert("An error was found... " + name + "as found in the newick file does not exist in the csv");
+          }
     }
 
     //nodeRep.date = metaData[name][3];

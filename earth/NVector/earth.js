@@ -21,12 +21,12 @@ var rotating,controls;
 
 //window.onload = function(){
 	var outlinedMapTexture;
-	var mapIndexedImage = new Image();
-	mapIndexedImage.src = '../images/map_indexed.png'
-	var mapOutlineImage
-	var indexedMapTexture = THREE.ImageUtils.loadTexture('../images/map_indexed.png', {}, function(){
-		mapOutlineImage = new Image();
-		mapOutlineImage.src = '../images/map_outline.png'
+	//var mapIndexedImage = new Image();
+	//mapIndexedImage.src = '../images/map_indexed.png'
+	//var mapOutlineImage
+	var sphereTexture = THREE.ImageUtils.loadTexture('../images/particleA.png', {}, function(){
+		//mapOutlineImage = new Image();
+		//mapOutlineImage.src = '../images/map_outline.png'
 		outlinedMapTexture = THREE.ImageUtils.loadTexture('../images/map_outline.png', {}, function(){
 			initializeEnvironment();
 		});
@@ -369,17 +369,17 @@ var rotating,controls;
 		lookupCanvas.width = 256;
 		lookupCanvas.height = 1;
 
-		lookupTexture = new THREE.Texture( lookupCanvas );
+		/*lookupTexture = new THREE.Texture( lookupCanvas );
 		lookupTexture.magFilter = THREE.NearestFilter;
 		lookupTexture.minFilter = THREE.NearestFilter;
-		lookupTexture.needsUpdate = true;
+		lookupTexture.needsUpdate = true;*/
 
 		//THREE.ImageUtils.loadTexture( 'images/map_indexed.png' );
 		//var indexedMapTexture = new THREE.Texture( mapIndexedImage );
-		indexedMapTexture.needsUpdate = true;
+		/*indexedMapTexture.needsUpdate = true;
 		indexedMapTexture.magFilter = THREE.NearestFilter;
 		indexedMapTexture.minFilter = THREE.NearestFilter;
-
+*/
 		//var mapOutlineImage = new Image();
 		//mapOutlineImage.src = 'images/map_outline.png'
 		//var outlinedMapTexture = new THREE.Texture( mapOutlineImage );
@@ -387,12 +387,12 @@ var rotating,controls;
 		// outlinedMapTexture.magFilter = THREE.NearestFilter;
 		// outlinedMapTexture.minFilter = THREE.NearestFilter;
 
-		var uniforms = {
+		/*var uniforms = {
 			'mapIndex': { type: 't', value: 0, texture: indexedMapTexture  },
 			'lookup': { type: 't', value: 1, texture: lookupTexture },
 			'outline': { type: 't', value: 2, texture: outlinedMapTexture },
 			'outlineLevel': {type: 'f', value: 1 },
-		};
+		};*/
 		/*
 		var uniforms = {
 		    time: { type: "f", value: 0 },
@@ -400,7 +400,7 @@ var rotating,controls;
 		    texture: { type: "t", value: THREE.ImageUtils.loadTexture('images/map_indexed.png') }
 		};*/
 
-		mapUniforms = uniforms;
+		//mapUniforms = uniforms;
 
 
 		//shaderMaterial.needsUpdate = true;
