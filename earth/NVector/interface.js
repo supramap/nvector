@@ -281,7 +281,7 @@ var open = true;
 var isOptions = false;
 $("#optionsButton").click(function(){
   $("#popup").show();
-  $("#popLoad").html("Connect");
+  $("#popLoad").html("Done");
   isOptions = true;
   $("#optionsList").show();
 });

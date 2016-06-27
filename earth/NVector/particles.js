@@ -172,6 +172,8 @@ function initializeLines(lineData,defaultColor){
 	var lineMat = new THREE.LineBasicMaterial({vertexColors: THREE.VertexColors});
 	// For increased line width:
 	//lineMat.linewidth = 2;
+	lineMat.linewidth = $("input:radio[name=lnwidth]:checked").val();
+
 
 	var linepos = []
 	var posIndex = 0;
