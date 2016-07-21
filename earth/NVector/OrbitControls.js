@@ -532,9 +532,9 @@ THREE.OrbitControls = function ( object, domElement ) {
 
 			case 1:	// one-fingered touch: rotate
 
-				if ( scope.noRotate === true ) return;
+				if ( scope.noRotate === true ) {return;}
 
-				if(panPriority){
+				if(scope.panPriority){
 					state = STATE.TOUCH_PAN;
 
 					panStart.set( event.touches[ 0 ].pageX, event.touches[ 0 ].pageY );
@@ -578,9 +578,9 @@ THREE.OrbitControls = function ( object, domElement ) {
 	}
 
 	function touchmove( event ) {
-
+		//console.log("It is touching");
 		if ( scope.enabled === false ) return;
-
+		//console.log("scope.enabled == true");
 		event.preventDefault();
 		event.stopPropagation();
 
@@ -591,8 +591,10 @@ THREE.OrbitControls = function ( object, domElement ) {
 			case 1: // one-fingered touch: rotate
 
 				if ( scope.noRotate === true ) return;
+
 				if ( state !== STATE.TOUCH_ROTATE ) return;
-				if(panPriority){
+
+				if(scope.panPriority){
 					panEnd.set( event.touches[ 0 ].pageX, event.touches[ 0 ].pageY );
 					panDelta.subVectors( panEnd, panStart );
 

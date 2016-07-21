@@ -24,10 +24,10 @@ var rotating,controls;
 	//var mapIndexedImage = new Image();
 	//mapIndexedImage.src = '../images/map_indexed.png'
 	//var mapOutlineImage
-	var sphereTexture = THREE.ImageUtils.loadTexture('../images/particleA.png', {}, function(){
+	var sphereTexture = THREE.ImageUtils.loadTexture('images/particleA.png', {}, function(){
 		//mapOutlineImage = new Image();
 		//mapOutlineImage.src = '../images/map_outline.png'
-		outlinedMapTexture = THREE.ImageUtils.loadTexture('../images/map_outline.png', {}, function(){
+		outlinedMapTexture = THREE.ImageUtils.loadTexture('images/map_outline.png', {}, function(){
 			initializeEnvironment();
 		});
 	});
@@ -438,7 +438,7 @@ var rotating,controls;
 
 		var skyBoxGeometry = new THREE.SphereGeometry( 8000, 100, 100 );
 		// BackSide: render faces from inside of the cube, instead of from outside (default).
-		var skyBoxMaterial = new THREE.MeshBasicMaterial( { side: THREE.BackSide,map: THREE.ImageUtils.loadTexture('../images/starfield.png') } );
+		var skyBoxMaterial = new THREE.MeshBasicMaterial( { side: THREE.BackSide,map: THREE.ImageUtils.loadTexture('images/starfield.png') } );
 		var skyBox = new THREE.Mesh( skyBoxGeometry, skyBoxMaterial );
 		scene.add(skyBox);
 
