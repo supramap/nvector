@@ -1,7 +1,26 @@
 // Data relevant to connecting to our server
-var queryroot = "http://10.16.56.79:8080/irods-rest/rest/";
+//var queryroot = "http://10.16.56.79:8080/irods-rest/rest/";
+var queryroot = "http://192.168.1.5:8081";
 var userName = "earth";
 var psw = "!darpa";
+
+
+
+// need to have some basic functions called to hide unwanted features while on
+// a mobile device.
+var mobile = false;
+if(window.navigator.platform == "iPad" || window.navigator.platform == "iPhone" ){
+  $("body").css({"position":"relative", "left" : "-8px", "top" : "10px"});
+  mobile = true;
+}
+
+
+
+
+
+
+
+
 //var queryroot = "http://192.168.1.14:8080/irods-rest/rest/"
 // Make the buttons trigger the file selector
 $("#infileBut").click(function(){
@@ -21,26 +40,18 @@ $("#infileButCloud").click(function(){
   // while waiting for collection information be sure to display the popup
   // window and a loading animation.
   layOrGraph = "graph";
-  var list = "collection/tempZone/home/zach/fda?listing=true"
+  var list = "/showFDA"
   loading();
   $.ajax({
     type:"GET",
     url:(queryroot + list),
-    beforeSend: function(xhr){
-      xhr.setRequestHeader("Authorization","Basic " + btoa(userName + ":" + psw));
-      xhr.setRequestHeader("Accept","application/json");
-      //xhr.setRequestHeader("Content-Type","application/json");
-    },
-    /*accepts: {
-      text: 'application/json'
-    },*/
     success:function(data){
-      var content = data.children;
-      var table= $("#selectionList");
+      var content = data;
+      var table = $("#selectionList");
       table.empty();
       for(var i = 0 ; i < content.length; i++){
         var currentChild = content[i];
-        var childName = currentChild.pathOrName;
+        var childName = currentChild.metadata.fileName;
         var nameString = "<li class='selections'>"+childName+"</li>";
         table.append(nameString);
 
@@ -57,6 +68,7 @@ $("#infileButCloud").click(function(){
   $("#popup").show();
 
 });
+
 //http://192.168.1.14:8080/irods-rest/rest/collection/tempZone/home/zach/fda?listing=true
 $("#layerButCloud").click(function(){
   layOrGraph = "layer";
@@ -118,24 +130,16 @@ $("#popLoad").click(function(){
   }
   //QUERY FOR A GRAPH
   if(layOrGraph == "graph"){
-    var fileOfInterest = queryroot + "fileContents/tempZone/home/zach/fda/" + fileSelection[0].innerHTML;
+    var fileOfInterest = queryroot + "/getFDA?fileName=" + fileSelection[0].innerHTML;
     latestFileName = fileSelection[0].innerHTML;
     loading();
     $.ajax({
       type:"GET",
       url:(fileOfInterest),
-      beforeSend: function(xhr){
-        xhr.setRequestHeader("Authorization","Basic " + btoa("earth" + ":" + "!darpa"));
-        //xhr.setRequestHeader("Accept","application/json");
-        //xhr.setRequestHeader("Content-Type","application/json");
-      },
-      /*accepts: {
-        text: 'application/json'
-      },*/
       success:function(data){
         // test if the selected file is json. Otherwise assume that it is gv
         try {
-          loadTransmissionsJson(JSON.parse(data),latestFileName);
+          loadTransmissionsJson(data,latestFileName);
         } catch (e) {
           loadTransmissions(data,latestFileName);
         }

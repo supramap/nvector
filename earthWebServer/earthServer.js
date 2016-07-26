@@ -24,7 +24,7 @@ Object.keys(ifaces).forEach(function (ifname) {
       console.log(ifname + ':' + alias, iface.address);
     } else {
       // this interface has only one ipv4 adress
-      console.log("Connect at http://" + iface.address + ":8080");
+      console.log("Connect at http://" + iface.address + ":8081");
     }
     ++alias;
   });
@@ -33,7 +33,7 @@ Object.keys(ifaces).forEach(function (ifname) {
 require('http').createServer(function (request, response) {
   dispatcher.dispatch(request, response);
 
-}).listen(8080);
+}).listen(8081);
 
 
 
@@ -57,6 +57,7 @@ dispatcher.onGet("/showFDA",function(req,res){
     var col = db.collection('fda');
     var arr = col.find({},{"metadata":1}).toArray(function(err, results){
         res.end(JSON.stringify(results));
+
     });
 
   });
@@ -74,6 +75,7 @@ dispatcher.onGet("/getFDA", function(req,res){
     var col = db.collection('fda');
     col.findOne({"metadata.fileName":fileName},function(err,results){
       res.end(JSON.stringify(results));
+
     });
   });
 

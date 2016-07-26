@@ -534,6 +534,12 @@ div#timeSlide{
 	border-radius: 3px;
 }
 
-
+@media screen{
+	/*body{
+		position:relative;
+		left:-8px;
+		top: 10px;
+	}*/
+}
 
 /*Time Slider End -------------------------------------------------------*/
