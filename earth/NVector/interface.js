@@ -1,6 +1,6 @@
 // Data relevant to connecting to our server
 //var queryroot = "http://10.16.56.79:8080/irods-rest/rest/";
-var queryroot = "http://192.168.1.5:8081";
+var queryroot = "http://10.22.26.73:8081";
 var userName = "earth";
 var psw = "!darpa";
 
@@ -11,6 +11,9 @@ var psw = "!darpa";
 var mobile = false;
 if(window.navigator.platform == "iPad" || window.navigator.platform == "iPhone" ){
   $("body").css({"position":"relative", "left" : "-8px", "top" : "10px"});
+  $("#infileBut").hide();
+  $("#layerBut").hide();
+  $("#generateFile").hide();
   mobile = true;
 }
 
@@ -110,7 +113,7 @@ $("#popCancel").click(function(){
   if(isOptions){
     isOptions = false;
     $("#popLoad").html("Load");
-    $("#optionsList").hide();
+    $("#options").hide();
   }
   $("#popup").hide();
 });
@@ -125,7 +128,7 @@ $("#popLoad").click(function(){
     psw = $("#passwd").val();
     $("#popLoad").html("Load");
     $("#popup").hide();
-    $("#optionsList").hide();
+    $("#options").hide();
     return;
   }
   //QUERY FOR A GRAPH
@@ -287,7 +290,8 @@ $("#optionsButton").click(function(){
   $("#popup").show();
   $("#popLoad").html("Done");
   isOptions = true;
-  $("#optionsList").show();
+  $("#selectionList").empty();
+  $("#options").show();
 });
 
 
