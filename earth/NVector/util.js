@@ -97,9 +97,22 @@ function formatDate ( date ) {
 }
 
 function reFormatDate ( date ) {
-    return date.getMonth()+1 + "-" +
-				date.getDate() + "-" +
-        date.getFullYear();
+    var niceDate =  date.getFullYear()+ "-";
+
+    if(date.getMonth() < 10){
+			niceDate += "0" + date.getMonth() + "-";
+		}
+		else{
+			niceDate += date.getMonth();
+		}
+
+		if(date.getDate() < 10){
+			niceDate += "0" + date.getDate();
+		}
+		else{
+			niceDate += date.getDate();
+		}
+		return niceDate;
 }
 
 function timestamp(str){

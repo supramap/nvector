@@ -5,8 +5,10 @@ var rad = 100;
 var customRoots;
 
 onmessage = function(e){
+
   var dataset = JSON.parse(e.data);
   customRoots = dataset.custRoots;
+
   if(dataset.type == "3d"){
     makeGraphGeometry(dataset.obj,dataset.stt,dataset.stp);
   }
@@ -327,7 +329,6 @@ var totalDepth = 0;
 var totalBreadth = 0;
 var leafPlace = 0;
 function build2d(coreObject,startP,endP){
-
   freshLines = [];
   freshNodes = [];
 
@@ -344,7 +345,7 @@ function build2d(coreObject,startP,endP){
 
   if(coreObject.options.time == true){
       if(startP == undefined || endP == undefined){
-        var range = coreObject.options.timeRange
+        var range = coreObject.options.timeRange;
         recurseBuild2d(roots[0],coreObject.data,0,range[0],range[1]);
       }
       else{
@@ -364,10 +365,34 @@ function build2d(coreObject,startP,endP){
 function recurseBuild2d(current, bigObj,depth,dateStart,dateEnd){
 	var node = bigObj[current];
 	var depthFactor = 5;
+
+
 	if(node.children.length == 0){
+
+
+      /*console.log("node date >= dateStart: ")
+      console.log( new Date(node.date) >= new Date(dateStart));
+      console.log(new Date(node.date));
+      console.log(node.date);
+      console.log("-");
+      console.log(new Date(dateStart));
+      console.log(dateStart);*/
+    /*  console.log("secondTest:")
+      console.log(!(new Date(node.date) >= new Date(dateStart) && new Date(node.date) <= new Date(dateEnd)));
+      console.log((dateStart != undefined && dateEnd != undefined));
+      console.log(( (dateStart != undefined && dateEnd != undefined) && !(new Date(node.date) >= new Date(dateStart) && new Date(node.date) <= new Date(dateEnd))));
+      console.log((node.coord instanceof THREE.Vector3));
+
+      console.log(new Date(dateStart));
+      console.log(new Date(node.date));
+      console.log(dateEnd)
+      console.log(new Date(dateEnd));*/
 			if(node.coord instanceof THREE.Vector3 || ( (dateStart != undefined && dateEnd != undefined) && !(new Date(node.date) >= new Date(dateStart) && new Date(node.date) <= new Date(dateEnd)))){
 				return 1;
 			}
+      //console.log("coordinate is a vector")
+      //console.log( node.coord instanceof THREE.Vector3 )
+      //console.log(( (dateStart != undefined && dateEnd != undefined) && !(new Date(node.date) >= new Date(dateStart) && new Date(node.date) <= new Date(dateEnd))));
 			// This is a leaf node and so needs to be placed in its relative position
 			// based upon depth and breadth
 
@@ -387,6 +412,7 @@ function recurseBuild2d(current, bigObj,depth,dateStart,dateEnd){
 			// make a sphere to represent this node, I'll give it a color to indicate
 			// that it is a leaf
 			//var sphere = createSphere(0xfffc32, current,node.coord);
+
 			freshNodes.push(nodeObj);
 			leafPlace++;
 

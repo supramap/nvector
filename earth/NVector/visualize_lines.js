@@ -348,6 +348,11 @@ function build2d(coreObject,startP,endP,rootPosition){
 		// check for optional roots so that they can be sent to the webworker appropriately
 
 		graphWorker.postMessage(JSON.stringify({"type":"2dlin","obj":coreObject,"stt":startP,"stp":endP,"custRoots":rootDataStore[rootPosition][2]}));
+
+		graphWorker.onerror = function(message, lineon){
+			console.log(message + " \n\n " + lineon)
+		}
+
 		graphWorker.onmessage = function(e){
 			//var loader = new THREE.ObjectLoader();
 			var dataset = JSON.parse(e.data);

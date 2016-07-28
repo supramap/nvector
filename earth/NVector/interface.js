@@ -1,6 +1,6 @@
 // Data relevant to connecting to our server
 //var queryroot = "http://10.16.56.79:8080/irods-rest/rest/";
-var queryroot = "http://10.22.26.73:8081";
+var queryroot = "http://cci-bsve.uncc.edu/nv/";
 var userName = "earth";
 var psw = "!darpa";
 
