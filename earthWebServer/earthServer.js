@@ -145,7 +145,7 @@ dispatcher.onGet("/showLayers", function(req,res){
       res.end("An error was returned. View developer console");
       return;
     }
-    var col = db.collection(collection);
+    var col = db.collection("layers");
     var arr = col.find({},{"fileName":1}).toArray(function(err, results){
         res.end(JSON.stringify(results));
 
@@ -166,7 +166,7 @@ dispatcher.onGet("/getLayer", function(req,res){
       console.log("an error was reported " + err);
       res.end("and error was returned. View developer console");
     }
-    var col = db.collection(collection);
+    var col = db.collection("layers");
     col.findOne({"fileName":fileName},function(err,results){
       res.end(JSON.stringify(results));
 
