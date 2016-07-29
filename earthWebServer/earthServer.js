@@ -132,3 +132,46 @@ dispatcher.onGet("/getFDA", function(req,res){
 
 
 });
+
+
+
+dispatcher.onGet("/showLayers", function(req,res){
+  res.writeHead(200, {'Content-Type': 'application/json'});
+
+  var fileName = req.params["fileName"];
+  mongoc.connect("mongodb://"+mongoServer+"/"+database, function(err,db){
+    if(err){
+      console.log("an error was reported: " + err );
+      res.end("An error was returned. View developer console");
+      return;
+    }
+    var col = db.collection(collection);
+    var arr = col.find({},{"fileName":1}).toArray(function(err, results){
+        res.end(JSON.stringify(results));
+
+    });
+
+  });
+
+
+});
+
+
+dispatcher.onGet("/getLayer", function(req,res){
+  res.writeHead(200, {'Content-Type': 'application/json'});
+
+  var fileName = req.params["fileName"];
+  mongoc.connect("mongodb://"+mongoServer+"/"+database, function(err,db){
+    if(err){
+      console.log("an error was reported " + err);
+      res.end("and error was returned. View developer console");
+    }
+    var col = db.collection(collection);
+    col.findOne({"fileName":fileName},function(err,results){
+      res.end(JSON.stringify(results));
+
+    });
+  });
+
+
+});
