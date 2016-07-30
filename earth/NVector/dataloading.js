@@ -1,6 +1,6 @@
 
 function loadLayer(data,fileName){
-	var	inObject = JSON.parse( data );
+	var	inObject = data ;
 	addNewLayer(inObject,fileName);
 }
 

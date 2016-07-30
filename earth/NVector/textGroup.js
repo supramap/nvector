@@ -117,8 +117,8 @@ function textGroup(font, color, size){
     /*c.style.position = 'absolute';
     c.style.top = '0';
     c.style.left= '0';
-    c.style.border='thick solid blue';*/
-
+    c.style.border='thick solid blue';
+    */
     // This is a magic number for aligning the letters on rows. YMMV.
     var yOffset = -0.25;
 

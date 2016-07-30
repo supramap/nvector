@@ -75,26 +75,18 @@ $("#infileButCloud").click(function(){
 //http://192.168.1.14:8080/irods-rest/rest/collection/tempZone/home/zach/fda?listing=true
 $("#layerButCloud").click(function(){
   layOrGraph = "layer";
-  var list = "collection/tempZone/home/zach/layers?listing=true"
+  var list = "/showLayers"
   loading();
   $.ajax({
     type:"GET",
     url:(queryroot + list),
-    beforeSend: function(xhr){
-      xhr.setRequestHeader("Authorization","Basic " + btoa("earth" + ":" + "!darpa"));
-      xhr.setRequestHeader("Accept","application/json");
-      //xhr.setRequestHeader("Content-Type","application/json");
-    },
-    /*accepts: {
-      text: 'application/json'
-    },*/
     success:function(data){
-      var content = data.children;
+      var content = data;
       var table= $("#selectionList");
       table.empty();
       for(var i = 0 ; i < content.length; i++){
         var currentChild = content[i];
-        var childName = currentChild.pathOrName;
+        var childName = currentChild.fileName;
         var nameString = "<li class='selections'>"+childName+"</li>";
         table.append(nameString);
 
@@ -158,21 +150,13 @@ $("#popLoad").click(function(){
   }
   // QUERY FOR A LAYER
   else{
-    var fileOfInterest = queryroot + "fileContents/tempZone/home/zach/layers/" + fileSelection[0].innerHTML;
+    var fileOfInterest = queryroot + "/getLayer?fileName=" + fileSelection[0].innerHTML;
     loading();
     $.ajax({
       type:"GET",
       url:(fileOfInterest),
-      beforeSend: function(xhr){
-        xhr.setRequestHeader("Authorization","Basic " + btoa("earth" + ":" + "!darpa"));
-        //xhr.setRequestHeader("Accept","application/json");
-        //xhr.setRequestHeader("Content-Type","application/json");
-      },
-      /*accepts: {
-        text: 'application/json'
-      },*/
       success:function(data){
-        loadLayer(data);
+        loadLayer(data,fileSelection[0].innerHTML);
         $("#popup").hide();
         doneLoading();
       },
