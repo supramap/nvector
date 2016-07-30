@@ -10,7 +10,7 @@ var psw = "!darpa";
 // a mobile device.
 var mobile = false;
 if(window.navigator.platform == "iPad" || window.navigator.platform == "iPhone" ){
-  //$("body").css({"position":"relative", "left" : "-8px", "top" : "10px"});
+  $("body").css({"position":"relative", "left" : "-8px", "top" : "10px"});
   $("#infileBut").hide();
   $("#layerBut").hide();
   $("#generateFile").hide();
