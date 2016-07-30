@@ -111,14 +111,20 @@ function textGroup(font, color, size){
     c.width = c.height = fontSize*lettersPerSide;
     var ctx = c.getContext('2d');
     ctx.font = fontSize+'px Arial';
-    ctx.fillStyle = "rgba(255,255,255,0.95)"
 
+
+    if(mobile){
+      ctx.fillStyle = "rgba(0,0,0,.95)";
+    }
+    else{
+      ctx.fillStyle = "rgba(255,255,255,0.95)";
+    }
     // for the sake of testing
     /*c.style.position = 'absolute';
     c.style.top = '0';
     c.style.left= '0';
-    c.style.border='thick solid blue';
-    */
+    c.style.border='thick solid blue';*/
+
     // This is a magic number for aligning the letters on rows. YMMV.
     var yOffset = -0.25;
 

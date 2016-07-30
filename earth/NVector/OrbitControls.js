@@ -592,7 +592,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 
 				if ( scope.noRotate === true ) return;
 
-				if ( state !== STATE.TOUCH_ROTATE ) return;
+				if ( state !== STATE.TOUCH_ROTATE && state !== STATE.TOUCH_PAN) return;
 
 				if(scope.panPriority){
 					panEnd.set( event.touches[ 0 ].pageX, event.touches[ 0 ].pageY );

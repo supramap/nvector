@@ -103,7 +103,7 @@ function reFormatDate ( date ) {
 			niceDate += "0" + date.getMonth() + "-";
 		}
 		else{
-			niceDate += date.getMonth();
+			niceDate += date.getMonth() + "-";
 		}
 
 		if(date.getDate() < 10){

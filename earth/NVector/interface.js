@@ -394,7 +394,7 @@ function showSelected(name, rootPosition){
   for(var i = 0; i < infoKeys.length; i++){
     htmlString += "<tr class='descriptorContainer'><td class='descriptor'><span class='tableText'>"+infoKeys[i]+":</span></td><td class='value'><span class='tableText'>"+info[infoKeys[i]]+"</span></td></tr>"
   }
-  htmlString += "</table><div class='returnButton' onclick='showPossible()'><input type='image' id='returnArrow' src='../images/return.svg'></div>"
+  htmlString += "</table><div class='returnButton' onclick='showPossible()'><input type='image' id='returnArrow' src='images/return.svg'></div>"
   $("#nodeDetails").html(htmlString);
 }
 
