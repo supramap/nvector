@@ -113,12 +113,12 @@ function textGroup(font, color, size){
     ctx.font = fontSize+'px Arial';
 
 
-    if(mobile){
+  /*  if(mobile){
       ctx.fillStyle = "rgba(0,0,0,.95)";
     }
-    else{
-      ctx.fillStyle = "rgba(255,255,255,0.95)";
-    }
+    else{*/
+    ctx.fillStyle = "rgba(255,255,255,0.95)";
+    //}
     // for the sake of testing
     /*c.style.position = 'absolute';
     c.style.top = '0';
