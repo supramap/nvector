@@ -262,7 +262,13 @@ layerSelection.change(function(evt){
     reader.onload = function(data){
       // Again addNewLayer is in earth.js to interface appropriately with
       // three.js
-      loadLayer(JSON.parse(data.target.result),latestFileName);
+      try{
+        var parsed = JSON.parse(data.target.result);
+        loadLayer(parsed,latestFileName);
+      }
+      catch(err){
+        alert("There was an error parsing the input file into a JSON object");
+      }
     };
     reader.readAsText(f);
   }
