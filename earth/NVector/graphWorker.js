@@ -242,14 +242,14 @@ function recurseRebuild(current, bigObj,dateStart,dateEnd){
 
 
 
-				var geometry = new THREE.SphereGeometry( .5 ,10, 10 );
+				//var geometry = new THREE.SphereGeometry( .5 ,10, 10 );
 
-				var material = new THREE.MeshLambertMaterial( {color:0xaa26f1, ambient:0xaa26f1} );
-				material.fog = false;
+				//var material = new THREE.MeshLambertMaterial( {color:0xaa26f1, ambient:0xaa26f1} );
+				//material.fog = false;
 				//material.color.setHSL( .4, 0.1, .8 );
 
 
-				var lineMat = new THREE.LineBasicMaterial({color: 0xc5c5c5});
+				//var lineMat = new THREE.LineBasicMaterial({color: 0xc5c5c5});
 				//var curve = new THREE.CubicBezierCurve3(midPoint,linepeak,latepeak,childPositions[i]);
 
 				//var curvePointsOne = segmentLine(midPoint,linepeak,10)

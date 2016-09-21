@@ -191,6 +191,7 @@ function initializeLines(lineData,defaultColor){
 
 		// calculate the color positions for each line
 		for(ccount = 0; ccount < lineData[i].length; ccount++){
+			//colors.push(Math.random()*0.5+0.5, Math.random()*0.5+0.5, 1);
 
 			$.merge(colors,defaultColor);
 		}
