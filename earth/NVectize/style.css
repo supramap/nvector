@@ -1,0 +1,162 @@
+.rootPanel{
+  width:100%;
+  height:100%;
+}
+
+.uploadIm{
+  position:absolute;
+  left:14vw;
+  top: calc(50% - 9vw);
+  width: 15vw;
+}
+
+#pathSel{
+  width:250px;
+  border:solid 2px rgba(0, 0, 0, 0.75);
+  position:relative;
+  left:calc(50% - 125px);
+  border-radius:10px;
+}
+
+#typeOption{
+  width:200px;
+  left:24px;
+  position:relative;
+  text-align:center;
+  font-size:19px;
+  background-color:rgb(165,67,67);
+  color:white;
+  margin-top:5px;
+
+}
+
+#fileOption{
+  width:200px;
+  left:24px;
+  position:relative;
+  text-align:center;
+  font-size:19px;
+  background-color:rgb(165,67,67);
+  color:white;
+  margin-top:5px;
+  margin-bottom:5px;
+  opacity:.4;
+}
+
+#moveOn{
+  position:relative;
+  width:100px;
+  left: calc(50% - 50px);
+  margin-top: 10px;
+}
+
+.noSelect{
+
+}
+
+.dropLabel{
+  text-align: center;
+  position:relative;
+  margin-top:3px;
+  top:3px;
+}
+
+.keyWord{
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.dragNDrop{
+
+  height: 95%;
+  border: dashed 2px black;
+  display: inline;
+  float:left;
+  margin-left:1.5%;
+  border-radius: 10px;
+  margin-top:5px;
+  position:relative;
+  text-align:center;
+}
+
+.onHover{
+  border: dotted 2px black;
+}
+
+.hiddenFileSelect{
+  width:0px;
+  height:0px;
+  overflow:hidden;
+  position:absolute;
+}
+
+#buttonHouse{
+  background-color: lightgrey;
+  width: 90%;
+  height:65%;
+  left:5%;
+  position:relative;
+  border-radius: 10px;
+  margin-top:10px;
+
+}
+
+#dataFilter{
+  border:3px solid black;
+  border-radius:10px;
+  text-align:center;
+  margin-left:auto;
+  margin-right:auto;
+  width: 95vw;
+}
+
+#dataFilter tr:nth-child(even){
+  background-color:lightgray;
+}
+
+#dataFilter tr:first-child{
+  border-bottom: 1px solid black;
+}
+
+#dataFilter td:not(:last-child){
+  border-right: solid 1px black;
+}
+
+#headerDetail{
+  position:relative;
+  left: calc(50% - 187px);
+  width:378px;
+}
+
+#cursearch{
+  text-decoration: underline;
+}
+
+#instruction{
+  position:relative;
+  left:calc(50% - 155px);
+  font-size:20px;
+  font-weight:bold;
+  top:-5px
+}
+
+#finishFilter{
+  display:block;
+  margin-left:auto;
+  margin-right:auto;
+  margin-top: 10px;
+}
+
+#custom{
+  position:relative;
+  margin-top:0px;
+  font-size: 18px;
+  margin-left:calc(50% - 100px);
+  display:block;
+  width:200px;
+}
+
+
+#removeHeader{
+
+}

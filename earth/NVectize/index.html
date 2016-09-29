@@ -1,0 +1,50 @@
+<html>
+	<head>
+		<title>NVector</title>
+		<link rel="stylesheet" type="text/css" href="style.css">
+		<script src="../jquery-2.1.1.min.js"></script>
+	</head>
+	<body>
+
+		<!--This is the panel that houses the file selectors -->
+		<div id="selection" class="rootPanel">
+
+			<div id="pathSel">
+				<select id="typeOption" onchange="changeType()" >
+					<option selected disabled>Graph Type</option>
+				</select>
+				<select id="fileOption" onchange="changeButtons()" disabled>
+					<option selected disabled>Preferred File Types</option>
+				</select>
+			</div>
+			<div id="buttonHouse">
+				<!--<button id="csvbut">CSV</button>
+				<button id="newick">Newick</button>-->
+			</div>
+
+			<button id="moveOn">Continue</button>
+
+		</div>
+
+		<div id="colChoice" class="rootPanel">
+			<label id="instruction">Please select the column of <span id='cursearch'>ID's</span></label>
+			<input type='text' id='custom' hidden='true'>
+			<div id="headerDetail"><label>Note: Labels should not be included. Remove top row?  </label><input type='checkbox' id="removeHeader"></div>
+			<table id="dataFilter"></table>
+			<button id="finishFilter" hidden="true">Generate!</button>
+			<input id="savePath" type="file" hidden="true" nwsaveas="newTree.json">
+		</div>
+
+		<div id="completed" class="rootPanel">
+			<p id="resultInfo"></p>
+			<a id="toNvector" href="../NVector/index.html">Back to Nvector</a>
+			<a id="startover" href="">Start Over</a>
+		</div>
+
+		<script src="loadCSV.js"></script>
+		<script src="filtering.js"></script>
+		<script src="vectize.js"></script>
+
+
+	</body>
+</html>

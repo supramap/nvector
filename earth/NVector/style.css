@@ -1,0 +1,545 @@
+#frame{
+	background-color:blue;
+	width: 200px;
+	height:200px;
+}
+
+
+
+canvas{
+	width:100%;
+	height:100%:
+}
+
+#countText{
+	height:18px;
+	position:absolute;
+	color:white;
+	text-align: center;
+	top:54px;
+	width:100%;
+}
+
+.buttonGroup{
+	background-color: rgb(230, 230, 230);
+	color: black;
+	width: calc(49% - 1px);
+	height:30px;
+	float:left;
+	display:inline;
+	margin:0px;
+	text-align: center;
+	line-height: 30px;
+	cursor:pointer;
+}
+
+#info{
+	width: 95%;
+	/*background-color: lightgray;*/
+	background-color:rgba(235,235,235,.5);
+	min-height: 25px;
+	position:relative;
+	margin-left: auto;
+	margin-right: auto;
+	top: 35px;
+	overflow-x: hidden;
+
+}
+
+#info-title{
+	color:black;
+	margin-left:auto;
+	margin-right: auto;
+	border-bottom: 1px solid black;
+	text-align: center;
+}
+
+#loadedFiles-names-list{
+	margin-top: 3px;
+	list-style-type: none;
+	padding-left: 0px;
+}
+#loadedFiles-layers-list{
+	margin-top: 3px;
+	list-style-type: none;
+	padding-left: 0px;
+}
+
+#tabContainer{
+	list-style-type:none;
+	margin-left:0px;
+	padding-left: 0px;
+	margin-bottom: 0px;
+	margin-top:0px;
+	cursor:pointer;
+}
+
+#nextSlider{
+	width: 130px;
+	height: 80px;
+	position: absolute;
+	top: -140px;
+	right: 10px;
+}
+
+#privResult{
+	height:40px;
+	width:40px;
+	background-color: gray;
+	border-radius: 20px;
+	float:left;
+	margin-top:10px;
+}
+
+#nextResult{
+	height: 40px;
+	width: 40px;
+	background-color: gray;
+	border-radius: 20px;
+	float:right;
+	margin-top:10px;
+}
+
+#nextArrow{
+	width:34px;
+	margin-top:3px;
+	margin-left:5px;
+}
+
+#previousArrow{
+	width:34px;
+	margin-top:3px;
+}
+
+
+
+.inputDelete{
+	width:10px;
+	height:10px;
+	background-color:rgba(235,235,235,.5);
+	border:1px solid gray;
+	display:inline;
+	float:right;
+	border-radius: 5px;
+	top:3px;
+	position:relative;
+	line-height:45%;
+	text-align: center;
+	margin-right:5px;
+	margin-left:3px;
+	cursor:pointer;
+}
+
+.inputCheck{
+	float:right;
+	cursor:pointer;
+	opacity:.8;
+}
+.inputCheckLayer{
+	float:right;
+	cursor:pointer;
+	opacity:.8;
+}
+
+.tab{
+	width:33%;
+	display:inline-block;
+	text-align: center;
+	border-right:1px solid black;
+	border-left:1px solid black;
+	margin-right: -5px;
+	height:20px;
+}
+
+.inactiveTab{
+	/*background-color:gray;*/
+	background-color: rgba(85,85,85,.5);
+	border-bottom:1px solid black;
+}
+
+#viewsTab{
+	border-left:none;
+}
+
+.textSpan{
+	display: inline-block;
+	margin-left: 3px;
+	width:calc(100% - 65px);
+	text-overflow: ellipsis;
+	overflow:hidden;
+}
+
+.inputRadio{
+	float:right;
+	cursor:pointer;
+	opacity:.8;
+}
+
+.descTable{
+	border-collapse: collapse;
+	min-width: 100%;
+}
+.descriptorContainer:nth-child(even){
+	background-color:rgba(185, 185, 185,.5);
+}
+
+.descriptor{
+
+}
+
+.value{
+
+}
+
+#returnArrow{
+	width:24px;
+	height:23px;
+}
+
+.returnButton{
+	border:2px solid darkgray;
+	background-color: rgba(235,235,235,.5);
+	width:24px;
+	height:24px;
+	border-radius: 12px;
+	text-align:center;
+	margin:auto;
+	margin-top:5px;
+	margin-bottom:3px;
+}
+
+.returnButton2{
+	border:2px solid darkgray;
+	background-color: rgba(235,235,235,.5);
+	width:24px;
+	height:24px;
+	border-radius: 12px;
+	text-align:center;
+	margin-top:5px;
+	margin-bottom:3px;
+	display:inline-block;
+	float:right;
+	right:5px;
+	position:relative;
+
+}
+
+#searchButton{
+	margin-left:auto;
+	margin-right: auto;
+	margin-top:3px;
+	width:75px;
+	height:25px;
+	background-color:rgba(235,235,235,.5);
+	text-align: center;
+	line-height: 25px;
+	margin-bottom:5px;
+
+
+}
+
+#searchText{
+	margin-left:auto;
+	margin-right: auto;
+	margin-top: 6px;
+	display:block;
+}
+
+
+
+
+.subButton{
+	width:75px;
+	height:25px;
+	background-color: rgba(235,235,235,.5);
+	display:inline-block;
+	position:relative;
+	top:6px;
+	left:4px;
+	text-align: center;
+	line-height: 23px;
+	cursor:pointer;
+}
+
+.subButtonTog{
+	width:75px;
+	height:25px;
+	background-color: rgba(154, 0, 0, 0.5);
+	color:white;
+	display:inline-block;
+	position:relative;
+	top:6px;
+	left:4px;
+	text-align: center;
+	line-height: 23px;
+}
+
+.subLabel{
+	text-align: center;
+	border-bottom:1px solid black;
+}
+.subLabel:not(:first-child){
+	margin-top:11px;
+}
+
+#possible{
+	list-style: none;
+	margin-top:0px;
+	padding-left:0px;
+}
+
+.nodeSel{
+	border-bottom: 1px solid black;
+	text-align: center;
+	cursor: pointer;
+}
+.nodeSel:hover{
+	text-align:center;
+	border-bottom:2px solid black;
+	border-top:1px solid black;
+	font-style: italic;
+	font-weight: bold;
+	cursor:pointer;
+}
+
+#nodeDetails{
+	max-height: calc(100% - 200px);
+	overflow:scroll;
+	width:calc(100% + 16px);
+}
+
+#infileBut{
+
+}
+#layerBut{
+
+}
+
+#popup{
+	width: 60%;
+	min-width: 300px;
+	height: 80%;
+	min-height: 280px;
+	background-color:#0c0f0f;
+	position:absolute;
+	z-index: 5;
+	left:calc(20% + 15px);
+	top:10%;
+	border-radius: 3px;
+	border: 1px solid paleturquoise;
+
+}
+
+#listSupport{
+	position:absolute;
+	width:94%;
+	left: 3%;
+	top: 2%;
+	height: calc((100% - 46px) - 2%);
+	overflow-y: scroll;
+}
+
+#lnWidthConf{
+	margin-left:40px;
+}
+
+#lnWidthConf span{
+	display:inline-block;
+	color:white;
+}
+#lnWidthConf input{
+	margin-left: 5px;
+}
+
+
+
+#selectionList{
+	list-style:none;
+	padding:0px;
+
+}
+
+.selections{
+	color: white;
+	height: 22px;
+	text-align:center;
+	height:31px;
+	font-size:18px;
+	text-align: center;
+	line-height: 30px;
+	opacity:.7;
+	cursor: pointer;
+}
+
+.selected{
+	opacity: .9;
+	border:solid 3px paleturquoise;
+}
+
+li.selections:nth-child(odd){
+	background-color: rgb(173,173,173);
+}
+li.selections:nth-child(even){
+	background-color: rgb(91, 91, 91);
+}
+
+
+
+#popLoad{
+	width: 100px;
+	height: 30px;
+	position: absolute;
+	bottom: 5px;
+	right: 110px;
+	opacity:.5;
+	cursor: pointer;
+}
+
+#popCancel{
+	width: 100px;
+	height: 30px;
+	position: absolute;
+	bottom: 5px;
+	right: 5px;
+	opacity: .5;
+	cursor:pointer;
+}
+
+#buttonPanel{
+	width:100%;
+	bottom:0px;
+	position:absolute;
+}
+
+.buttonGroup{
+	border: 1px solid black;
+	cursor:pointer;
+	background-color: rgba(235,235,235,.5);
+}
+
+#menu{
+	z-index: 3;
+	position:absolute;
+	top:0px;
+	left: 0px;
+	background-color: rgba(0,0,0,.5);
+	/*opacity: .5;*/
+	width: 20%;
+	height: 100%;
+	border-right: solid paleturquoise;
+	min-width: 215px;
+}
+
+#infile{
+	left:calc(50% - 42px);
+	position: absolute;
+	width: 78px;
+	height:20px;
+	top:calc(60% - 10px);
+}
+
+#close{
+	position: absolute;
+	right:1px;
+	top:3px;
+	border-radius:20px;
+}
+
+#gear{
+	width:22px;
+	height:22px;
+	left:1px;
+	position:relative;
+	top:1px;
+}
+
+#optionsButton{
+	position: absolute;
+	left: 1px;
+	top:3px;
+	border-radius: 12px;
+	width: 24px;
+	height: 24px;
+	background-color: rgba(235,235,235,.5);;
+	border:1px solid gray;
+}
+
+#panelButton{
+	position: absolute;
+	width: 24px;
+	height:24px;
+	border-radius:12px;
+	right:1px;
+	top:3px;
+	background-color:rgba(235,235,235,.5);;
+	border:1px solid gray;
+}
+
+#leftArrow{
+	width: 20px;
+	top: 2px;
+	position:relative;
+}
+
+#optionsList{
+	list-style: none;
+	color: white;
+}
+
+#optionsList	li{
+	margin-bottom: 5px;
+}
+
+#optionsList input{
+	position:relative;
+	left: 10px;
+}
+
+#rightArrow{
+	display:none;
+	width: 20px;
+	top: 2px;
+	left:3px;
+	position:relative;
+}
+
+#details{
+	color: white;
+	text-align: center;
+}
+
+#infile{
+
+}
+
+.loading{
+		cursor:wait;
+}
+
+/*Time Slider Start------------------------------------------------------*/
+div#timeSlide{
+	position:absolute;
+	height: calc(100% - 70px);
+	top: 50px;
+	left: calc(100% + 10px);
+}
+
+.dateIndicator{
+	width: 155px;
+	left:calc(100% + 35px);
+	background-color: black;
+	position:absolute;
+	color:white;
+	text-align: center;
+	border-radius: 3px;
+}
+
+@media screen{
+	/*body{
+		position:relative;
+		left:-8px;
+		top: 10px;
+	}*/
+}
+
+/*Time Slider End -------------------------------------------------------*/
