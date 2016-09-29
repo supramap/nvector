@@ -47,12 +47,7 @@ function popColorIndices(nodes,rootPosition){
 		if(cNode.lineInd){
 			var existInd = rootDataStore[rootPosition][0].data[cNode.name].edgeIndices
 			if(!existInd){
-				rootDataStore[rootPosition][0].data[cNode.name].edgeIndices= [cNode.index];
-			}
-			else{
-				existInd.push(cNode.index);
-				rootDataStore[rootPosition][0].data[cNode.name].edgeIndices= existInd;
-
+				rootDataStore[rootPosition][0].data[cNode.name].edgeIndices= cNode.lineInd;
 			}
 		}
 	}
