@@ -1,3 +1,19 @@
+
+/*
+  The colorLines function controls the user's ability to color lines from within
+  the edit panel.
+*/
+function colorLines(){
+
+}
+
+var colorController = {
+  "colorPicked": null,
+  "parentSel": null,
+  "childSel": null
+}
+
+
 /*
   This is the function called when the user selects a subsection of a graph
   from within edit mode.

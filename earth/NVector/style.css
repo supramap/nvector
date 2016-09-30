@@ -238,6 +238,16 @@ canvas{
 
 }
 
+#colorButton{
+	margin-bottom: 11px;
+}
+
+.sp-replacer{
+	margin:0px 36px 0px;
+	top: 5px;
+	position:relative;
+}
+
 #searchText{
 	margin-left:auto;
 	margin-right: auto;

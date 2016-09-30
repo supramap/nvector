@@ -573,6 +573,16 @@ var rotating,controls;
 						$("#subButton").trigger("click");
 						//****************
 					}
+					else if(colorToggle){
+						if(colorController.parentSel == null){
+							colorController.parentSel = possible[0][0];
+						}
+						else if(colorController.childSel == null){
+							colorController.parentSel = possible[0][0];
+							// now need to run the function that applies the colors to the
+							// global graph and updates the visualization. 
+						}
+					}
 					else{
 						//***************	If not in any form of editing mode
 						$("#dataTab").trigger("click");

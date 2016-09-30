@@ -439,6 +439,22 @@ $("#subButton").click(function(){
 });
 
 
+var pickerObject = $("#colorPicker").spectrum({
+  color:"#ffffff"
+})
+pickerObject.spectrum("container").css({"margin-top": "5px", "margin-left" :"5px", "position" : "relative"});
+
+
+var colorToggle = false;
+$("#colorButton").click(function(){
+  if(colorToggle == false){
+      colorToggle = true;
+  }
+  else{
+      colorToggle = false;
+  }
+})
+
 // Control the commands for searching within the editor
 $("#searchButton").click(function(){
   //extract the text from the search box and pass it into the searching function
