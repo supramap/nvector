@@ -4,7 +4,7 @@
   the edit panel.
 */
 function colorLines(){
-
+  console.log("yay time to color");
 }
 
 var colorController = {

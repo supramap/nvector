@@ -440,18 +440,31 @@ $("#subButton").click(function(){
 
 
 var pickerObject = $("#colorPicker").spectrum({
-  color:"#ffffff"
+  //color:"#ffffff"
+  allowEmpty:true
 })
 pickerObject.spectrum("container").css({"margin-top": "5px", "margin-left" :"5px", "position" : "relative"});
 
+pickerObject.on("change", function(e, tinycolor){
+  //console.log("color chosen");
+  if(colorToggle && colorController.childSel){
+    // at this stage we need to move on to the controller function that colors the line
+    $("#colorButton").trigger("click");
+    colorLines();
+  }
+});
 
 var colorToggle = false;
 $("#colorButton").click(function(){
   if(colorToggle == false){
       colorToggle = true;
+      $("#colorButton").addClass("subButtonTog");
+      $("#colorButton").removeClass("subButton");
   }
   else{
       colorToggle = false;
+      $("#colorButton").addClass("subButton");
+      $("#colorButton").removeClass("subButtonTog");
   }
 })
 

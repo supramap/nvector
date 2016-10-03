@@ -243,7 +243,7 @@ canvas{
 }
 
 .sp-replacer{
-	margin:0px 36px 0px;
+	margin:0px 29px 0px;
 	top: 5px;
 	position:relative;
 }
@@ -282,6 +282,7 @@ canvas{
 	left:4px;
 	text-align: center;
 	line-height: 23px;
+	cursor: pointer;
 }
 
 .subLabel{

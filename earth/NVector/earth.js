@@ -578,9 +578,18 @@ var rotating,controls;
 							colorController.parentSel = possible[0][0];
 						}
 						else if(colorController.childSel == null){
-							colorController.parentSel = possible[0][0];
+							colorController.childSel = possible[0][0];
 							// now need to run the function that applies the colors to the
-							// global graph and updates the visualization. 
+							// global graph and updates the visualization.
+							var colorChoice = pickerObject.spectrum("get");
+							if(colorChoice == null){
+								pickerObject.spectrum("show");
+
+							}
+							else{
+								$("#colorButton").trigger("click");
+								colorLines();
+							}
 						}
 					}
 					else{
