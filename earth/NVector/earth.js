@@ -574,11 +574,11 @@ var rotating,controls;
 						//****************
 					}
 					else if(colorToggle){
-						if(colorController.parentSel == null){
-							colorController.parentSel = possible[0][0];
+						if(colorController.strt == null){
+							colorController.strt = possible[0][0];
 						}
-						else if(colorController.childSel == null){
-							colorController.childSel = possible[0][0];
+						else if(colorController.end == null){
+							colorController.end = possible[0][0];
 							// now need to run the function that applies the colors to the
 							// global graph and updates the visualization.
 							var colorChoice = pickerObject.spectrum("get");
@@ -588,6 +588,11 @@ var rotating,controls;
 							}
 							else{
 								$("#colorButton").trigger("click");
+								// need to add the currently seleted nodes to the color list
+								var checkedRadio = $("input:radio:checked");
+								var graphPos = parseInt(checkedRadio[0].value);
+								colorController.c = pickerObject.spectrum("get").toHsl();
+								rootDataStore[graphPos][0].options.customColors.push(colorController);
 								colorLines();
 							}
 						}

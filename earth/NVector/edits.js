@@ -4,13 +4,50 @@
   the edit panel.
 */
 function colorLines(){
-  console.log("yay time to color");
+  var checkedRadio = $("input:radio:checked");
+  var graphPos = parseInt(checkedRadio[0].value);
+  var toColor = rootDataStore[graphPos][0].options.customColors;
+
+  for(var i = 0; i < toColor.length; i++){
+    var newColoredLine = toColor[i];
+    var firstNode = rootDataStore[graphPos][0].data[newColoredLine.strt];
+    // now we have to find the index of the child node so that we no to apply a shift
+
+    var childIndex = 0;
+    for(var c = 0; c < firstNode.children.length; c++){
+      var testChild = firstNode.children[c];
+      if (testChild == newColoredLine.end){
+        childIndex = c;
+        break;
+      }
+    }// end of inner for loop.
+
+    // gather the index value of the parent node of interest
+    var parentIndex = (firstNode.edgeIndices * 50) * 3 ;
+    // adjust this index by the child nodes position
+    var startIndex = parentIndex + ((childIndex * 50)*3);
+
+    // now we have to actually change the color of the lines
+    for(var l = startIndex; l < (startIndex + (50*3)); l++){
+        graph2d.children[0].children[1].geometry.attributes.color.array[l++] = newColoredLine.c.h;
+        graph2d.children[0].children[1].geometry.attributes.color.array[l++] = newColoredLine.c.s;
+        graph2d.children[0].children[1].geometry.attributes.color.array[l] = newColoredLine.c.l;
+    }
+
+
+
+  }// end of outer for loop
+  graph2d.children[0].children[1].geometry.attributes.color.needsUpdate = true;
+
+  colorController.c = null;
+  colorController.strt = null;
+  colorController.end = null;
 }
 
 var colorController = {
-  "colorPicked": null,
-  "parentSel": null,
-  "childSel": null
+  "c": null,
+  "strt": null,
+  "end": null
 }
 
 

@@ -283,7 +283,8 @@ function recurseRebuild(current, bigObj,dateStart,dateEnd){
 				//var lineMat = new THREE.LineBasicMaterial({color: 0xc5c5c5});
 				//var currentLine = new THREE.Line(currentGeometry,lineMat);
 				//currentLine.name = current + " -> " + node.children[i]
-				freshLines.push(geoArr);
+        indexCount++;
+        freshLines.push(geoArr);
 			}
 
 		}
@@ -291,7 +292,7 @@ function recurseRebuild(current, bigObj,dateStart,dateEnd){
     //var nodeObj = {"name":current,"desc":node.desc,"color":node.color,"links":node.links,"location":[midPoint.x,midPoint.y,midPoint.z]}
     var nodeObj = {"name":current,"color":node.color,"location":[midPoint.x,midPoint.y,midPoint.z], "lineInd":indexCount}
 		freshNodes.push(nodeObj);
-    indexCount++;
+    //indexCount++;
 
 		//console.log(conlines);
 		return currentLevel + 1;
