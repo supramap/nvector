@@ -23,15 +23,18 @@ function colorLines(){
     }// end of inner for loop.
 
     // gather the index value of the parent node of interest
-    var parentIndex = (firstNode.edgeIndices * 50) * 3 ;
+    var parentIndex = (firstNode.edgeIndices * 51) * 3 ;
     // adjust this index by the child nodes position
-    var startIndex = parentIndex + ((childIndex * 50)*3);
+    var startIndex = parentIndex + ((childIndex * 51)*3);
 
     // now we have to actually change the color of the lines
-    for(var l = startIndex; l < (startIndex + (50*3)); l++){
-        graph2d.children[0].children[1].geometry.attributes.color.array[l++] = newColoredLine.c.h;
+    for(var l = startIndex; l < (startIndex + (51*3)); l++){
+        /*graph2d.children[0].children[1].geometry.attributes.color.array[l++] = newColoredLine.c.l;
         graph2d.children[0].children[1].geometry.attributes.color.array[l++] = newColoredLine.c.s;
-        graph2d.children[0].children[1].geometry.attributes.color.array[l] = newColoredLine.c.l;
+        graph2d.children[0].children[1].geometry.attributes.color.array[l] = newColoredLine.c.h;*/
+        graph2d.children[0].children[1].geometry.attributes.color.array[l++] = newColoredLine.c.r/255;
+        graph2d.children[0].children[1].geometry.attributes.color.array[l++] = newColoredLine.c.g/255;
+        graph2d.children[0].children[1].geometry.attributes.color.array[l] = newColoredLine.c.b/255;
     }
 
 

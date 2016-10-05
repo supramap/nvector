@@ -450,10 +450,11 @@ pickerObject.on("change", function(e, tinycolor){
   if(colorToggle && colorController.end){
     // at this stage we need to move on to the controller function that colors the line
     $("#colorButton").trigger("click");
-    colorController.c = pickerObject.spectrum("get").toHsl();
+    colorController.c = pickerObject.spectrum("get").toRgb();
     var checkedRadio = $("input:radio:checked");
     var graphPos = parseInt(checkedRadio[0].value);
-    rootDataStore[graphPos][0].options.customColors.push(colorController);
+    var newColor = jQuery.extend({}, colorController);
+    rootDataStore[graphPos][0].options.customColors.push(newColor);
     colorLines();
   }
 });

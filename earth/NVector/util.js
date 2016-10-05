@@ -45,10 +45,10 @@ function popColorIndices(nodes,rootPosition){
 	for(var i = 0; i < nodes.length; i++){
 		var cNode = nodes[i];
 		if(cNode.lineInd){
-			var existInd = rootDataStore[rootPosition][0].data[cNode.name].edgeIndices
-			if(!existInd){
+			//var existInd = rootDataStore[rootPosition][0].data[cNode.name].edgeIndices
+			//if(!existInd){
 				rootDataStore[rootPosition][0].data[cNode.name].edgeIndices= cNode.lineInd;
-			}
+			//}
 		}
 	}
 
@@ -128,11 +128,11 @@ function formatDate ( date ) {
 function reFormatDate ( date ) {
     var niceDate =  date.getFullYear()+ "-";
 
-    if(date.getMonth() < 10){
-			niceDate += "0" + date.getMonth() + "-";
+    if((date.getMonth() + 1) < 10){
+			niceDate += "0" + (date.getMonth()+1) + "-";
 		}
 		else{
-			niceDate += date.getMonth() + "-";
+			niceDate += (date.getMonth()+1) + "-";
 		}
 
 		if(date.getDate() < 10){

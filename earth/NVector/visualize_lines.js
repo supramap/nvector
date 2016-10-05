@@ -30,7 +30,7 @@ function makeGraphGeometry(connectionObj, startP, endP, rootPosition){
 				var dataset = JSON.parse(e.data);
 				popColorIndices(dataset.nodes, rootPosition);
 				var allSpheres = initializeSpheres(dataset.nodes,rootPosition);
-				var allLines = initializeLines(dataset.lines,connectionObj.options.defaultColor);
+				var allLines = initializeLines(dataset.lines,connectionObj.options.defaultColor,rootDataStore[rootPosition][0].options.customColors,rootPosition);
 				var graphObject = new THREE.Object3D();
 				graphObject.add(allSpheres);
 				graphObject.add(allLines);
@@ -71,7 +71,7 @@ function makeGraphGeometry(connectionObj, startP, endP, rootPosition){
 
 			}
 			var allSpheres = initializeSpheres(freshNodes,rootPosition);
-			var allLines = initializeLines(freshLines,connectionObj.options.defaultColor);
+			var allLines = initializeLines(freshLines,connectionObj.options.defaultColor,rootDataStore[rootPosition][0].options.customColors,rootPosition);
 			var graphObject = new THREE.Object3D();
 			graphObject.add(allSpheres);
 			graphObject.add(allLines);
@@ -357,8 +357,9 @@ function build2d(coreObject,startP,endP,rootPosition){
 		graphWorker.onmessage = function(e){
 			//var loader = new THREE.ObjectLoader();
 			var dataset = JSON.parse(e.data);
+			popColorIndices(dataset.nodes, rootPosition)
 			var allSpheres = initializeSpheres(dataset.nodes,rootPosition);
-			var allLines = initializeLines(dataset.lines,coreObject.options.defaultColor);
+			var allLines = initializeLines(dataset.lines,coreObject.options.defaultColor,rootDataStore[rootPosition][0].options.customColors,rootPosition);
 			var graphObject = new THREE.Object3D();
 			graphObject.add(allSpheres);
 			graphObject.add(allLines);
@@ -404,7 +405,7 @@ function build2d(coreObject,startP,endP,rootPosition){
 		}
 		recurseBuild2d(coreObject.options.roots[0],coreObject.data,0);
 		var allSpheres = initializeSpheres(freshNodes);
-		var allLines = initializeLines(freshLines,coreObject.options.defaultColor);
+		var allLines = initializeLines(freshLines,coreObject.options.defaultColor,rootDataStore[rootPosition][0].options.customColors, rootPosition);
 		var graphObject = new THREE.Object3D();
 		graphObject.add(allSpheres);
 		graphObject.add(allLines);

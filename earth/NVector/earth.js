@@ -591,8 +591,9 @@ var rotating,controls;
 								// need to add the currently seleted nodes to the color list
 								var checkedRadio = $("input:radio:checked");
 								var graphPos = parseInt(checkedRadio[0].value);
-								colorController.c = pickerObject.spectrum("get").toHsl();
-								rootDataStore[graphPos][0].options.customColors.push(colorController);
+								colorController.c = pickerObject.spectrum("get").toRgb();
+								var newColor = jQuery.extend({}, colorController);
+								rootDataStore[graphPos][0].options.customColors.push(newColor);
 								colorLines();
 							}
 						}

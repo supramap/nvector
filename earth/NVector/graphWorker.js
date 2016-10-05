@@ -222,7 +222,7 @@ function recurseRebuild(current, bigObj,dateStart,dateEnd){
 
 
 
-
+    var lineGapComp = 0;
 		//create and push newly made lines
 		for(var i = 0; i < childPositions.length; i++){
 			var currentGeometry = new THREE.Geometry();
@@ -283,17 +283,17 @@ function recurseRebuild(current, bigObj,dateStart,dateEnd){
 				//var lineMat = new THREE.LineBasicMaterial({color: 0xc5c5c5});
 				//var currentLine = new THREE.Line(currentGeometry,lineMat);
 				//currentLine.name = current + " -> " + node.children[i]
-        indexCount++;
+
         freshLines.push(geoArr);
 			}
-
+      lineGapComp++;
 		}
 
     //var nodeObj = {"name":current,"desc":node.desc,"color":node.color,"links":node.links,"location":[midPoint.x,midPoint.y,midPoint.z]}
     var nodeObj = {"name":current,"color":node.color,"location":[midPoint.x,midPoint.y,midPoint.z], "lineInd":indexCount}
 		freshNodes.push(nodeObj);
     //indexCount++;
-
+    indexCount = indexCount + lineGapComp;
 		//console.log(conlines);
 		return currentLevel + 1;
 	}
@@ -527,11 +527,11 @@ function recurseBuild2d(current, bigObj,depth,dateStart,dateEnd){
       node.color = 0xff0000
     }
 
-    var nodeObj = {"name":current,"desc":node.desc,"links":node.links,"color":node.color,"location":[midPoint.x,midPoint.y,midPoint.z]}
-		freshNodes.push(nodeObj);
+    //var nodeObj = {"name":current,"desc":node.desc,"links":node.links,"color":node.color,"location":[midPoint.x,midPoint.y,midPoint.z]}
+		//freshNodes.push(nodeObj);
 
 
-
+    var lineGapComp = 0;
 		//create and push newly made lines
 		for(var i = 0; i < childPositions.length; i++){
 			var currentGeometry = new THREE.Geometry();
@@ -582,6 +582,7 @@ function recurseBuild2d(current, bigObj,depth,dateStart,dateEnd){
 				//generateParticles(currentGeometry.vertices, curve.getLength());
 				//var currentLine = new THREE.Line(currentGeometry,lineMat);
 				//currentLine.name = current + " -> " + node.children[i]
+        lineGapComp++;
 				freshLines.push(geoArr);
 			}
 			else{
@@ -599,10 +600,17 @@ function recurseBuild2d(current, bigObj,depth,dateStart,dateEnd){
 				//var lineMat = new THREE.LineBasicMaterial({color: 0xc5c5c5});
 				//var currentLine = new THREE.Line(currentGeometry,lineMat);
 				//currentLine.name = current + " -> " + node.children[i]
+        lineGapComp++;
 				freshLines.push(geoArr);
 			}
 
+
+      //"lineInd":indexCount
+
 		}
+    var nodeObj = {"name":current,"desc":node.desc,"links":node.links,"color":node.color,"location":[midPoint.x,midPoint.y,midPoint.z],"lineInd":indexCount}
+    indexCount = indexCount + lineGapComp;
+    freshNodes.push(nodeObj);
 		//console.log(conlines);
 		return 1;
 	}

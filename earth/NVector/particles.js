@@ -163,7 +163,7 @@ function initializeSpheres(ingeometry,rootPosition){
 	return spherePSystem;
 }
 
-function initializeLines(lineData,defaultColor){
+function initializeLines(lineData,defaultColor,colOptions,rootPos){
 	if(defaultColor == undefined){
 		defaultColor = [1,1,1];
 	}
@@ -180,6 +180,17 @@ function initializeLines(lineData,defaultColor){
 	var colors = [];
 	var indicesArr = []
 
+ 	var colIndex = [];
+	var colcol = [];
+	// need to write a quicksort
+	for(var i = 0; i < colOptions.length; i++){
+		var colSel = colOption[i];
+		var ind = rootDataStore[rootPos][0].data[colSel.strt].edgeIndices;
+		colIndex.push(ind);
+		colcol.push(colSel.c);
+	}
+
+	var finalCount = 0;
 	for(var i = 0; i < lineData.length;i++){
 		//linepos = linepos.concat(lineData[i]);
 		$.merge(linepos,lineData[i])
@@ -190,10 +201,18 @@ function initializeLines(lineData,defaultColor){
 		}
 
 		// calculate the color positions for each line
+		var growing = 0;
+		//p is the current index position of the color starting place currently being
+		// searched for
+		var p = 0;
+
 		for(ccount = 0; ccount < lineData[i].length; ccount++){
 			//colors.push(Math.random()*0.5+0.5, Math.random()*0.5+0.5, 1);
-
+			if(colIndex.length > 0 && (colIndex[p] * 51 * 3) == finalCount){
+				if(colIndex[p]*51 )
+			}
 			$.merge(colors,defaultColor);
+			finalCount++;
 		}
 
 		posIndex = posIndex + calcLength + 1;
