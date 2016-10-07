@@ -25,6 +25,69 @@ function nth (d) {
     }
 }
 
+/*
+	needed a custom quick sort that would move the colors array in parralel with
+	the index array
+*/
+
+function quickSort(indices,lineColors, left, right) {
+
+    var index;
+
+    if (indices.length > 1) {
+
+        index = partition(indices,lineColors, left, right);
+
+        if (left < index - 1) {
+            quickSort(indices,lineColors, left, index - 1);
+        }
+
+        if (index < right) {
+            quickSort(indices, lineColors,index, right);
+        }
+
+    }
+
+    return [indices,lineColors];
+}
+
+
+function partition(items,lineColors ,left, right) {
+
+    var pivot   = items[Math.floor((right + left) / 2)],
+        i       = left,
+        j       = right;
+
+
+    while (i <= j) {
+
+        while (items[i] < pivot) {
+            i++;
+        }
+
+        while (items[j] > pivot) {
+            j--;
+        }
+
+        if (i <= j) {
+            swap(items, lineColors,i, j);
+            i++;
+            j--;
+        }
+    }
+
+    return i;
+}
+
+function swap(items,lineColors, firstIndex, secondIndex){
+    var temp = items[firstIndex];
+    items[firstIndex] = items[secondIndex];
+    items[secondIndex] = temp;
+
+		var secondTemp = lineColors[firstIndex];
+		lineColors[firstIndex] = lineColors[secondIndex];
+		lineColors[secondIndex] = secondTemp;
+}
 
 /*
 	the popColorIndices function is a support function call for populating the

@@ -184,13 +184,29 @@ function initializeLines(lineData,defaultColor,colOptions,rootPos){
 	var colcol = [];
 	// need to write a quicksort
 	for(var i = 0; i < colOptions.length; i++){
-		var colSel = colOption[i];
+		var colSel = colOptions[i];
 		var ind = rootDataStore[rootPos][0].data[colSel.strt].edgeIndices;
+		var childrenBuff = 0;
+		var childrenAr = rootDataStore[rootPos][0].data[colSel.strt].children;
+		for(var c = 0; c < childrenAr.length; c++){
+			if(childrenAr[c] == colSel.end){
+				break;
+			}
+			else{
+				childrenBuff++;
+			}
+		}
+		ind = ind + childrenBuff;
 		colIndex.push(ind);
 		colcol.push(colSel.c);
 	}
 
-	var finalCount = 0;
+	var sorted = quickSort(colIndex, colcol, 0, colIndex.length -1);
+	colIndex = sorted[0];
+	colcol = sorted[1];
+
+	var p = 0;
+	var coloring = false;
 	for(var i = 0; i < lineData.length;i++){
 		//linepos = linepos.concat(lineData[i]);
 		$.merge(linepos,lineData[i])
@@ -201,18 +217,28 @@ function initializeLines(lineData,defaultColor,colOptions,rootPos){
 		}
 
 		// calculate the color positions for each line
-		var growing = 0;
+		if(colIndex[p] == i){
+			coloring = true;
+		}
+		var colorDuration = 0;
 		//p is the current index position of the color starting place currently being
 		// searched for
-		var p = 0;
 
-		for(ccount = 0; ccount < lineData[i].length; ccount++){
+
+		for(ccount = 0; ccount < lineData[i].length; ccount = ccount + 3){
 			//colors.push(Math.random()*0.5+0.5, Math.random()*0.5+0.5, 1);
-			if(colIndex.length > 0 && (colIndex[p] * 51 * 3) == finalCount){
-				if(colIndex[p]*51 )
+			if(colIndex.length > 0 && coloring == true){
+				var toMerge = [colcol[p].r/255,colcol[p].g/255,colcol[p].b/255];
+				$.merge(colors,toMerge);
+
 			}
-			$.merge(colors,defaultColor);
-			finalCount++;
+			else{
+				$.merge(colors,defaultColor);
+			}
+		}
+		if(coloring == true){
+			coloring = false;
+			p++;
 		}
 
 		posIndex = posIndex + calcLength + 1;
