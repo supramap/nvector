@@ -23,7 +23,7 @@ function createTreeCSVNewick(dataIn,dataPlaces, topRow){
     if(line.length > 0){
       var dataset = line.split(",");
       var id = dataset[dataPlaces.mandatory.name - 1];
-      metaData[id] = dataset;
+      metaData[id.trim()] = dataset;
     }
   }
   loadNewick(dataIn, dataPlaces);
@@ -53,7 +53,7 @@ $("#savePath").change(function(evt){
     $("#colChoice").hide();
     $("#completed").show();
   });
-})
+});
 
 var earthStructure = {"metadata":{
                         "fileName":outFile,

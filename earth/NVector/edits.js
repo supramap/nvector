@@ -1,4 +1,4 @@
-
+var fs = require('fs');
 /*
   The colorLines function controls the user's ability to color lines from within
   the edit panel.
@@ -90,6 +90,17 @@ function subsect(){
     cameraRelocate = true;
   }
 }
+
+$("#savePath").change(function(evt){
+  var checkedRadio = $("input:radio:checked");
+  var graphPos = parseInt(checkedRadio[0].value);
+  fs.writeFile(evt.delegateTarget.value,JSON.stringify(rootDataStore[graphPos][0]),function(){
+  });
+});
+
+$("#saveButton").click(function(){
+  $("#savePath").trigger('click');
+});
 
 function removeSubsect(){
   var checkedRadio = $("input:radio:checked");
