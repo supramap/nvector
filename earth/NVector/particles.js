@@ -188,13 +188,19 @@ function initializeLines(lineData,defaultColor,colOptions,rootPos){
 		var ind = rootDataStore[rootPos][0].data[colSel.strt].edgeIndices;
 		var childrenBuff = 0;
 		var childrenAr = rootDataStore[rootPos][0].data[colSel.strt].children;
+		var bad = true
 		for(var c = 0; c < childrenAr.length; c++){
 			if(childrenAr[c] == colSel.end){
+				bad = false;
 				break;
+
 			}
 			else{
 				childrenBuff++;
 			}
+		}
+		if(bad){
+			continue;
 		}
 		ind = ind + childrenBuff;
 		colIndex.push(ind);
@@ -202,8 +208,9 @@ function initializeLines(lineData,defaultColor,colOptions,rootPos){
 	}
 
 	var sorted = quickSort(colIndex, colcol, 0, colIndex.length -1);
-	colIndex = sorted[0];
-	colcol = sorted[1];
+	var cleanSort = removeDup(sorted);
+	colIndex = cleanSort[0];
+	colcol = cleanSort[1];
 
 	var p = 0;
 	var coloring = false;

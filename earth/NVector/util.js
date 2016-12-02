@@ -90,6 +90,29 @@ function swap(items,lineColors, firstIndex, secondIndex){
 }
 
 /*
+	This function is needed to be run after the quicksort to remove
+	any duplicat ids as they seem to cause all kinds of problems and are likely
+	to happen given our coloring solution
+*/
+function removeDup(input){
+	var indArr = input[0];
+	var colArr = input[1];
+	var last = indArr[0];
+	for(var i = 1; i < indArr.length; i++){
+		var c = indArr[i];
+		if(c == last){
+			indArr.splice(i, 1);
+			colArr.splice(i,1);
+			i = i -1;
+		}
+		else{
+			last = c;
+		}
+	}
+	return [indArr, colArr];
+}
+
+/*
 	the popColorIndices function is a support function call for populating the
 	graph with the indices at which it's edges are formed relative to the individual
 	edge's connecting nodes.
@@ -107,7 +130,7 @@ function popColorIndices(nodes,rootPosition){
 	// used at th etime the user chooses to color the lines.
 	for(var i = 0; i < nodes.length; i++){
 		var cNode = nodes[i];
-		if(cNode.lineInd){
+		if(cNode.lineInd != undefined){
 			//var existInd = rootDataStore[rootPosition][0].data[cNode.name].edgeIndices
 			//if(!existInd){
 				rootDataStore[rootPosition][0].data[cNode.name].edgeIndices= cNode.lineInd;
