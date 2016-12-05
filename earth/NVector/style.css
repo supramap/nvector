@@ -496,6 +496,33 @@ li.selections:nth-child(even){
 	position:relative;
 }
 
+#options{
+	display: block;
+	background-color:purple;
+	height:calc(100% - 65px);
+	width: calc(100% - 20px);
+	left: 10px;
+	position: relative;
+}
+
+#optionsTab{
+	margin-left:0px;
+	position:relative;
+	color:white;
+	list-style-type: none;
+	padding-left:0px;
+}
+
+.oTab{
+	width:50%;
+	display:inline-block;
+	text-align: center;
+	border-right:1px solid white;
+	border-left:1px solid white;
+	margin-right: -5px;
+	height:20px;
+}
+
 #optionsList{
 	list-style: none;
 	color: white;

@@ -173,16 +173,21 @@
 		}
 		</script>
 
-		<!-- varying vec3 vNormal;-->
-
-		</script>
-		<!-- This is the popup window that provides the interface to irods-->
+		<!-- This is the popup window that provides the interface to datastores-->
 		<div id="popup" style="display: none">
 			<div id="listSupport">
 				<ul id="selectionList">
 
 				</ul>
+
+			</div>
 			<div id="options" style="display: none">
+				<!-- The options panel is about to become tabular -->
+
+				<ul id="optionsTab">
+					<li class="oTab" id="servO">Server</li>
+					<li class="oTab" id="appO">App</li>
+				</ul>
 					<ul id="optionsList" >
 						<li><span class="basicForm">Server:</span> <input type="text" id="server"></li>
 						<li><span class="basicForm">User Name:</span> <input type="text" id="userName"></li>
@@ -192,14 +197,10 @@
 					<div id="lnWidthConf">
 						<label id="lnwidthLabel" style="color:white">Line Width</lable><br>
 						<span><input type="radio" name="lnwidth" value=1 checked="checked"> 1<br></span>
-	  				<span><input type="radio" name="lnwidth" value=2> 2<br></span>
+						<span><input type="radio" name="lnwidth" value=2> 2<br></span>
 						<span><input type="radio" name="lnwidth" value=3> 3<br></span>
 					</div>
 			</div>
-
-
-			</div>
-
 
 
 			<button id="popLoad">Load</button>
