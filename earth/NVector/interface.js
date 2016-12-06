@@ -345,6 +345,24 @@ function clickEdit(){
   }
 }
 
+/**
+  Instanciate click functions for the options tabs to differenciate from the
+  server settings/login and the app settings
+*/
+$("#servO").click(function(){
+  $("#lnWidthConf").hide();
+  $("#serverOptions").show();
+  $("#servO").removeClass("deSelectedoTab");
+  $("#appO").addClass("deSelectedoTab");
+});
+$("#appO").click(function(){
+  $("#lnWidthConf").show();
+  $("#serverOptions").hide();
+  $("#servO").addClass("deSelectedoTab");
+  $("#appO").removeClass("deSelectedoTab");
+});
+
+
 /*
 Control all animation effects for the sliding menu window.
 */

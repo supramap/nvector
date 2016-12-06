@@ -25,7 +25,7 @@
 
 			<div id="info">
 				<ul id="tabContainer">
-					<li class="tab inactiveTab" id="viewsTab">Views</li>
+					<li class="tab inactiveTab" id="viewsTab">Graphs</li>
 					<li class="tab inactiveTab" id="dataTab">Data</li>
 					<li class="tab inactiveTab" id="editTab">Edit</li>
 				</ul>
@@ -184,17 +184,40 @@
 			<div id="options" style="display: none">
 				<!-- The options panel is about to become tabular -->
 
-				<ul id="optionsTab">
-					<li class="oTab" id="servO">Server</li>
-					<li class="oTab" id="appO">App</li>
-				</ul>
-					<ul id="optionsList" >
-						<li><span class="basicForm">Server:</span> <input type="text" id="server"></li>
-						<li><span class="basicForm">User Name:</span> <input type="text" id="userName"></li>
-						<li><span class="basicForm">Password:</span> <input type="password" id="passwd"></li>
+					<ul id="optionsTab">
+						<li class="oTab" id="servO">Server</li>
+						<li class="oTab deSelectedoTab" id="appO">App</li>
 					</ul>
+					<div id="serverOptions">
 
-					<div id="lnWidthConf">
+
+						<!--<ul id="optionsList" >
+							<li><span class="basicForm">Server:</span> <input type="text" id="server"></li>
+							<li><span class="basicForm">User Name:</span> <input type="text" id="userName"></li>
+							<li><span class="basicForm">Password:</span> <input type="password" id="passwd"></li>
+						</ul>-->
+						<table id="serverStatus">
+							<tr><td>Status:</td><td><span class="statusYellow">Logged Out</span></td></tr>
+							<tr><td>Current Server:</td> <td><span id="currentServer">Default</span></td></tr>
+						</table>
+
+						<table id="serverLogin">
+							<tr><td>Server:</td><td><input type="text" id="server"></td></tr>
+							<tr><td>User Name:</td><td><input type="text" id="userName"></td></tr>
+							<tr><td>Password:</td><td><input type="password" id="passwd"></td></tr>
+						</table>
+
+						<!-- In this panel we want to list existing groups that this person is
+						a part of and also be able to manage them-->
+						<div id="groupManagement">
+								<label><span id="currentGroup">None</span></label>
+						</div>
+
+						<button type="button" class="noSelect"></button
+
+					</div>
+
+					<div id="lnWidthConf" style= "display: none">
 						<label id="lnwidthLabel" style="color:white">Line Width</lable><br>
 						<span><input type="radio" name="lnwidth" value=1 checked="checked"> 1<br></span>
 						<span><input type="radio" name="lnwidth" value=2> 2<br></span>

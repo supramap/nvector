@@ -498,11 +498,14 @@ li.selections:nth-child(even){
 
 #options{
 	display: block;
-	background-color:purple;
 	height:calc(100% - 65px);
-	width: calc(100% - 20px);
-	left: 10px;
+	/*width: calc(100% - 20px);
+	left: 10px;*/
 	position: relative;
+}
+
+#listSupport::-webkit-scrollbar{
+	display:none;
 }
 
 #optionsTab{
@@ -511,16 +514,48 @@ li.selections:nth-child(even){
 	color:white;
 	list-style-type: none;
 	padding-left:0px;
+	margin-top:0px;
+}
+
+#serverOptions table{
+	text-align: left;
+	position: relative;
+	left: 10%;
+	margin-top:25px;
+
 }
 
 .oTab{
 	width:50%;
 	display:inline-block;
 	text-align: center;
-	border-right:1px solid white;
-	border-left:1px solid white;
+	border-right:1px solid paleturquoise;
+	border-left:1px solid paleturquoise;
 	margin-right: -5px;
-	height:20px;
+	height:23px;
+	cursor: pointer;
+}
+
+.deSelectedoTab{
+	background-color:rgb(107, 107, 107);
+	border-bottom: 1px solid paleturquoise;
+}
+
+.statusYellow{
+	color:rgb(204, 192, 86);
+}
+
+.statusGreen{
+	color:rgb(90, 189, 88);
+}
+
+#serverStatus{
+	color: white;
+	margin-bottom: 10px;
+}
+
+#serverLogin{
+	color:white;
 }
 
 #optionsList{
