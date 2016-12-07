@@ -1,8 +1,10 @@
 var static = require('node-static');
 var os = require('os');
-var dispatcher = require("httpdispatcher");
+var httpDispatcher = require("httpdispatcher");
+var dispatcher = new httpDispatcher();
 var mongoc = require('mongodb').MongoClient;
-var url = require('url')
+var url = require('url');
+var bcrypt = require('bcrypt');
 
 var fileServer = new static.Server('../earth');
 var ifaces = os.networkInterfaces();
@@ -88,7 +90,9 @@ require('http').createServer(function (request, response) {
 
 
 
-
+/**
+  This should display the application
+*/
 dispatcher.onGet("/", function(req,res){
 
   req.addListener('end', function () {
@@ -97,6 +101,9 @@ dispatcher.onGet("/", function(req,res){
 });
 
 
+/**
+  return a list of all of the existing data graphs.
+*/
 dispatcher.onGet("/showFDA",function(req,res){
   res.writeHead(200, {'Content-Type': 'application/json'});
   mongoc.connect("mongodb://"+mongoServer+"/"+database, function(err,db){
@@ -113,7 +120,9 @@ dispatcher.onGet("/showFDA",function(req,res){
 
   });
 });
-
+/**
+  return the fda graph selected by the user.
+*/
 dispatcher.onGet("/getFDA", function(req,res){
   res.writeHead(200, {'Content-Type': 'application/json'});
 
@@ -134,7 +143,10 @@ dispatcher.onGet("/getFDA", function(req,res){
 });
 
 
-
+/**
+  Catch the showLayers request and return the avialable layers as provided in the
+  database.
+*/
 dispatcher.onGet("/showLayers", function(req,res){
   res.writeHead(200, {'Content-Type': 'application/json'});
 
@@ -156,7 +168,10 @@ dispatcher.onGet("/showLayers", function(req,res){
 
 });
 
-
+/**
+  when a request to getLayer is recieved send the json object that forms the layer
+  to be displayed in NVector
+*/
 dispatcher.onGet("/getLayer", function(req,res){
   res.writeHead(200, {'Content-Type': 'application/json'});
 
@@ -175,3 +190,71 @@ dispatcher.onGet("/getLayer", function(req,res){
 
 
 });
+
+
+
+/**
+This is our newly added code to recieve requests on user data.
+We get to use Post from this point ;)
+==========================================================================
+**/
+
+
+/**
+  This will not be called from the NVector application. Think the server admin
+  should be responsible for creating users.
+*/
+dispatcher.onPost("/createUser", function(req,res){
+  res.writeHead(200, {'Content-Type': 'application/json'});
+
+  var userName = req.params["usrName"];
+  var passw = req.params["passw"];
+  mongoc.connect("mongodb://"+mongoServer+"/"+database, function(err,db){
+    if(err){
+      console.log("an error was reported " + err);
+      res.end("and error was returned. View developer console");
+    }//end if
+    // in this case create the salt for the hashing algorithm
+    bcrypt.genSalt(5, function(err,salt){
+        bcrypt.hash(passw,salt,function(err, hash ){
+          db.collection('users').insertOne({
+
+              "userName": userName,
+              "passw": hash,
+              "nacl": salt
+
+
+          },function(err,enMess){
+            if(err){
+              console.log("The user was not successfully added to the database");
+            }
+            else{
+              res.end(JSON.stringify({"result": enMess}));
+            }
+          });
+        });
+    });// salted
+
+
+    res.end(JSON.stringify({"status" : "successful"}));
+
+  });// end mongodb connection
+});// end of post
+
+dispatcher.onPost("/signIn", function(req,res){
+  res.writeHead(200, {'Content-Type': 'application/json'});
+
+  var usr= req.params["usrName"];
+  var pasw = req.params["passw"];
+  mongoc.connect("mongodb://"+mongoServer+"/"+database, function(err,db){
+    if(err){
+      console.log("an error was reported " + err);
+      res.end("and error was returned. View developer console");
+    }//end if
+    var col = db.collection("layers");
+    col.findOne({"fileName":fileName},function(err,results){
+      res.end(JSON.stringify(results));
+
+    });// end of fineOne column
+  });// end mongodb connection
+});// end of post
