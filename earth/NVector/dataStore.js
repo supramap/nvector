@@ -62,5 +62,29 @@ function addUserToGroup(){
 }
 
 /**
-  Create User
+  Signin
 */
+function signInUser(){
+  // get the user's credentials from the options panel
+  var lastroot = queryroot;
+  queryroot = $("#server").val();
+  var userName = $("#userName").val();
+  var passw = $("#passwd").val();
+  $.ajax({
+    type: "POST",
+    data: {"usrName" : userName, "passw" : passw},
+    url:(queryroot + "/signIn"),
+    success:function(finished){
+      if(finished.login == true){
+        console.log("logged in now change status");
+        $("#logStatus").html("Logged In");
+        $("#logStatus").addClass("statusGreen");
+
+      }
+      else{
+        console.log("password is incorrect");
+        queryroot = lastroot;
+      }
+    }
+  });
+}

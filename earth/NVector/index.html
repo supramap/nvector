@@ -197,7 +197,7 @@
 							<li><span class="basicForm">Password:</span> <input type="password" id="passwd"></li>
 						</ul>-->
 						<table id="serverStatus">
-							<tr><td>Status:</td><td><span class="statusYellow">Logged Out</span></td></tr>
+							<tr><td>Status:</td><td><span id="logStatus" class="statusYellow">Logged Out</span></td></tr>
 							<tr><td>Current Server:</td> <td><span id="currentServer">Default</span></td></tr>
 						</table>
 
@@ -207,15 +207,19 @@
 							<tr><td>Password:</td><td><input type="password" id="passwd"></td></tr>
 						</table>
 
-						
+
 
 						<!-- In this panel we want to list existing groups that this person is
 						a part of and also be able to manage them-->
 						<div id="groupManagement">
-								<label><span id="currentGroup">None</span></label>
+								<span style="color:white">Your Groups:</span>
+								<button type="button" class="noSelect">+</button>
+								<div class="currentGroups"><span class= "groupText">FDA</span><input type="image" class="gear2" src="images/gear1.svg"></div>
+								<div class="currentGroups"><span class= "groupText">UNCC</span><input type="image" class="gear2" src="images/gear1.svg"></div>
+								<div class="currentGroups"><span class= "groupText">DARPA</span><input type="image" class="gear2" src="images/gear1.svg"></div>
 						</div>
 
-						<button type="button" class="noSelect">selectGroup</button>
+
 
 					</div>
 
@@ -250,6 +254,7 @@
 	<!--	<script src="axis.js"></script>-->
 		<script src="OrbitControls.js"></script>
 		<script src="earth.js" type="text/javascript"></script>
+		<script src="dataStore.js" type="text/javascript"></script>
 		<script src="interface.js" type="text/javascript"></script>
 		<script src="edits.js" type="text/javascript"></script>
 

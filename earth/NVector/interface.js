@@ -115,9 +115,10 @@ var layOrGraph;
 $("#popLoad").click(function(){
   if(isOptions){
     isOptions = false;
-    queryroot = "http://" + $("#server").val() + ":8080/irods-rest/rest/";
-    userName =  $("#userName").val();
-    psw = $("#passwd").val();
+    //queryroot = "http://" + $("#server").val() + ":8080/irods-rest/rest/";
+    //userName =  $("#userName").val();
+    //psw = $("#passwd").val();
+    signInUser();
     $("#popLoad").html("Load");
     $("#popup").hide();
     $("#options").hide();

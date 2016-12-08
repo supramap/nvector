@@ -619,4 +619,28 @@ div#timeSlide{
 	}*/
 }
 
+.currentGroups{
+	background-color:gray;
+	width: 90%;
+	left: 5%;
+	position:relative;
+	border: 1px solid black;
+	margin-bottom: 3px;
+	text-align: center;
+}
+
+.gear2{
+	width:20px;
+	height:20px;
+	position:relative;
+	float:right;
+}
+
+.groupText{
+
+}
+
+
+
+
 /*Time Slider End -------------------------------------------------------*/

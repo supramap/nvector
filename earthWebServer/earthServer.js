@@ -12,7 +12,7 @@ var ifaces = os.networkInterfaces();
 var port = 8080;
 var database = "nvector";
 var collection = "fda";
-var mongoServer = "192.168.1.13:27017";
+var mongoServer = "192.168.1.11:27017";
 
 
 var option = null;
@@ -221,7 +221,6 @@ dispatcher.onPost("/createUser", function(req,res){
 
               "userName": userName,
               "passw": hash,
-              "nacl": salt
 
 
           },function(err,enMess){
@@ -242,6 +241,7 @@ dispatcher.onPost("/createUser", function(req,res){
 });// end of post
 
 dispatcher.onPost("/signIn", function(req,res){
+  console.log("user request attempted");
   res.writeHead(200, {'Content-Type': 'application/json'});
 
   var usr= req.params["usrName"];
@@ -251,9 +251,17 @@ dispatcher.onPost("/signIn", function(req,res){
       console.log("an error was reported " + err);
       res.end("and error was returned. View developer console");
     }//end if
-    var col = db.collection("layers");
-    col.findOne({"fileName":fileName},function(err,results){
-      res.end(JSON.stringify(results));
+    var col = db.collection("users");
+    col.findOne({"useName":usr},function(err,results){
+      console.log("results: " + results);
+      bcrypt.compare(pasw,results, function(err, success){
+        if(success){
+          res.end(JSON.stringify({"login":true , "userName" : usr}));
+        }
+        else{
+          res.end(JSON.stringify({"login":false , "userName" : usr}));
+        }
+      });
 
     });// end of fineOne column
   });// end mongodb connection
