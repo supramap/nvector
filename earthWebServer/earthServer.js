@@ -10,10 +10,10 @@ var fileServer = new static.Server('../earth');
 var ifaces = os.networkInterfaces();
 
 var port = 8080;
-var database = "nvector";
+var database = "NVector";
 var collection = "fda";
-var mongoServer = "192.168.1.11:27017";
-
+//var mongoServer = "192.168.1.11:27017";
+var mongoServer = "10.16.54.223:27017";
 
 var option = null;
 process.argv.forEach(function(val, index, array){
@@ -174,7 +174,6 @@ dispatcher.onGet("/showLayers", function(req,res){
 */
 dispatcher.onGet("/getLayer", function(req,res){
   res.writeHead(200, {'Content-Type': 'application/json'});
-
   var fileName = req.params["fileName"];
   mongoc.connect("mongodb://"+mongoServer+"/"+database, function(err,db){
     if(err){
@@ -194,7 +193,8 @@ dispatcher.onGet("/getLayer", function(req,res){
 
 
 /**
-This is our newly added code to recieve requests on user data.
+This is our newly added code to recieve requests on user data including userName
+and groups.
 We get to use Post from this point ;)
 ==========================================================================
 **/
@@ -225,7 +225,7 @@ dispatcher.onPost("/createUser", function(req,res){
 
           },function(err,enMess){
             if(err){
-              console.log("The user was not successfully added to the database");
+              console.log("The user was not successfully added to the database: " + err);
             }
             else{
               res.end(JSON.stringify({"result": enMess}));
@@ -240,6 +240,14 @@ dispatcher.onPost("/createUser", function(req,res){
   });// end mongodb connection
 });// end of post
 
+
+
+/**
+  This is the listener for sign in requests. Every thing is sent via post
+  to obscure data as much as possible. The username and password are then checked
+  against the hashing algorithm and compared to the one stored in the database.
+  On success a message is returned stating the success. 
+*/
 dispatcher.onPost("/signIn", function(req,res){
   console.log("user request attempted");
   res.writeHead(200, {'Content-Type': 'application/json'});
@@ -252,9 +260,13 @@ dispatcher.onPost("/signIn", function(req,res){
       res.end("and error was returned. View developer console");
     }//end if
     var col = db.collection("users");
-    col.findOne({"useName":usr},function(err,results){
-      console.log("results: " + results);
-      bcrypt.compare(pasw,results, function(err, success){
+    col.findOne({"userName":usr},function(err,results){
+      console.log("results: " + Object.keys(results));
+
+      bcrypt.compare(pasw,results.passw, function(err, success){
+        if(err){
+          console.log("Error found: " + err);
+        }
         if(success){
           res.end(JSON.stringify({"login":true , "userName" : usr}));
         }
