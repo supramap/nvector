@@ -119,9 +119,9 @@ $("#popLoad").click(function(){
     //userName =  $("#userName").val();
     //psw = $("#passwd").val();
     signInUser();
-    $("#popLoad").html("Load");
-    $("#popup").hide();
-    $("#options").hide();
+    //$("#popLoad").html("Load");
+    //$("#popup").hide();
+    //$("#options").hide();
     return;
   }
   //QUERY FOR A GRAPH
@@ -279,7 +279,7 @@ var open = true;
 var isOptions = false;
 $("#optionsButton").click(function(){
   $("#popup").show();
-  $("#popLoad").html("Done");
+  $("#popLoad").html("Connect");
   isOptions = true;
   $("#selectionList").empty();
   $("#options").show();

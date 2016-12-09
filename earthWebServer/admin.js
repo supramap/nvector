@@ -41,4 +41,38 @@ function CreateUser(userName, password) {
 
 }
 
-CreateUser("zach", "passed");
+
+function CreateGroup(user,groupName){
+
+  var post_data = querystring.stringify({
+      'usrName' : userName,
+      'groupName': groupName
+  });
+
+  var post_options = {
+      host: 'localhost',
+      port: '8080',
+      path: '/createGroup',
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json'
+      }
+  };
+
+  var post_req = http.request(post_options, function(res) {
+      res.setEncoding('utf8');
+      res.on('data', function (chunk) {
+          console.log('Response: ' + chunk);
+      });
+  });
+
+
+  // post the data
+  post_req.write(post_data);
+  post_req.end();
+
+
+}
+
+//CreateUser("zach", "passed");
+CreateGroup("zach","UNCC");

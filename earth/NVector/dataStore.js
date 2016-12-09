@@ -79,6 +79,7 @@ function signInUser(){
         console.log("logged in now change status");
         $("#logStatus").html("Logged In");
         $("#logStatus").addClass("statusGreen");
+        $("#currentServer").html(queryroot);
 
       }
       else{

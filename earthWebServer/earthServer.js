@@ -246,10 +246,9 @@ dispatcher.onPost("/createUser", function(req,res){
   This is the listener for sign in requests. Every thing is sent via post
   to obscure data as much as possible. The username and password are then checked
   against the hashing algorithm and compared to the one stored in the database.
-  On success a message is returned stating the success. 
+  On success a message is returned stating the success.
 */
 dispatcher.onPost("/signIn", function(req,res){
-  console.log("user request attempted");
   res.writeHead(200, {'Content-Type': 'application/json'});
 
   var usr= req.params["usrName"];
@@ -261,7 +260,6 @@ dispatcher.onPost("/signIn", function(req,res){
     }//end if
     var col = db.collection("users");
     col.findOne({"userName":usr},function(err,results){
-      console.log("results: " + Object.keys(results));
 
       bcrypt.compare(pasw,results.passw, function(err, success){
         if(err){
@@ -278,3 +276,35 @@ dispatcher.onPost("/signIn", function(req,res){
     });// end of fineOne column
   });// end mongodb connection
 });// end of post
+
+
+
+dispatcher.onPost("/createGroup", function(req,res){
+  res.writeHead(200, {'Content-Type': 'application/json'});
+
+  var userName = req.params["usrName"];
+  var groupName = req.params["groupName"];
+  mongoc.connect("mongodb://"+mongoServer+"/"+database, function(err,db){
+    if(err){
+      console.log("an error was reported " + err);
+      res.end("and error was returned. View developer console");
+    }//end if
+    // in this case create the salt for the hashing algorithm
+    bcrypt.genSalt(5, function(err,salt){
+        bcrypt.hash(passw,salt,function(err, hash ){
+          db.collection('users').insertOne({
+
+              "userName": userName,
+              "passw": hash,
+
+
+          },function(err,enMess){
+            if(err){
+              console.log("The user was not successfully added to the database: " + err);
+            }
+            else{
+              res.end(JSON.stringify({"result": enMess}));
+            }
+          });
+        });
+    });
