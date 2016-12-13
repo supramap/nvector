@@ -45,7 +45,7 @@ function CreateUser(userName, password) {
 function CreateGroup(user,groupName){
 
   var post_data = querystring.stringify({
-      'usrName' : userName,
+      'usrName' : user,
       'groupName': groupName
   });
 

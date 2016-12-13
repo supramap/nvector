@@ -279,7 +279,12 @@ dispatcher.onPost("/signIn", function(req,res){
 
 
 
+/**
+  Create a listener for the on createGroup request that creates a group that the
+  current user is already assigned too.
+*/
 dispatcher.onPost("/createGroup", function(req,res){
+  console.log("Creating group");
   res.writeHead(200, {'Content-Type': 'application/json'});
 
   var userName = req.params["usrName"];
@@ -289,22 +294,14 @@ dispatcher.onPost("/createGroup", function(req,res){
       console.log("an error was reported " + err);
       res.end("and error was returned. View developer console");
     }//end if
-    // in this case create the salt for the hashing algorithm
-    bcrypt.genSalt(5, function(err,salt){
-        bcrypt.hash(passw,salt,function(err, hash ){
-          db.collection('users').insertOne({
+    // Awesome there was no error... so create a group. The findAndModify option
+    // will find the group if it already exist and only add a new one if it does
+    // not
+    db.collection('groups').update({"groupName": groupName, "userNames": [userName]},
+    {"groupName": groupName, "userNames": [userName]},
+    {upsert:true});
 
-              "userName": userName,
-              "passw": hash,
+    res.end(JSON.stringify({"success":true , "userName" : usr}));
 
-
-          },function(err,enMess){
-            if(err){
-              console.log("The user was not successfully added to the database: " + err);
-            }
-            else{
-              res.end(JSON.stringify({"result": enMess}));
-            }
-          });
-        });
-    });
+  });
+});
