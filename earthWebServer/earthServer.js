@@ -10,10 +10,10 @@ var fileServer = new static.Server('../earth');
 var ifaces = os.networkInterfaces();
 
 var port = 8080;
-var database = "nvector";
+var database = "NVector";
 var collection = "fda";
-var mongoServer = "192.168.1.11:27017";
-//var mongoServer = "10.16.54.223:27017";
+//var mongoServer = "192.168.1.11:27017";
+var mongoServer = "10.16.54.223:27017";
 
 var option = null;
 process.argv.forEach(function(val, index, array){
