@@ -10,10 +10,10 @@ var fileServer = new static.Server('../earth');
 var ifaces = os.networkInterfaces();
 
 var port = 8080;
-var database = "NVector";
+var database = "nvector";
 var collection = "fda";
-//var mongoServer = "192.168.1.11:27017";
-var mongoServer = "10.16.54.223:27017";
+var mongoServer = "192.168.1.11:27017";
+//var mongoServer = "10.16.54.223:27017";
 
 var option = null;
 process.argv.forEach(function(val, index, array){
@@ -298,10 +298,82 @@ dispatcher.onPost("/createGroup", function(req,res){
     // will find the group if it already exist and only add a new one if it does
     // not
     db.collection('groups').update({"groupName": groupName, "userNames": [userName]},
-    {"groupName": groupName, "userNames": [userName]},
+    {"groupName": groupName, "userNames": [userName],"graphs":[] },
     {upsert:true});
 
-    res.end(JSON.stringify({"success":true , "userName" : usr}));
+    res.end(JSON.stringify({"success":true , "userName" : userName}));
+
+  });
+});
+
+/**
+  this listener is responsible for adding a user to the group.
+**/
+dispatcher.onPost("/addUserToGroup", function(req,res){
+  console.log("Creating group");
+  res.writeHead(200, {'Content-Type': 'application/json'});
+
+  var userName = req.params["usrName"];
+  var groupName = req.params["groupName"];
+  mongoc.connect("mongodb://"+mongoServer+"/"+database, function(err,db){
+    if(err){
+      console.log("an error was reported " + err);
+      res.end("an error was returned. View developer console");
+    }//end if
+    // Awesome there was no error... so create a group. The findAndModify option
+    // will find the group if it already exist and only add a new one if it does
+    // not
+    db.collection('groups').update({"groupName": groupName},
+    {$addToSet: {"userNames": userName}});
+
+    res.end(JSON.stringify({"success":true , "userName" : userName}));
+
+  });
+});
+
+/**
+  this listener is responsible for adding a graph to a group.
+*/
+dispatcher.onPost("/addGraphToGroup", function(req,res){
+  console.log("Creating group");
+  res.writeHead(200, {'Content-Type': 'application/json'});
+
+  var graphName = req.params["graphName"];
+  var groupName = req.params["groupName"];
+  mongoc.connect("mongodb://"+mongoServer+"/"+database, function(err,db){
+    if(err){
+      console.log("an error was reported " + err);
+      res.end("and error was returned. View developer console");
+    }//end if
+    // Awesome there was no error... so create a group. The findAndModify option
+    // will find the group if it already exist and only add a new one if it does
+    // not
+    db.collection('groups').update({"groupName": groupName},
+    {$addToSet: {"graphs": graphName}});
+
+    res.end(JSON.stringify({"success":true , "userName" : userName}));
+
+  });
+});
+
+dispatcher.onPost("/showGroups", function(req,res){
+  console.log("Creating group");
+  res.writeHead(200, {'Content-Type': 'application/json'});
+
+  var graphName = req.params["graphName"];
+  var groupName = req.params["groupName"];
+  mongoc.connect("mongodb://"+mongoServer+"/"+database, function(err,db){
+    if(err){
+      console.log("an error was reported " + err);
+      res.end("and error was returned. View developer console");
+    }//end if
+    // Awesome there was no error... so create a group. The findAndModify option
+    // will find the group if it already exist and only add a new one if it does
+    // not
+    db.collection('groups').update({"groupName": groupName},
+    {$addToSet: {"graphs": graphName}});
+
+    res.end(JSON.stringify({"success":true , "userName" : userName}));
 
   });
 });

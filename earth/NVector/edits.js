@@ -102,6 +102,12 @@ $("#saveButton").click(function(){
   $("#savePath").trigger('click');
 });
 
+
+$("#uploadButton").click(function(){
+
+});
+
+
 function removeSubsect(){
   var checkedRadio = $("input:radio:checked");
   var graphPos = parseInt(checkedRadio[0].value);

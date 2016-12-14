@@ -62,8 +62,9 @@ function addUserToGroup(){
 }
 
 /**
-  Signin
+  Signin the current user.
 */
+var currentUser;
 function signInUser(){
   // get the user's credentials from the options panel
   var lastroot = queryroot;
@@ -76,6 +77,7 @@ function signInUser(){
     url:(queryroot + "/signIn"),
     success:function(finished){
       if(finished.login == true){
+        currentUser = userName;
         console.log("logged in now change status");
         $("#logStatus").html("Logged In");
         $("#logStatus").addClass("statusGreen");
@@ -89,3 +91,56 @@ function signInUser(){
     }
   });
 }
+
+
+
+
+function checkGroups(){
+  if(!currentUser){
+    // make sure that the currrent user is signed in
+    return;
+  }
+  else{
+    $.ajax({
+        type: "POST",
+        data:{},
+        url:(queryroot + "/showGroups"),
+        success: function(results){
+          var groupnames = results.groups;
+          for(var i = 0; i < groupnames.length; i++){
+            var currentGroup = $("div").append("<span class='groupText'>" + groupnames[i] + "</span>");
+            currentGroup.append("<input type='image' class='gear2' src='images/gear1.svg' value='"+groupNames[i]+"'>");
+            $("#groupManagement").append(currentGroup);
+          }
+        }
+    });
+  }
+}
+
+
+$("#addGroupBut").click(function(){
+  if(!currentUser){
+    alert("you need to be loggged in before you can create a group. The default server has no groups");
+    return;
+  }
+  else{
+    $("#ngplacement").show();
+  }
+});
+
+$("#confirmGroup").click(function(){
+  var newGroup = $("#newGroupName").val();
+  $.ajax({
+    type:"POST",
+    data: {"usrName" : currentUser, "groupName" : newGroup},
+    url: (queryroot + "/createGroup"),
+    success: function(results){
+      var currentGroup = document.createElement("div");
+      $(currentGroup).append("<span class='groupText'>" + newGroup + "</span>");
+      $(currentGroup).append("<input type='image' class='gear2' src='images/gear1.svg' value='"+newGroup+"'>");
+      $(currentGroup).addClass("currentGroups");
+      $("#groupManagement").append(currentGroup);
+      $("#ngplacement").hide();
+    }
+  });
+});

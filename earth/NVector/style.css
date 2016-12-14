@@ -619,14 +619,22 @@ div#timeSlide{
 	}*/
 }
 
+#uploadButton{
+		position:relative;
+		margin-right:12px;
+		float:right;
+}
+
 .currentGroups{
 	background-color:gray;
-	width: 90%;
-	left: 5%;
+	width: 96%;
+	left: 2%;
 	position:relative;
 	border: 1px solid black;
-	margin-bottom: 3px;
+	margin-top: 3px;
 	text-align: center;
+	height: 20px;
+	border-radius: 2px
 }
 
 .gear2{
@@ -634,6 +642,30 @@ div#timeSlide{
 	height:20px;
 	position:relative;
 	float:right;
+}
+
+#ngplacement{
+	position:relative;
+	margin-top:6px;
+	display: none;
+}
+
+#confirmGroup{
+	position:relative;
+	width:20%;
+	margin-left:calc(5% - 7px);
+}
+
+#newGroupName{
+	position:relative;
+	width:75%;
+	margin-left:5px;
+}
+
+.noSelect{
+	position:relative;
+	float: right;
+	margin-right: 5px;
 }
 
 .groupText{

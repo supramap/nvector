@@ -74,5 +74,40 @@ function CreateGroup(user,groupName){
 
 }
 
+
+
+function addUserToGroup(user,groupName){
+
+  var post_data = querystring.stringify({
+      'usrName' : user,
+      'groupName': groupName
+  });
+
+  var post_options = {
+      host: 'localhost',
+      port: '8080',
+      path: '/addUserToGroup',
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json'
+      }
+  };
+
+  var post_req = http.request(post_options, function(res) {
+      res.setEncoding('utf8');
+      res.on('data', function (chunk) {
+          console.log('Response: ' + chunk);
+      });
+  });
+
+
+  // post the data
+  post_req.write(post_data);
+  post_req.end();
+
+
+}
+
 //CreateUser("zach", "passed");
-CreateGroup("zach","UNCC");
+//CreateGroup("zach","UNCC");
+addUserToGroup("fud","UNCC");

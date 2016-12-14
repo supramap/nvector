@@ -283,6 +283,8 @@ $("#optionsButton").click(function(){
   isOptions = true;
   $("#selectionList").empty();
   $("#options").show();
+  checkGroups();
+  // call the function to gather the current user's groups
 });
 
 
