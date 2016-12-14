@@ -183,27 +183,30 @@ function initializeLines(lineData,defaultColor,colOptions,rootPos){
  	var colIndex = [];
 	var colcol = [];
 	// need to write a quicksort
-	for(var i = 0; i < colOptions.length; i++){
-		var colSel = colOptions[i];
-		var ind = rootDataStore[rootPos][0].data[colSel.strt].edgeIndices;
-		var childrenBuff = 0;
-		var childrenAr = rootDataStore[rootPos][0].data[colSel.strt].children;
-		for(var c = 0; c < childrenAr.length; c++){
-			if(childrenAr[c] == colSel.end){
-				break;
+	if(colOptions){
+		for(var i = 0; i < colOptions.length; i++){
+			var colSel = colOptions[i];
+			var ind = rootDataStore[rootPos][0].data[colSel.strt].edgeIndices;
+			var childrenBuff = 0;
+			var childrenAr = rootDataStore[rootPos][0].data[colSel.strt].children;
+			for(var c = 0; c < childrenAr.length; c++){
+				if(childrenAr[c] == colSel.end){
+					break;
+				}
+				else{
+					childrenBuff++;
+				}
 			}
-			else{
-				childrenBuff++;
-			}
+			ind = ind + childrenBuff;
+			colIndex.push(ind);
+			colcol.push(colSel.c);
 		}
-		ind = ind + childrenBuff;
-		colIndex.push(ind);
-		colcol.push(colSel.c);
+		var sorted = quickSort(colIndex, colcol, 0, colIndex.length -1);
+		colIndex = sorted[0];
+		colcol = sorted[1];
 	}
 
-	var sorted = quickSort(colIndex, colcol, 0, colIndex.length -1);
-	colIndex = sorted[0];
-	colcol = sorted[1];
+
 
 	var p = 0;
 	var coloring = false;
