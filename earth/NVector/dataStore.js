@@ -98,24 +98,21 @@ function signInUser(){
 function checkGroups(){
   if(!currentUser){
     // make sure that the currrent user is signed in
+    console.log("current user is not defined and so you cannot show a group.");
     return;
   }
   else{
     $.ajax({
         type: "POST",
-        data:{},
+        data:{"userName":currentUser},
         url:(queryroot + "/showGroups"),
         success: function(results){
-          var groupnames = results.groups;
-          for(var i = 0; i < groupnames.length; i++){
-            var currentGroup = $("div").append("<span class='groupText'>" + groupnames[i] + "</span>");
-            currentGroup.append("<input type='image' class='gear2' src='images/gear1.svg' value='"+groupNames[i]+"'>");
-            $("#groupManagement").append(currentGroup);
-          }
+          return results.groups;
         }
     });
   }
 }
+
 
 
 $("#addGroupBut").click(function(){

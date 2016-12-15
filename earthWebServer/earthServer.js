@@ -357,11 +357,10 @@ dispatcher.onPost("/addGraphToGroup", function(req,res){
 });
 
 dispatcher.onPost("/showGroups", function(req,res){
-  console.log("Creating group");
+  console.log("ShowingGroup");
   res.writeHead(200, {'Content-Type': 'application/json'});
 
-  var graphName = req.params["graphName"];
-  var groupName = req.params["groupName"];
+  var userName = req.params["userName"];
   mongoc.connect("mongodb://"+mongoServer+"/"+database, function(err,db){
     if(err){
       console.log("an error was reported " + err);
@@ -370,10 +369,11 @@ dispatcher.onPost("/showGroups", function(req,res){
     // Awesome there was no error... so create a group. The findAndModify option
     // will find the group if it already exist and only add a new one if it does
     // not
-    db.collection('groups').update({"groupName": groupName},
-    {$addToSet: {"graphs": graphName}});
+    var dataArr = db.collection('groups').find({"userNames": userName}).toArray(function(err, array){
+      res.end(JSON.stringify(array));
+    });
 
-    res.end(JSON.stringify({"success":true , "userName" : userName}));
+    //res.end(JSON.stringify({"success":true , "groupList" : dataArr.toArray()}));
 
   });
 });

@@ -283,7 +283,9 @@ $("#optionsButton").click(function(){
   isOptions = true;
   $("#selectionList").empty();
   $("#options").show();
-  checkGroups();
+  if(currentUser){
+    displayGroupsOptions();
+  }
   // call the function to gather the current user's groups
 });
 
@@ -730,4 +732,13 @@ function checkSlider(){
     jumpToTree();
   });
 
-// THIS IS FOR THE TREE VIEW----------------------------------------------------
+
+// FOR THE OPTIONS menu
+function displayGroupsOptions(){
+  var groupnames = checkGroups();
+  for(var i = 0; i < groupnames.length; i++){
+    var currentGroup = $("div").append("<span class='groupText'>" + groupnames[i] + "</span>");
+    currentGroup.append("<input type='image' class='gear2' src='images/gear1.svg' value='"+groupNames[i]+"'>");
+    $("#groupManagement").append(currentGroup);
+  }
+}
