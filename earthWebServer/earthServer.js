@@ -10,10 +10,10 @@ var fileServer = new static.Server('../earth');
 var ifaces = os.networkInterfaces();
 
 var port = 8080;
-var database = "NVector";
+var database = "nvector";
 var collection = "fda";
-//var mongoServer = "192.168.1.11:27017";
-var mongoServer = "10.16.54.223:27017";
+var mongoServer = "192.168.1.11:27017";
+//var mongoServer = "10.16.54.223:27017";
 
 var option = null;
 process.argv.forEach(function(val, index, array){
@@ -266,7 +266,11 @@ dispatcher.onPost("/signIn", function(req,res){
           console.log("Error found: " + err);
         }
         if(success){
-          res.end(JSON.stringify({"login":true , "userName" : usr}));
+          var colGroups = db.collection("groups");
+          colGroups.find({"userNames":usr},{"groupName":1}).toArray(function(err, groupNames){
+              res.end(JSON.stringify({"login":true,"groupNames": groupNames}));
+          });
+          //res.end(JSON.stringify({"login":true , "userName" : usr}));
         }
         else{
           res.end(JSON.stringify({"login":false , "userName" : usr}));
@@ -335,7 +339,7 @@ dispatcher.onPost("/addUserToGroup", function(req,res){
   this listener is responsible for adding a graph to a group.
 */
 dispatcher.onPost("/addGraphToGroup", function(req,res){
-  console.log("Creating group");
+  console.log("adding graph to group");
   res.writeHead(200, {'Content-Type': 'application/json'});
 
   var graphName = req.params["graphName"];

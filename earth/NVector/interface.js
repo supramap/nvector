@@ -283,9 +283,9 @@ $("#optionsButton").click(function(){
   isOptions = true;
   $("#selectionList").empty();
   $("#options").show();
-  if(currentUser){
+  /*if(currentUser){
     displayGroupsOptions();
-  }
+  }*/
   // call the function to gather the current user's groups
 });
 
@@ -734,11 +734,32 @@ function checkSlider(){
 
 
 // FOR THE OPTIONS menu
-function displayGroupsOptions(){
-  var groupnames = checkGroups();
+function displayGroupsOptions(groupnames){
   for(var i = 0; i < groupnames.length; i++){
-    var currentGroup = $("div").append("<span class='groupText'>" + groupnames[i] + "</span>");
-    currentGroup.append("<input type='image' class='gear2' src='images/gear1.svg' value='"+groupNames[i]+"'>");
+    var currentGroup = document.createElement("div");
+    $(currentGroup).addClass('currentGroups');
+    var span = document.createElement("span")
+    $(span).addClass("groupText").html(groupnames[i].groupName);
+    currentGroup.append(span);
+
+    var inp = document.createElement("input");
+    $(inp).addClass("gear2").attr({"type":"image","src":"images/gear1.svg"});
+
+    currentGroup.append(inp);
     $("#groupManagement").append(currentGroup);
   }
 }
+
+$("#uploadButton").click(function(){
+  $("#popup2").show();
+  // find the available groups for the signed in user and display them in
+  // #groupOptions
+  checkGroups(function(groupData){
+    for(var i = 0; i < groupData.length; i++){
+      var availGr = document.createElement("div");
+      $(availGr).addClass("groupSelection").attr("onclick",uploadToGroup);
+
+
+    }
+  });
+});

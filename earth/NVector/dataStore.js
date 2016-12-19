@@ -82,6 +82,8 @@ function signInUser(){
         $("#logStatus").html("Logged In");
         $("#logStatus").addClass("statusGreen");
         $("#currentServer").html(queryroot);
+        displayGroupsOptions(finished.groupNames);
+
 
       }
       else{
@@ -95,7 +97,7 @@ function signInUser(){
 
 
 
-function checkGroups(){
+function checkGroups(whenComplete){
   if(!currentUser){
     // make sure that the currrent user is signed in
     console.log("current user is not defined and so you cannot show a group.");
@@ -107,7 +109,7 @@ function checkGroups(){
         data:{"userName":currentUser},
         url:(queryroot + "/showGroups"),
         success: function(results){
-          return results.groups;
+          whenComplete(results);
         }
     });
   }
@@ -141,3 +143,19 @@ $("#confirmGroup").click(function(){
     }
   });
 });
+
+function uploadToGroup(groupName){
+  console.log("uploading to group");
+
+  var checkedRadio = $("input:radio:checked");
+  var graphPos = parseInt(checkedRadio[0].value);
+
+  $.ajax({
+    type:"POST",
+    data:{"data":rootDataStore[graphPos][0]},
+    url: (queryroot + "/addGraphToGroup"),
+    success:function(results){
+      console.log("successful");
+    }
+  });
+}

@@ -43,6 +43,7 @@ canvas{
 	margin-right: auto;
 	top: 35px;
 	overflow-x: hidden;
+	max-height: calc(100% - 165px)
 
 }
 
@@ -460,6 +461,13 @@ li.selections:nth-child(even){
 	min-width: 215px;
 }
 
+#editor::-webkit-scrollbar{
+	display:none;
+}
+::-webkit-scrollbar{
+	display:none;
+}
+
 #infile{
 	left:calc(50% - 42px);
 	position: absolute;
@@ -538,6 +546,19 @@ li.selections:nth-child(even){
 	left: 10%;
 	margin-top:25px;
 
+}
+#serverOptions{
+	height:calc(100% - 20px);
+}
+
+#groupManagement{
+	height: calc(100% - 148px);
+	overflow-y:scroll;
+
+}
+
+#groupManagement::-webkit-scrollbar{
+	display:none;
 }
 
 .oTab{
@@ -683,11 +704,25 @@ div#timeSlide{
 	margin-right: 5px;
 }
 
-.groupText{
 
+.groupSelection{
+		height:20px;
+		position:relative;
+		width: 96%;
+		left: 2%;
+		background-color: gray;
+		border:1px solid paleturquoise;
 }
 
-
+#cancel2{
+	width: 100px;
+	height: 30px;
+	position: absolute;
+	bottom: 5px;
+	right: 5px;
+	opacity: .5;
+	cursor:pointer;
+}
 
 
 /*Time Slider End -------------------------------------------------------*/
