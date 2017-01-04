@@ -706,12 +706,17 @@ div#timeSlide{
 
 
 .groupSelection{
-		height:20px;
+		min-height:20px;
+		height:5%;
 		position:relative;
 		width: 96%;
 		left: 2%;
 		background-color: gray;
 		border:1px solid paleturquoise;
+		margin-top:2px;
+		display:table;
+		text-align: center;
+		cursor:pointer;
 }
 
 #cancel2{
@@ -724,5 +729,9 @@ div#timeSlide{
 	cursor:pointer;
 }
 
+.groupTextUpload{
+	display:table-cell;
+	vertical-align:middle;
+}
 
 /*Time Slider End -------------------------------------------------------*/

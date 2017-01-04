@@ -152,7 +152,7 @@ function uploadToGroup(groupName){
 
   $.ajax({
     type:"POST",
-    data:{"data":rootDataStore[graphPos][0]},
+    data:{"data":rootDataStore[graphPos][0], "groupName":groupName.currentTarget.innerText},
     url: (queryroot + "/addGraphToGroup"),
     success:function(results){
       console.log("successful");

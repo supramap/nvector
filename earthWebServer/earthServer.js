@@ -338,7 +338,7 @@ dispatcher.onPost("/addUserToGroup", function(req,res){
 /**
   this listener is responsible for adding a graph to a group.
 */
-dispatcher.onPost("/addGraphToGroup", function(req,res){
+dispatcher.onPost("/Group", function(req,res){
   console.log("adding graph to group");
   res.writeHead(200, {'Content-Type': 'application/json'});
 
@@ -375,6 +375,35 @@ dispatcher.onPost("/showGroups", function(req,res){
     // not
     var dataArr = db.collection('groups').find({"userNames": userName}).toArray(function(err, array){
       res.end(JSON.stringify(array));
+    });
+
+    //res.end(JSON.stringify({"success":true , "groupList" : dataArr.toArray()}));
+
+  });
+});
+
+
+
+
+dispatcher.onPost("/addGraphToGroup", function(req,res){
+  console.log("Adding a new graph to specified group");
+  res.writeHead(200, {'Content-Type': 'application/json'});
+
+  var groupName = req.params["groupName"];
+  var graph = req.params["data"]
+  mongoc.connect("mongodb://"+mongoServer+"/"+database, function(err,db){
+    if(err){
+      console.log("an error was reported " + err);
+      res.end("an error was returned. View developer console");
+    }//end if
+    // Awesome there was no error... so create a group. The findAndModify option
+    // will find the group if it already exist and only add a new one if it does
+    // not
+    var dataArr = db.collection('graphs').insertOne(graph,function(err, array){
+    db.collection('groups').update({"groupName":grouName},{$push: {"graphs":graph.metadata.fileName}}, function(err,complete){
+      res.end(JSON.stringify({"success":true}));
+    })
+
     });
 
     //res.end(JSON.stringify({"success":true , "groupList" : dataArr.toArray()}));

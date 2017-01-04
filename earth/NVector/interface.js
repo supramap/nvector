@@ -757,9 +757,12 @@ $("#uploadButton").click(function(){
   checkGroups(function(groupData){
     for(var i = 0; i < groupData.length; i++){
       var availGr = document.createElement("div");
-      $(availGr).addClass("groupSelection").attr("onclick",uploadToGroup);
+      $(availGr).addClass("groupSelection").click(uploadToGroup);
+      var groupName = document.createElement("span")
+      $(groupName).addClass("groupTextUpload").html(groupData[i].groupName);
+      availGr.append(groupName);
 
-
+      $("#groupOptions").append(availGr);
     }
   });
 });
