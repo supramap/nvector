@@ -150,9 +150,10 @@ function uploadToGroup(groupName){
   var checkedRadio = $("input:radio:checked");
   var graphPos = parseInt(checkedRadio[0].value);
 
+  var keyInfo = {"uploadedGraph": rootDataStore[graphPos][0] , "groupName":groupName.currentTarget.innerText}
   $.ajax({
     type:"POST",
-    data:{"data":rootDataStore[graphPos][0], "groupName":groupName.currentTarget.innerText},
+    data:{"data":keyInfo, "groupName":groupName.currentTarget.innerText},
     url: (queryroot + "/addGraphToGroup"),
     success:function(results){
       console.log("successful");

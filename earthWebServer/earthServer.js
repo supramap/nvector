@@ -10,10 +10,10 @@ var fileServer = new static.Server('../earth');
 var ifaces = os.networkInterfaces();
 
 var port = 8080;
-var database = "nvector";
+var database = "NVector";
 var collection = "fda";
-var mongoServer = "192.168.1.11:27017";
-//var mongoServer = "10.16.54.223:27017";
+//var mongoServer = "192.168.1.12:27017";
+var mongoServer = "10.16.54.223:27017";
 
 var option = null;
 process.argv.forEach(function(val, index, array){
@@ -360,6 +360,9 @@ dispatcher.onPost("/Group", function(req,res){
   });
 });
 
+/**
+  the showGroups
+*/
 dispatcher.onPost("/showGroups", function(req,res){
   console.log("ShowingGroup");
   res.writeHead(200, {'Content-Type': 'application/json'});
@@ -388,6 +391,8 @@ dispatcher.onPost("/showGroups", function(req,res){
 dispatcher.onPost("/addGraphToGroup", function(req,res){
   console.log("Adding a new graph to specified group");
   res.writeHead(200, {'Content-Type': 'application/json'});
+
+  var test = req.params["data"];
 
   var groupName = req.params["groupName"];
   var graph = req.params["data"]

@@ -740,12 +740,12 @@ function displayGroupsOptions(groupnames){
     $(currentGroup).addClass('currentGroups');
     var span = document.createElement("span")
     $(span).addClass("groupText").html(groupnames[i].groupName);
-    currentGroup.append(span);
+    $(currentGroup).append(span);
 
     var inp = document.createElement("input");
     $(inp).addClass("gear2").attr({"type":"image","src":"images/gear1.svg"});
 
-    currentGroup.append(inp);
+    $(currentGroup).append(inp);
     $("#groupManagement").append(currentGroup);
   }
 }
@@ -760,7 +760,7 @@ $("#uploadButton").click(function(){
       $(availGr).addClass("groupSelection").click(uploadToGroup);
       var groupName = document.createElement("span")
       $(groupName).addClass("groupTextUpload").html(groupData[i].groupName);
-      availGr.append(groupName);
+      $(availGr).append(groupName);
 
       $("#groupOptions").append(availGr);
     }
