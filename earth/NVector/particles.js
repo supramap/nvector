@@ -183,6 +183,7 @@ function initializeLines(lineData,defaultColor,colOptions,rootPos){
  	var colIndex = [];
 	var colcol = [];
 	// need to write a quicksort
+
 	if(colOptions){
 		for(var i = 0; i < colOptions.length; i++){
 			var colSel = colOptions[i];
@@ -196,17 +197,17 @@ function initializeLines(lineData,defaultColor,colOptions,rootPos){
 				else{
 					childrenBuff++;
 				}
+
 			}
 			ind = ind + childrenBuff;
 			colIndex.push(ind);
 			colcol.push(colSel.c);
 		}
+
 		var sorted = quickSort(colIndex, colcol, 0, colIndex.length -1);
 		colIndex = sorted[0];
 		colcol = sorted[1];
 	}
-
-
 
 	var p = 0;
 	var coloring = false;
