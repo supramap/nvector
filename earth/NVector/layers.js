@@ -54,6 +54,17 @@ function generateLayer(inObject){
   a single array so that they can be sent off to have a buffer created.
 */
 function geoJsonLayer(inObject){
+
+
+  var lineArry = genGeometryArray(inObject);
+  var layerLine = initializeLines(lineArr);
+  //var layerLine = initializeLines([lineArr[6]]);
+  return layerLine;
+}
+
+
+
+function genGeometryArray(inObject){
   var lineArr = [];
 
   if(inObject.type == "FeatureCollection" ){
@@ -110,6 +121,8 @@ function geoJsonLayer(inObject){
       }
     }
   }
+  return lineArr;
+}
 
 
 function featureLineBuild(cordArr){
@@ -125,11 +138,11 @@ function featureLineBuild(cordArr){
 }
 
 
-  var layerLine = initializeLines(lineArr);
-  //var layerLine = initializeLines([lineArr[6]]);
-  return layerLine;
 
+/**
+  The polygonLayer function is designed to take in the loaded geojson file
 
-
+*/
+function polygonLayer(inObject){
 
 }

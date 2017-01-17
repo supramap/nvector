@@ -55,7 +55,8 @@ var rotating,controls;
 
 
 	function addNewLayer(layerObj,fileName){
-		var newLayer = geoJsonLayer(layerObj);
+		//var newLayer = geoJsonLayer(layerObj);
+		var newLayer = polygonLayer(layerObj);
 		layers.add(newLayer);
 		layerStore.push(fileName);
 		displayContents();
