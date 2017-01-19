@@ -357,13 +357,14 @@ function wrap(value, min, rangeSize) {
 	return value % rangeSize;
 }
 
-THREE.Curve.Utils.createLineGeometry = function( points ) {
+// It seems that THREE.Curve.Utils was depricated
+/*THREE.Curve.Utils.createLineGeometry = function( points ) {
 	var geometry = new THREE.Geometry();
 	for( var i = 0; i < points.length; i ++ ) {
 		geometry.vertices.push( points[i] );
 	}
 	return geometry;
-};
+};*/
 
 function getAbsOrigin( object3D ){
 	var mat = object3D.matrixWorld;

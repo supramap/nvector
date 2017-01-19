@@ -19,18 +19,26 @@ var particleCloud;
 var particlesExist = false,treeState = false;
 var rotating,controls;
 
-//window.onload = function(){
+var textureLoader = new THREE.TextureLoader();
+
+
 	var outlinedMapTexture;
-	//var mapIndexedImage = new Image();
-	//mapIndexedImage.src = '../images/map_indexed.png'
-	//var mapOutlineImage
-	var sphereTexture = THREE.ImageUtils.loadTexture('images/particleA.png', {}, function(){
+	var particleTexture;
+	var sphereTexture;
+
 		//mapOutlineImage = new Image();
 		//mapOutlineImage.src = '../images/map_outline.png'
-		outlinedMapTexture = THREE.ImageUtils.loadTexture('images/map_outline.png', {}, function(){
-			initializeEnvironment();
+		//images/particleA.png"
+		textureLoader.load('/images/particleA.png', function(pTexture){
+			particleTexture = pTexture;
+			textureLoader.load('images/ball.png',function(ballTexture){
+				sphereTexture = ballTexture;
+				textureLoader.load('images/map_outline.png', function(texture){
+					outlinedMapTexture = texture;
+					initializeEnvironment();
+				});
+			});
 		});
-	});
 
 
 	// Function to be run after the expected images are loaded.
@@ -443,11 +451,14 @@ var rotating,controls;
 		renderer.generateMipmaps = false;
 
 
-		var skyBoxGeometry = new THREE.SphereGeometry( 8000, 100, 100 );
-		// BackSide: render faces from inside of the cube, instead of from outside (default).
-		var skyBoxMaterial = new THREE.MeshBasicMaterial( { side: THREE.BackSide,map: THREE.ImageUtils.loadTexture('images/starfield.png') } );
-		var skyBox = new THREE.Mesh( skyBoxGeometry, skyBoxMaterial );
-		scene.add(skyBox);
+		textureLoader.load('images/starfield.png', function(texture){
+			var skyBoxGeometry = new THREE.SphereGeometry( 8000, 100, 100 );
+			// BackSide: render faces from inside of the cube, instead of from outside (default).
+			var skyBoxMaterial = new THREE.MeshBasicMaterial( { side: THREE.BackSide,map: texture } );
+			var skyBox = new THREE.Mesh( skyBoxGeometry, skyBoxMaterial );
+			scene.add(skyBox);
+
+		});
 
 
 

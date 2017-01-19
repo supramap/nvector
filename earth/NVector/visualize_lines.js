@@ -290,7 +290,7 @@ function recurseRebuild(current, bigObj,dateStart,dateEnd){
 				curvePoints.push(childPositions[i]);
 
 				// this still needs work but it may be on the right track
-				var curve = new THREE.SplineCurve3(curvePoints);
+				var curve = new THREE.CatmullRomCurve3(curvePoints);
 
 				currentGeometry.vertices = curve.getPoints(50);
 
@@ -604,7 +604,7 @@ function recurseBuild2d(current, bigObj,depth,dateStart,dateEnd){
 				curvePoints.push(childPositions[i]);
 
 				// this still needs work but it may be on the right track
-				var curve = new THREE.SplineCurve3(curvePoints);
+				var curve = new THREE.CatmullRomCurve3(curvePoints);
 
 				currentGeometry.vertices = curve.getPoints(50);
 				//generateParticles(currentGeometry.vertices, curve.getLength());
