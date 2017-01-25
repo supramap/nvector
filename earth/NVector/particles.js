@@ -1,97 +1,46 @@
 //var pSystem;
 
+
 function initializeParticles(generatedParticles){
-	// load the shaders
-	particleAttributes = {
-
-		size: {	type: 'f', value: [] },
-		customColor: { type: 'c', value: [] }
-
-	};
-
-	particleUniforms = {
-
-		amplitude: { type: "f", value: 1.0 },
-		color:     { type: "c", value: new THREE.Color( 0xffaa00 ) },
-		texture:   { type: "t", value: particleTexture/*THREE.ImageUtils.loadTexture( "../images/particleA.png" )*/ },
-
-	};
 
 
-	var particleMaterial = new THREE.ShaderMaterial( {
-
-		uniforms:       particleUniforms,
-		/*attributes:     particleAttributes,*/
-		vertexShader:   document.getElementById( 'vertexshader' ).textContent,
-		fragmentShader: document.getElementById( 'fragmentshader' ).textContent,
-
-		blending:       THREE.AdditiveBlending,
-		depthTest:      false,
-		transparent:    true
-
-	});
-
-	//var particleMaterial = new THREE.PointsMaterial({size:1, map:particleTexture, alphaTest:.5, vetexColors: THREE.VertexColors, transparent:true});
 	// after the shaders are loaded build the particle system
-	/*var particleMaterial = new THREE.ShaderMaterial({
 
-		vertexShader: document.getElementById( 'vertexShader' ).textContent,
-		fragmentShader = documetn.getElementById('fragmentshader').textContent,
-		uniforms: particleUniforms,
-		depthWrite: false,
-		transparent: true,
-		blending: THREE.AdditiveBlending
-	});*/
-
-	/*var values_size = particleAttributes.size.value;
-	var values_color = particleAttributes.customColor.value
-
-	for(var i = 0 ; i < generatedParticles.vertices.length; i++){
-		values_size[i] = 3;
-		values_color[ i ] = new THREE.Color( 0xffaa00 );
-		values_color[i].setHSL(.2,.7,.4);
-	}
-
-	generatedParticles.addAttribute('customColor', new THREE.BufferAttribute(new Float32Array(values_color)),3 );
-	generatedParticles.addAttribute('size', new THREE.BufferAttribute(new Float32Array(values_color)),1 );
-	*/
-
+	var particleMaterial = new THREE.PointsMaterial({size: 2, map: particleTexture, blending: THREE.AdditiveBlending,transparent:true });
+	particleMaterial.color = new THREE.Color(0xffaa00).setHSL(.2,.7,.4);
 	pSystem = new THREE.Points(generatedParticles,particleMaterial);
-	//pSystem.attributes = particleAttributes;
 
 
 	pSystem.update = function(){
 			// var time = Date.now()
-			for( var i = 0; i < this.geometry.attributes.position.length; i+3 ){
+			for( var i in this.geometry.vertices ){
 				if(i == "extend"){
 					return;
 				}
 
-				//var particle = this.geometry.vertices[i];
-				var path = this.geometry.movement.paths[i/3];
+				var particle = this.geometry.vertices[i];
+				var path = particle.path;
 				//var moveLength = path.length;
 
-				this.geometry.movement.indices[i/3].lerpN+= 0.05;
-				if(this.geometry.movement.indices[i/3].lerpN > 1){
-					this.geometry.movement.indices[i/3].lerpN = 0;
-					this.geometry.movement.indices[i/3].moveIndex = this.geometry.movement.indices[i/3].nextIndex;
-					this.geometry.movement.indices[i/3].nextIndex = this.geometry.movement.indices[i/3].nextIndex + 3;
-					if( this.geometry.movement.indices[i/3].nextIndex >= path.length ){
-						this.geometry.movement.indices[i/3].moveIndex = 0;
-						this.geometry.movement.indices[i/3].nextIndex = 3;
+				particle.lerpN += 0.05;
+				if(particle.lerpN > 1){
+					particle.lerpN = 0;
+					particle.moveIndex = particle.nextIndex;
+					particle.nextIndex = particle.nextIndex + 3;
+					if( particle.nextIndex >= path.length ){
+						particle.moveIndex = 0;
+						particle.nextIndex = 3;
 					}
 				}
 				var currentPoint = new THREE.Vector3(path[particle.moveIndex],path[particle.moveIndex + 1],path[particle.moveIndex + 2]);
 				var nextPoint = new THREE.Vector3(path[particle.nextIndex],path[particle.nextIndex + 1],path[particle.nextIndex + 2]);
 
-				var positionS = this.geometry.attributes.position[i];
-				var mathVector = new THREE.Vector3(positionS[i],positionS[i+1],positionS[i+2]);
+
 				particle.copy( currentPoint );
 				particle.lerp( nextPoint, particle.lerpN );
 			}
 			//this.geometry.verticesNeedUpdate = true;
 		};
-
 
 		return pSystem
 }
@@ -99,22 +48,8 @@ function initializeParticles(generatedParticles){
 
 
 function generateParticles(lineData){
-	// I will require something to continue storing the line data in to control
-	// the movement of the particles.
-	var particleMovement = {};
-	particleMovement.paths = [];
-	particleMovement.indices = [];
-
-	var	particleCount = 0;
-	var particlesGeo = new THREE.BufferGeometry();
-
-	var valuesSize = [];
-	var valuesColor = [];
-	var valuesPosition = [];
-
-
-	//particlesGeo.addAttribute('customColor', new THREE.BufferAttribute(new Float32Array(values_color)),3 );
-	//particlesGeo.addAttribute('size', new THREE.BufferAttribute(new Float32Array(values_size)),1 );
+	var	particleSize = 2,particleCount = 0;
+	var particlesGeo = new THREE.Geometry();
 
 	for(var linePos = 0; linePos < lineData.length; linePos++){
 		var currentLine = lineData[linePos];
@@ -131,68 +66,30 @@ function generateParticles(lineData){
 			var lineIndex = i/particleCount * (currentLine.length/3);
 			var rIndex = Math.floor(lineIndex);
 			var baseIndex = rIndex * 3;
-			//old particle
-			//var particle = new THREE.Vector3(currentLine[baseIndex],currentLine[baseIndex+1],currentLine[baseIndex+2]);
-			var indexInfo = {};
-
-			indexInfo.moveIndex = baseIndex;
-			indexInfo.nextIndex = baseIndex+3;
-			indexInfo.lerpN = 0;
-			particleMovement.indices.push(indexInfo);
+			var particle = new THREE.Vector3(currentLine[baseIndex],currentLine[baseIndex+1],currentLine[baseIndex+2]);
+			particle.moveIndex = baseIndex;
+			particle.nextIndex = baseIndex+3;
 			//if(particle.nextIndex >= (currentLine.length/3) )
 					//particle.nextIndex = 0;
 
-			particleMovement.paths.push(currentLine);
-			//particlesGeo.vertices.push(particle);
-			$.merge(valuesPosition,[currentLine[baseIndex],currentLine[baseIndex+1],currentLine[baseIndex+2]])
-
-
-
-			valuesSize[i] = 3;
-			valuesColor[ i ] = new THREE.Color( 0xffaa00 );
-			valuesColor[i].setHSL(.2,.7,.4);
+			particle.lerpN = 0;
+			particle.path = currentLine;
+			particlesGeo.vertices.push(particle);
 		}
 
 
 
 	}
 
-	particlesGeo.addAttribute('customColor', new THREE.BufferAttribute(new Float32Array(valuesColor)),3 );
-	particlesGeo.addAttribute('position', new THREE.BufferAttribute(new Float32Array(valuesPosition)),3 );
-	particlesGeo.addAttribute('size', new THREE.BufferAttribute(new Float32Array(valuesSize)),1 );
-
-	particlesGeo.movement = particleMovement;
-
 	return particlesGeo;
-
 }
-
 
 
 
 function initializeSpheres(ingeometry,rootPosition){
 	var spheresGeometry = new THREE.Geometry();
 
-	/*var sphereAttributes = {
-		size: {	type: 'f', value: [] },
-    customColor: { type: 'c', value: [] }
-	}
-
-	var sphereUniforms ={
-		amplitude: { type: "f", value: 1.0 },
-		color:     { type: "c", value: new THREE.Color( 0xffaa00 ) },
-		texture:   { type: "t", value: sphereTexture }
-	}*/
-
-	/*var sphmat = new THREE.ShaderMaterial({
-  uniforms: sphereUniforms,
-  /*attributes: sphereAttributes,*/
-  /*vertexShader: document.getElementById( 'sphereVertex' ).textContent,
-  fragmentShader: document.getElementById( 'sphereFragment' ).textContent,
-});*/
-
-
-	sphmat = new THREE.PointsMaterial({size:3, map:sphereTexture, alphaTest:.5, vertexColors:THREE.VertexColors, transparent:true})
+	sphmat = new THREE.PointsMaterial({size:3, map:sphereTexture, alphaTest:.5, vertexColors:THREE.VertexColors, transparent:false});
 
 	var colorsArr = [];
 	for(var i = 0; i < ingeometry.length;i++){
@@ -200,14 +97,10 @@ function initializeSpheres(ingeometry,rootPosition){
 		var vertex = new THREE.Vector3(currentGeo['location'][0],currentGeo['location'][1],currentGeo['location'][2]);
 		vertex.nodeName=currentGeo['name'];
 		spheresGeometry.vertices.push(vertex);
-		//sphereAttributes.size.value[i] = 5;
-		//sphereAttributes.customColor.value[i] = new THREE.Color(currentGeo.color);
 		colorsArr.push(new THREE.Color(currentGeo.color));
 	}
 
 
-
-	//spheresGeometry.attributes = sphereAttributes;
 	spheresGeometry.colors = colorsArr;
 	var spherePSystem = new THREE.Points(spheresGeometry,sphmat);
 	spherePSystem.rootPosition = rootPosition;
