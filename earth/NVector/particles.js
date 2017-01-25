@@ -57,34 +57,35 @@ function initializeParticles(generatedParticles){
 	*/
 
 	pSystem = new THREE.Points(generatedParticles,particleMaterial);
-	pSystem.attributes = particleAttributes;
+	//pSystem.attributes = particleAttributes;
 
 
 	pSystem.update = function(){
 			// var time = Date.now()
-			for( var i in this.geometry.vertices ){
+			for( var i = 0; i < this.geometry.attributes.position.length; i+3 ){
 				if(i == "extend"){
 					return;
 				}
 
-				var particle = this.geometry.vertices[i];
-				var path = particle.path;
+				//var particle = this.geometry.vertices[i];
+				var path = this.geometry.movement.paths[i/3];
 				//var moveLength = path.length;
 
-				particle.lerpN += 0.05;
-				if(particle.lerpN > 1){
-					particle.lerpN = 0;
-					particle.moveIndex = particle.nextIndex;
-					particle.nextIndex = particle.nextIndex + 3;
-					if( particle.nextIndex >= path.length ){
-						particle.moveIndex = 0;
-						particle.nextIndex = 3;
+				this.geometry.movement.indices[i/3].lerpN+= 0.05;
+				if(this.geometry.movement.indices[i/3].lerpN > 1){
+					this.geometry.movement.indices[i/3].lerpN = 0;
+					this.geometry.movement.indices[i/3].moveIndex = this.geometry.movement.indices[i/3].nextIndex;
+					this.geometry.movement.indices[i/3].nextIndex = this.geometry.movement.indices[i/3].nextIndex + 3;
+					if( this.geometry.movement.indices[i/3].nextIndex >= path.length ){
+						this.geometry.movement.indices[i/3].moveIndex = 0;
+						this.geometry.movement.indices[i/3].nextIndex = 3;
 					}
 				}
 				var currentPoint = new THREE.Vector3(path[particle.moveIndex],path[particle.moveIndex + 1],path[particle.moveIndex + 2]);
 				var nextPoint = new THREE.Vector3(path[particle.nextIndex],path[particle.nextIndex + 1],path[particle.nextIndex + 2]);
 
-
+				var positionS = this.geometry.attributes.position[i];
+				var mathVector = new THREE.Vector3(positionS[i],positionS[i+1],positionS[i+2]);
 				particle.copy( currentPoint );
 				particle.lerp( nextPoint, particle.lerpN );
 			}
@@ -132,20 +133,19 @@ function generateParticles(lineData){
 			var baseIndex = rIndex * 3;
 			//old particle
 			//var particle = new THREE.Vector3(currentLine[baseIndex],currentLine[baseIndex+1],currentLine[baseIndex+2]);
-			//new particle
-			valuesPosition ;
 			var indexInfo = {};
 
 			indexInfo.moveIndex = baseIndex;
-			indexInfo.moveIndex = baseIndex+3;
+			indexInfo.nextIndex = baseIndex+3;
 			indexInfo.lerpN = 0;
+			particleMovement.indices.push(indexInfo);
 			//if(particle.nextIndex >= (currentLine.length/3) )
 					//particle.nextIndex = 0;
 
-			particle.path = currentLine;
-			particlesGeo.vertices.push(particle);
+			particleMovement.paths.push(currentLine);
+			//particlesGeo.vertices.push(particle);
+			$.merge(valuesPosition,[currentLine[baseIndex],currentLine[baseIndex+1],currentLine[baseIndex+2]])
 
-			$.merge(valuesPosition,[currentLines[baseIndex],currentLine[baseIndex+1],currentLine[baseIndex+2]])
 
 
 			valuesSize[i] = 3;

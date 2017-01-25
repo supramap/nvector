@@ -29,7 +29,7 @@ var textureLoader = new THREE.TextureLoader();
 		//mapOutlineImage = new Image();
 		//mapOutlineImage.src = '../images/map_outline.png'
 		//images/particleA.png"
-		textureLoader.load('/images/particleA.png', function(pTexture){
+		textureLoader.load('images/particleA.png', function(pTexture){
 			particleTexture = pTexture;
 			textureLoader.load('images/ball.png',function(ballTexture){
 				sphereTexture = ballTexture;
