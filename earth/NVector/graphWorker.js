@@ -60,6 +60,15 @@ function makeGraphGeometry(connectionObj, startP, endP){
 var cantPlace = [];
 
 function recurseRebuild(current, bigObj,dateStart,dateEnd){
+  if(current == "a295"){
+    console.log("a295 stop here");
+  }
+  if(current == "a10"){
+    console.log("a10 stop here");
+  }
+  if(current == "PDT000088236.1"){
+    console.log("Critical offender");
+  }
 	var node = bigObj[current];
 	// if leaf node, convert the current coordinates into three dimentional points
 	if(node.children.length == 0){

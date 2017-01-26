@@ -438,7 +438,7 @@ var textureLoader = new THREE.TextureLoader();
 		sphere.rotation.z = Math.PI;// - .1;
 		sphere.id = "base";
 
-		rotating.add( sphere );
+		//rotating.add( sphere );
 
 		//console.log( selectableCountries );
 
@@ -537,11 +537,11 @@ var textureLoader = new THREE.TextureLoader();
 						which pointClouds it intersects.
 					*/
 					for(var i = 0; i < intersecs.length; i++){
-						if(foundSphere == false && intersecs[i].object.type == "PointCloud"){
+						if(foundSphere == false && intersecs[i].object.type == "Points"){
 							foundSphere = true;
 							possible = [];
 						}
-						if(intersecs[i].object.type == "PointCloud"){
+						if(intersecs[i].object.type == "Points"){
 							var currentName = intersecs[i].object.geometry.vertices[intersecs[i].index].nodeName;
 							var currentRootPos = intersecs[i].object.rootPosition;
 							possible.push([currentName,currentRootPos]);

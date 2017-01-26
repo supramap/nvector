@@ -139,6 +139,7 @@ function initializeLines(lineData,defaultColor,colOptions,rootPos){
 			var ind = rootDataStore[rootPos][0].data[colSel.strt].edgeIndices;
 			var childrenBuff = 0;
 			var childrenAr = rootDataStore[rootPos][0].data[colSel.strt].children;
+			// acknowledges a scenario where the current child is the end of the line
 			var bad = true;
 			for(var c = 0; c < childrenAr.length; c++){
 				if(childrenAr[c] == colSel.end){
