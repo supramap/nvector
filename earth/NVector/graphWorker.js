@@ -263,6 +263,7 @@ function recurseRebuild(current, bigObj,dateStart,dateEnd){
 
 				// this still needs work but it may be on the right track
 				var curve = new THREE.CatmullRomCurve3(curvePoints);
+        //var curve = new THREE.SplineCurve(curvePoints);
 
 				currentGeometry.vertices = curve.getPoints(50);
 
@@ -579,7 +580,7 @@ function recurseBuild2d(current, bigObj,depth,dateStart,dateEnd){
 
 				// this still needs work but it may be on the right track
 				var curve = new THREE.CatmullRomCurve3(curvePoints);
-
+        //var curve = new THREE.SplineCurve(curvePoints);
 				currentGeometry.vertices = curve.getPoints(50);
 
         var geoArr = [];
@@ -822,6 +823,7 @@ function recurseBuildCircle(current, bigObj,depth,dateStart,dateEnd){
 
 				// this still needs work but it may be on the right track
 				var curve = new THREE.CatmullRomCurve3(curvePoints);
+        //var curve = new THREE.SplineCurve(curvePoints);
 
 				currentGeometry.vertices = curve.getPoints(50);
 
