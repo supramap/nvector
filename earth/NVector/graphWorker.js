@@ -60,13 +60,13 @@ function makeGraphGeometry(connectionObj, startP, endP){
 var cantPlace = [];
 
 function recurseRebuild(current, bigObj,dateStart,dateEnd){
-  if(current == "a295"){
+  if(current == "a106"){
     console.log("a295 stop here");
   }
-  if(current == "a10"){
+  if(current == "a105"){
     console.log("a10 stop here");
   }
-  if(current == "PDT000088236.1"){
+  if(current == "PDT000084614.2"){
     console.log("Critical offender");
   }
 	var node = bigObj[current];
@@ -264,7 +264,7 @@ function recurseRebuild(current, bigObj,dateStart,dateEnd){
 				// this still needs work but it may be on the right track
 				var curve = new THREE.CatmullRomCurve3(curvePoints);
         //var curve = new THREE.SplineCurve(curvePoints);
-
+        curve.closed = false;
 				currentGeometry.vertices = curve.getPoints(50);
 
         var geoArr = [];

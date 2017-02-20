@@ -534,7 +534,7 @@ var textureLoader = new THREE.TextureLoader();
 
 					/*
 						Iterate through all of the possible intersections for determining
-						which pointClouds it intersects.
+						which Points object it intersects.
 					*/
 					for(var i = 0; i < intersecs.length; i++){
 						if(foundSphere == false && intersecs[i].object.type == "Points"){
@@ -568,11 +568,11 @@ var textureLoader = new THREE.TextureLoader();
 					var foundSphere = false;
 					for(var i = 0; i < intersecs.length; i++){
 
-						if(foundSphere == false && intersecs[i].object.type == "PointCloud"){
+						if(foundSphere == false && intersecs[i].object.type == "Points"){
 							foundSphere = true;
 							possible = [];
 						}
-						if(intersecs[i].object.type == "PointCloud"){
+						if(intersecs[i].object.type == "Points"){
 							var currentName = intersecs[i].object.geometry.vertices[intersecs[i].index].nodeName;
 							var currentRootPos = intersecs[i].object.rootPosition;
 							possible.push([currentName,currentRootPos]);
