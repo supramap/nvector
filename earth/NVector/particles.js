@@ -205,8 +205,9 @@ function initializeLines(lineData,defaultColor,colOptions,rootPos){
 		//colors.push(.9, .2, .4);
 		//colors.push(Math.random()*0.5+0.5, Math.random()*0.5+0.5, 1);
 	}
+	//var bsTest = indicesArr.slice(198,202);
 	// test for colors
-  lineGeo.setIndex(new THREE.BufferAttribute( new Uint32Array( indicesArr ), 1 ));
+  lineGeo.setIndex(new THREE.BufferAttribute( new Uint32Array( indicesArr), 1 ));
 	//lineGeo.addAttribute( 'index', new THREE.BufferAttribute( new Uint32Array( indicesArr ), 1 ) );
 	lineGeo.addAttribute( 'position', new THREE.BufferAttribute( new Float32Array( linepos ), 3 ) );
 	lineGeo.addAttribute( 'color', new THREE.BufferAttribute( new Float32Array( colors ), 3 ) );
