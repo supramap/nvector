@@ -60,15 +60,7 @@ function makeGraphGeometry(connectionObj, startP, endP){
 var cantPlace = [];
 
 function recurseRebuild(current, bigObj,dateStart,dateEnd){
-  if(current == "a106"){
-    console.log("a295 stop here");
-  }
-  if(current == "a105"){
-    console.log("a10 stop here");
-  }
-  if(current == "PDT000084614.2"){
-    console.log("Critical offender");
-  }
+
 	var node = bigObj[current];
 	// if leaf node, convert the current coordinates into three dimentional points
 	if(node.children.length == 0){
@@ -376,31 +368,10 @@ function recurseBuild2d(current, bigObj,depth,dateStart,dateEnd){
 	if(node.children.length == 0){
 
 
-      /*console.log("node date >= dateStart: ")
-      console.log( new Date(node.date) >= new Date(dateStart));
-      console.log(new Date(node.date));
-      console.log(node.date);
-      console.log("-");
-      console.log(new Date(dateStart));
-      console.log(dateStart);*/
-    /*  console.log("secondTest:")
-      console.log(!(new Date(node.date) >= new Date(dateStart) && new Date(node.date) <= new Date(dateEnd)));
-      console.log((dateStart != undefined && dateEnd != undefined));
-      console.log(( (dateStart != undefined && dateEnd != undefined) && !(new Date(node.date) >= new Date(dateStart) && new Date(node.date) <= new Date(dateEnd))));
-      console.log((node.coord instanceof THREE.Vector3));
 
-      console.log(new Date(dateStart));
-      console.log(new Date(node.date));
-      console.log(dateEnd)
-      console.log(new Date(dateEnd));*/
 			if(node.coord instanceof THREE.Vector3 || ( (dateStart != undefined && dateEnd != undefined) && !(new Date(node.date) >= new Date(dateStart) && new Date(node.date) <= new Date(dateEnd)))){
 				return 1;
 			}
-      //console.log("coordinate is a vector")
-      //console.log( node.coord instanceof THREE.Vector3 )
-      //console.log(( (dateStart != undefined && dateEnd != undefined) && !(new Date(node.date) >= new Date(dateStart) && new Date(node.date) <= new Date(dateEnd))));
-			// This is a leaf node and so needs to be placed in its relative position
-			// based upon depth and breadth
 
 			// z is easy as we are building to 2 dimensions
 			var z = 0;

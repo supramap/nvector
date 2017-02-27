@@ -438,7 +438,7 @@ var textureLoader = new THREE.TextureLoader();
 		sphere.rotation.z = Math.PI;// - .1;
 		sphere.id = "base";
 
-		//rotating.add( sphere );
+		rotating.add( sphere );
 
 		//console.log( selectableCountries );
 
