@@ -60,7 +60,7 @@ function geoJsonLayer(inObject){
   var lineArry = genGeometryArray(inObject);
   // initializeLines is the same function used to create the lines for regular
   // graphs. layerLine will then be the three.js buffered lines ready for rendering
-  var layerLine = initializeLines(lineArr);
+  var layerLine = initializeLines(lineArry);
   //var layerLine = initializeLines([lineArr[6]]);
   return layerLine;
 }
