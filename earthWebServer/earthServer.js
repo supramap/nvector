@@ -1,4 +1,4 @@
-var static = require('node-static');
+var nstatic = require('node-static');
 var os = require('os');
 var httpDispatcher = require("httpdispatcher");
 var dispatcher = new httpDispatcher();
@@ -6,14 +6,14 @@ var mongoc = require('mongodb').MongoClient;
 var url = require('url');
 var bcrypt = require('bcrypt');
 
-var fileServer = new static.Server('../earth');
+var fileServer = new nstatic.Server('../earth/NVector');
 var ifaces = os.networkInterfaces();
 
 var port = 8080;
 var database = "NVector";
 var collection = "fda";
-//var mongoServer = "192.168.1.12:27017";
-var mongoServer = "10.16.54.223:27017";
+var mongoServer = "192.168.1.12:27017";
+//var mongoServer = "10.16.54.223:27017";
 
 var option = null;
 process.argv.forEach(function(val, index, array){
@@ -83,6 +83,9 @@ Object.keys(ifaces).forEach(function (ifname) {
   });
 });
 
+dispatcher.setStatic('../eart/NVector/stat');
+dispatcher.setStaticDirname('bs');
+
 require('http').createServer(function (request, response) {
   dispatcher.dispatch(request, response);
 
@@ -90,12 +93,14 @@ require('http').createServer(function (request, response) {
 
 
 
+
 /**
   This should display the application
 */
 dispatcher.onGet("/", function(req,res){
-
+  console.log("request recieved... should be returning NVector html");
   req.addListener('end', function () {
+
       fileServer.serve(req, res);
   }).resume();
 });
@@ -104,7 +109,7 @@ dispatcher.onGet("/", function(req,res){
 /**
   return a list of all of the existing data graphs.
 */
-dispatcher.onGet("/showFDA",function(req,res){
+dispatcher.onPost("/showFDA",function(req,res){
   res.writeHead(200, {'Content-Type': 'application/json'});
   mongoc.connect("mongodb://"+mongoServer+"/"+database, function(err,db){
     if(err){
@@ -123,7 +128,7 @@ dispatcher.onGet("/showFDA",function(req,res){
 /**
   return the fda graph selected by the user.
 */
-dispatcher.onGet("/getFDA", function(req,res){
+dispatcher.onPost("/getFDA", function(req,res){
   res.writeHead(200, {'Content-Type': 'application/json'});
 
   var fileName = req.params["fileName"];
@@ -147,7 +152,7 @@ dispatcher.onGet("/getFDA", function(req,res){
   Catch the showLayers request and return the avialable layers as provided in the
   database.
 */
-dispatcher.onGet("/showLayers", function(req,res){
+dispatcher.onPost("/showLayers", function(req,res){
   res.writeHead(200, {'Content-Type': 'application/json'});
 
   var fileName = req.params["fileName"];
@@ -172,7 +177,7 @@ dispatcher.onGet("/showLayers", function(req,res){
   when a request to getLayer is recieved send the json object that forms the layer
   to be displayed in NVector
 */
-dispatcher.onGet("/getLayer", function(req,res){
+dispatcher.onPost("/getLayer", function(req,res){
   res.writeHead(200, {'Content-Type': 'application/json'});
   var fileName = req.params["fileName"];
   mongoc.connect("mongodb://"+mongoServer+"/"+database, function(err,db){
