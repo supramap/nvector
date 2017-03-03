@@ -83,8 +83,9 @@ Object.keys(ifaces).forEach(function (ifname) {
   });
 });
 
-dispatcher.setStatic('../eart/NVector/stat');
-dispatcher.setStaticDirname('bs');
+dispatcher.setStaticDirname('../earth/NVector/');
+dispatcher.setStatic('static');
+
 
 require('http').createServer(function (request, response) {
   dispatcher.dispatch(request, response);
@@ -97,6 +98,7 @@ require('http').createServer(function (request, response) {
 /**
   This should display the application
 */
+
 dispatcher.onGet("/", function(req,res){
   console.log("request recieved... should be returning NVector html");
   req.addListener('end', function () {
