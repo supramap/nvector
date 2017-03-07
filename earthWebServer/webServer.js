@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 var os = require('os');
 var ifaces = os.networkInterfaces();
+var path = require('path');
 
 var port = 8080;
 var database = "NVector";
@@ -78,8 +79,12 @@ Object.keys(ifaces).forEach(function (ifname) {
 });
 
 app.get('/', function(req,res){
-  res.send("this is your first express app");
+  //res.send("this is your first express app");
+  res.sendFile(path.join(__dirname + "/../earth/NVector/index.html"));
 });
+
+// server the static files including css and javascript
+app.use(express.static("../earth/NVector"));
 
 
 app.listen(port, function(){
