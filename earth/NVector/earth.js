@@ -18,6 +18,9 @@ var layerStore = [];
 var particleCloud;
 var particlesExist = false,treeState = false;
 var rotating,controls;
+var displayMode = false;
+
+
 
 //window.onload = function(){
 	var outlinedMapTexture;
@@ -48,11 +51,20 @@ var rotating,controls;
 		else{
 			isNW = false;
 		}
+
+		if($("#dm").html() == "true"){
+			console.log("Running NVector in display mode");
+			displayMode();
+		}
+
 		// [[DISTANT FUTURE]] Maybe test the possibilities for the use of phonegap
 		buildearth();
 	}
 
 
+	function displayMode(){
+		$("#")
+	}
 
 	function addNewLayer(layerObj,fileName){
 		var newLayer = geoJsonLayer(layerObj);
