@@ -54,7 +54,8 @@ var displayMode = false;
 
 		if($("#dm").html() == "true"){
 			console.log("Running NVector in display mode");
-			displayMode();
+			var sourceFile = $("#dm").attr("fileName");
+			dispModeSetup(sourceFile);
 		}
 
 		// [[DISTANT FUTURE]] Maybe test the possibilities for the use of phonegap
@@ -62,8 +63,30 @@ var displayMode = false;
 	}
 
 
-	function displayMode(){
-		$("#")
+	/*
+		need to disable a number of buttons such that NVector can be used explicitly
+		to display a graph
+	*/
+	function dispModeSetup(dispFile){
+		$("#infileBut").hide();
+		$("#infileButCloud").hide();
+		$("#layerBut").hide();
+		$("#layerButCloud").hide();
+		$("#generateFile").hide();
+		$("#editTab").css("opacity",.5);
+		$("#editTab").off("click");
+
+		$.ajax({
+			url:dispFile,
+			type:"GET",
+			cache: false,
+			fileName: dispFile,
+			success: function(data){
+				addNewGraph(data,this.fileName,true);
+			}
+		});
+
+		console.log("disp")
 	}
 
 	function addNewLayer(layerObj,fileName){
@@ -73,8 +96,46 @@ var displayMode = false;
 		displayContents();
 	}
 
-	function addNewGraph(connectionObj, graphName){
-		rootDataStore.push([JSON.parse(JSON.stringify(connectionObj)),graphName]);
+	function addNewGraph(connectionObj, graphName,disp){
+		if(disp){
+				connectionObj = JSON.parse(connectionObj);
+				// calculate the time range if not presant.
+				if(connectionObj.options.time == true && connectionObj.options.timeRange.length < 2){
+					var coreData = connectionObj.data;
+					var objKeys = Object.keys(coreData);
+					var minDate;
+					var maxDate;
+					for(var i = 0; i < objKeys.length; i++){
+						var currentObj = coreData[objKeys[i]]
+
+						if(currentObj.date.length < 1){
+							continue;
+						}
+
+						if(minDate == undefined){
+							minDate = currentObj.date
+						}
+						if(maxDate == undefined){
+							maxDate = currentObj.date
+						}
+
+						if(new Date(currentObj.date) < new Date(minDate)){
+							minDate = currentObj.date;
+						}
+						if(new Date(currentObj.date) > new Date(maxDate)){
+							maxDate = currentObj.date;
+						}
+					}
+
+					connectionObj["options"].timeRange = [minDate,maxDate];
+				}
+
+				rootDataStore.push([connectionObj,graphName]);
+		}
+		else{
+				rootDataStore.push([JSON.parse(JSON.stringify(connectionObj)),graphName]);
+		}
+
 		if(connectionObj.options.time == true){
 			if(sliderExists){
 				checkSlider();
