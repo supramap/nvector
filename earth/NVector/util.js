@@ -120,7 +120,7 @@ function removeDup(input){
 function popColorIndices(nodes,rootPosition){
 
 	// first if the customColors bar does not exist then it needs to so that
-	// colors can be added in this session.
+	// colors can be added in this session
 	if(!rootDataStore[rootPosition][0].options.customColors){
 		rootDataStore[rootPosition][0].options.customColors = [];
 	}
