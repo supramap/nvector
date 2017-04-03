@@ -46,8 +46,10 @@ function loadNewick(){
 
     var allPlaces = Object.keys(places);
     for(var i = 0; i < allPlaces.length; i++){
-      //console.log(allPlaces[i]);
-      setTimeout(geoLocate(allPlaces[i],allPlaces.length,allPlaces[i]), 1200);
+      console.log(allPlaces[i]);
+      //console.log(allPlaces[i] + " " + allPlaces.length + " " + allPlaces[i]);
+      //setTimeout(geoLocate,1200,allPlaces[i],allPlaces.length,allPlaces[i]);
+      
     }
 
   });
@@ -156,7 +158,7 @@ function finishCoding(total){
 }
 
 function geoLocate(place,total,original){
-
+  console.log(place);
   if(place.indexOf('\#') > -1){
       place = place.slice(0,place.indexOf('\#'));
   }
@@ -169,7 +171,7 @@ function geoLocate(place,total,original){
       if(result == undefined || result[0] == undefined || result.length == 0){
         var newPlace = place.slice(0,place.lastIndexOf(" "));
         console.log("failed to find " + place + ". Now testing " + newPlace);
-        setTimeout(geoLocate(newPlace,total,original),1200);
+        setTimeout(geoLocate,1200,newPlace,total,original);
       }
       else{
         console.log("located: " + place);
@@ -182,7 +184,7 @@ function geoLocate(place,total,original){
 
       var newPlace = place.slice(0,place.lastIndexOf(" "));
       console.log("failed to find " + place + ". Now testing " + newPlace)
-      setTimeout(geoLocate(newPlace,total,original),1200);
+      setTimeout(geoLocate,1200,newPlace,total,original);
     }
   });
 }

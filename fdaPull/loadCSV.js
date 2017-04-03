@@ -9,7 +9,7 @@ var tsv = args[0];
 var newick = args[1];
 var outFile = args[2];
 
-
+console.log("input files are: " + tsv + " " + newick + " " + outFile);
 
 function compare(){
   var fileDate;
@@ -19,6 +19,7 @@ function compare(){
     for(var i = 0; i < acdata.length; i++){
       var line= acdata[i];
       if(line.length > 0){
+        console.log(line);
         var dataset = line.split(",");
         var id = dataset[0];
         metaData[id] = dataset;
