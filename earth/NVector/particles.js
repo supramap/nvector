@@ -207,7 +207,8 @@ function initializeLines(lineData,defaultColor,colOptions,rootPos){
 		colcol.push(colSel.c);
 	}
 
-	var sorted = quickSort(colIndex, colcol, 0, colIndex.length -1);
+	var nanLess = removeNan(colIndex, colcol);
+	var sorted = quickSort(nanLess[0], nanLess[1], 0, nanLess[0].length -1);
 	var cleanSort = removeDup(sorted);
 	colIndex = cleanSort[0];
 	colcol = cleanSort[1];
@@ -224,7 +225,8 @@ function initializeLines(lineData,defaultColor,colOptions,rootPos){
 		}
 
 		// calculate the color positions for each line
-		if(colIndex[p] == i){
+	
+		if(colIndex[p]!== undefined && colIndex[p] === i){
 			coloring = true;
 		}
 		var colorDuration = 0;
@@ -246,6 +248,7 @@ function initializeLines(lineData,defaultColor,colOptions,rootPos){
 		if(coloring == true){
 			coloring = false;
 			p++;
+
 		}
 
 		posIndex = posIndex + calcLength + 1;

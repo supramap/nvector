@@ -100,13 +100,30 @@ function removeDup(input){
 	var last = indArr[0];
 	for(var i = 1; i < indArr.length; i++){
 		var c = indArr[i];
-		if(c == last){
+		if(c == last || isNaN(c)){
 			indArr.splice(i, 1);
 			colArr.splice(i,1);
 			i = i -1;
 		}
 		else{
 			last = c;
+		}
+	}
+	return [indArr, colArr];
+}
+
+
+function removeNan(indAr, colAr){
+	var indArr = indAr;
+	var colArr = colAr;
+
+	for(var i = 1; i < indArr.length; i++){
+		var c = indArr[i];
+
+		if(isNaN(c)){
+			indArr.splice(i, 1);
+			colArr.splice(i,1);
+			i = i -1;
 		}
 	}
 	return [indArr, colArr];
