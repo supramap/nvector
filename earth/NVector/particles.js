@@ -206,12 +206,12 @@ function initializeLines(lineData,defaultColor,colOptions,rootPos){
 		//colors.push(Math.random()*0.5+0.5, Math.random()*0.5+0.5, 1);
 	}
 	// 128500 - 128502 seems to be the problem child.........
-	// this translates to the 65535 vertices to the 65536 vertices, 
+	// this translates to the 65535 vertices to the 65536 vertices,
 	// which can be found at the 196,605 index of the linepos...
 	//ratio for linepos count to indicesArr count : (2x/3) - 2
 	var bsTest = indicesArr.slice(128500,128502);
 	// test for colors
-  lineGeo.setIndex(new THREE.BufferAttribute( new Uint16Array( /*bsTest*/ indicesArr), 1 ));
+  lineGeo.setIndex(new THREE.BufferAttribute( new Uint32Array( /*bsTest*/ indicesArr), 1 ));
 	//lineGeo.addAttribute( 'index', new THREE.BufferAttribute( new Uint32Array( indicesArr ), 1 ) );
 	lineGeo.addAttribute( 'position', new THREE.BufferAttribute( new Float32Array( linepos ), 3 ) );
 	lineGeo.addAttribute( 'color', new THREE.BufferAttribute( new Float32Array( colors ), 3 ) );
