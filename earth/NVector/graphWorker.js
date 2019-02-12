@@ -1,5 +1,5 @@
 
-importScripts('three.min.js');
+importScripts('three.js');
 importScripts('util.js');
 var rad = 100;
 var customRoots;
