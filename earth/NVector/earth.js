@@ -443,7 +443,7 @@ var textureLoader = new THREE.TextureLoader();
 		//console.log( selectableCountries );
 
 
-		renderer = new THREE.WebGLRenderer({antialias:false});
+		renderer = new THREE.WebGLRenderer({antialias:true});
 		renderer.setSize( window.innerWidth, window.innerHeight );
 		renderer.autoClear = false;
 

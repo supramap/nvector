@@ -24,7 +24,7 @@ function init(){
 
 
   scene.add(parentNode);
-  renderer = new THREE.WebGLRenderer({ antialias: false});
+  renderer = new THREE.WebGLRenderer({ antialias: true});
   renderer.gammaInput = true;
   renderer.gammaOutput = true;
 
